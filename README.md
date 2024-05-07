@@ -262,7 +262,7 @@ Returns all the spots.
 - Request
 
   - Method: GET
-  - URL: /api/spots
+  - URL: /api/spots/all
   - Body: none
 
 - Successful Response
@@ -630,7 +630,7 @@ Deletes an existing spot.
 - Request
 
   - Method: DELETE
-  - URL: /api/spots/:spotId
+  - URL: /api/spots/:spotId/delete
   - Body: none
 
 - Successful Response
@@ -929,7 +929,7 @@ Update and return an existing review.
 - Request
 
   - Method: PUT
-  - URL: /api/reviews/:reviewId
+  - URL: /api/reviews/:reviewId/edit
   - Headers:
     - Content-Type: application/json
   - Body:
@@ -999,7 +999,7 @@ Delete an existing review.
 - Request
 
   - Method: DELETE
-  - URL: /api/reviews/:reviewId
+  - URL: /api/reviews/:reviewId/delete
   - Body: none
 
 - Successful Response
@@ -1241,7 +1241,7 @@ Update and return an existing booking.
 - Request
 
   - Method: PUT
-  - URL: /api/bookings/:bookingId
+  - URL: /api/bookings/:bookingId/edit
   - Headers:
     - Content-Type: application/json
   - Body:
@@ -1341,7 +1341,7 @@ Delete an existing booking.
 - Request
 
   - Method: DELETE
-  - URL: /api/bookings/:bookingId
+  - URL: /api/bookings/:bookingId/delete
   - Body: none
 
 - Successful Response
@@ -1394,7 +1394,7 @@ Delete an existing image for a Spot.
 - Request
 
   - Method: DELETE
-  - URL: /api/spots/:spotID/image
+  - URL: /api/spots/:spotID/image/delete
   - Body: none
 
 - Successful Response
@@ -1432,7 +1432,7 @@ Delete an existing image for a Review.
 - Request
 
   - Method: DELETE
-  - URL: /api/reviews/:reviewId/image
+  - URL: /api/reviews/:reviewId/image/delete
   - Body: none
 
 - Successful Response
