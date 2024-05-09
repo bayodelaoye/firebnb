@@ -14,23 +14,34 @@ router.post("/", async (req, res) => {
 
   const { firstName, lastName, email, username, password } = req.body;
 
-  const users = await User.unscoped().findAll();
+  if (firstName && lastName && email && username && password) {
+    const userSameEmail = await User.scope({
+      method: ["findUser", email],
+    }).findOne();
 
-  if ((firstName, lastName, email, username, password)) {
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].email === email) {
-        error.message = "User already exists";
-        error.errors = {
-          email: "User with that email already exists",
-        };
-        return res.json(error);
-      } else if (users[i].username === username) {
-        error.message = "User already exists";
-        error.errors = {
-          username: "User with that username already exists",
-        };
-        return res.json(error);
-      }
+    const userSameUsername = await User.scope({
+      method: ["findUser", username],
+    }).findOne();
+
+    if (userSameEmail && userSameUsername) {
+      error.message = "User already exists";
+      error.errors = {
+        email: "User with that email already exists",
+        username: "User with that username already exists",
+      };
+      return res.json(error);
+    } else if (userSameEmail) {
+      error.message = "User already exists";
+      error.errors = {
+        email: "User with that email already exists",
+      };
+      return res.json(error);
+    } else if (userSameUsername) {
+      error.message = "User already exists";
+      error.errors = {
+        username: "User with that username already exists",
+      };
+      return res.json(error);
     }
 
     const hashedPassword = bcrypt.hashSync(password);
