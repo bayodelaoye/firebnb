@@ -1,5 +1,5 @@
 "use strict";
-const { Model, Validator } = require("sequelize");
+const { Model, Validator, Op } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -57,6 +57,18 @@ module.exports = (sequelize, DataTypes) => {
       defaultScope: {
         attributes: {
           exclude: ["hashedPassword", "email", "createdAt", "updatedAt"],
+        },
+      },
+      scopes: {
+        findUser(credential) {
+          return {
+            where: {
+              [Op.or]: {
+                email: credential,
+                username: credential,
+              },
+            },
+          };
         },
       },
     }
