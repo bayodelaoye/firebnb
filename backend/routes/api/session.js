@@ -4,10 +4,23 @@ const bcrypt = require("bcryptjs");
 
 const { setTokenCookie, restoreUser } = require("../../utils/auth");
 const { User } = require("../../db/models");
+const { check } = require("express-validator");
+const { handleValidationErrors } = require("../../utils/validation");
 
 const router = express.Router();
 
-router.post("/", async (req, res, next) => {
+const validateLogin = [
+  check("credential")
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("Email or username is required"),
+  check("password")
+    .exists({ checkFalsy: true })
+    .withMessage("Password is required"),
+  handleValidationErrors,
+];
+
+router.post("/", validateLogin, async (req, res, next) => {
   const { credential, password } = req.body;
 
   const user = await User.unscoped().findOne({
@@ -20,10 +33,9 @@ router.post("/", async (req, res, next) => {
   });
 
   if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
-    const err = new Error("Login failed");
+    const err = {};
     err.status = 401;
-    err.title = "Login failed";
-    err.errors = { credential: "The provided credentials were invalid." };
+    err.message = "Invalid credentials";
     return next(err);
   }
 
