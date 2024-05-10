@@ -13,7 +13,7 @@ const validUsers = [
     firstName: "Charlotte",
     lastName: "Franklin",
     email: "charlotte.franklin@example.com",
-    username: "CharFrank34",
+    username: "charfrank34",
     hashedPassword: bcrypt.hashSync("bJ4*(,fGTU~z"),
   },
   {
@@ -51,7 +51,7 @@ module.exports = {
     return queryInterface.bulkDelete(
       options,
       {
-        username: { [Op.in]: ["CharFrank34", "dkirsch0", "gjakubovsky1"] },
+        username: { [Op.in]: ["charfrank34", "dkirsch0", "gjakubovsky1"] },
       },
       {}
     );
