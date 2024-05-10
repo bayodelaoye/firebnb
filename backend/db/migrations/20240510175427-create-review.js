@@ -12,10 +12,16 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "Users",
+        },
       },
       spotId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "Spots",
+        },
       },
       imageId: {
         type: Sequelize.INTEGER,
