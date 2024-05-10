@@ -42,6 +42,12 @@ app.use(
 
 app.use(routes);
 
+app.get("/", (req, res) => {
+  res.json({
+    message: "API server is running",
+  });
+});
+
 app.use((_req, _res, next) => {
   const err = new Error("The requested resource couldn't be found.");
   err.title = "Resource Not Found";
@@ -72,10 +78,6 @@ app.use((err, _req, res, _next) => {
     errors: err.errors,
     stack: isProduction ? null : err.stack,
   });
-});
-
-app.get("/", async (req, res) => {
-  res.send("Website deployed!");
 });
 
 module.exports = app;
