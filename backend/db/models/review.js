@@ -42,6 +42,9 @@ module.exports = (sequelize, DataTypes) => {
       stars: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+          len: [1, 5],
+        },
       },
     },
     {
