@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
         validate: {
-          isBefore: "2024-08-03",
+          isAfter: "2024-05-11",
         },
       },
     },

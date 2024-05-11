@@ -1,7 +1,6 @@
 "use strict";
 
 const { Review } = require("../models");
-const spot = require("../models/spot");
 
 let options = {};
 if (process.env.NODE_ENV === "production") {
@@ -22,7 +21,7 @@ const validReviews = [
     spotId: 2,
     imageId: 2,
     review:
-      "Excellent place to stay in Paris; surprisingly quiet considering it was on a busy street. Great view and kitchen and all the furniture and appliances were spotless.",
+      "Excellent place to stay; surprisingly quiet considering it was on a busy street. Great view and kitchen and all the furniture and appliances were spotless.",
     stars: 4,
   },
   {
@@ -37,8 +36,7 @@ const validReviews = [
     userId: 12,
     spotId: 4,
     imageId: 4,
-    review:
-      "Penelope was a super host. She let us check in earlier due to our early arrival which was so nice after long flight. My husband and I really enjoyed staying at her place.",
+    review: "My husband and I really enjoyed staying at this place.",
     stars: 4,
   },
   {
@@ -53,7 +51,7 @@ const validReviews = [
     spotId: 6,
     imageId: 6,
     review:
-      "I wouldn't recommend. The host broke the locks of the off-limit storage area of the house.",
+      "I wouldn't recommend. The host was late with providing us access to the house, and it was not in a good location.",
     stars: 1,
   },
   {
@@ -92,7 +90,7 @@ const validReviews = [
     spotId: 11,
     imageId: 11,
     review:
-      "We had a great time at maras place! lovely host and beautifully located near the lake but very private. The apartment itself also was very nice, we had lots of space and our dog enjoyed it a lot as well!",
+      "We had a great time at maras place! Lovely host and beautifully located near the lake but very private. The apartment itself also was very nice, we had lots of space and our dog enjoyed it a lot as well!",
     stars: 5,
   },
   {
@@ -161,6 +159,157 @@ const validReviews = [
     imageId: 20,
     review: "Amazing Time. Amazing view. Worth it.",
     stars: 4,
+  },
+  {
+    userId: 2,
+    spotId: 20,
+    imageId: 21,
+    review:
+      "I really loved the place, very good location and very clean. Would definitely come back. Thank you.",
+    stars: 5,
+  },
+  {
+    userId: 6,
+    spotId: 19,
+    imageId: 22,
+    review:
+      "I had a really bad experience. The place was not clean and the other guests would make a lot of noise.",
+    stars: 1,
+  },
+  {
+    userId: 10,
+    spotId: 18,
+    imageId: 23,
+    review: "It was great!",
+    stars: 4,
+  },
+  {
+    userId: 12,
+    spotId: 17,
+    imageId: 24,
+    review:
+      "Very nice apartment, well equipped and owner always quickly responding.",
+    stars: 3,
+  },
+  {
+    userId: 13,
+    spotId: 16,
+    imageId: 25,
+    review:
+      "Very nice little apartment, hostess very nice and we would book again immediately.",
+    stars: 5,
+  },
+  {
+    userId: 14,
+    spotId: 15,
+    imageId: 26,
+    review:
+      "Very well equipped apartment and sparkling clean. Well-maintained ambiance, good location, access to public transport and very quiet, both outside and inside. Nice hosts.",
+    stars: 5,
+  },
+  {
+    userId: 16,
+    spotId: 14,
+    imageId: 27,
+    review: "The place was a lot smaller than what it looked like in images.",
+    stars: 3,
+  },
+  {
+    userId: 17,
+    spotId: 13,
+    imageId: 28,
+    review:
+      "Welcoming host, apartment as described, ideal location for visiting the city! I highly recommend this apartment :)",
+    stars: 4,
+  },
+  {
+    userId: 18,
+    spotId: 12,
+    imageId: 29,
+    review:
+      "We'd love to come back! We felt very comfortable. Everything was clean and cozy. The location is also very central and above all quiet.",
+    stars: 5,
+  },
+  {
+    userId: 20,
+    spotId: 11,
+    imageId: 30,
+    review: "Very clean and tighty, felt right at home.",
+    stars: 4,
+  },
+  {
+    userId: 21,
+    spotId: 10,
+    imageId: 31,
+    review: "The environment is clean and the hosts are friendly.",
+    stars: 5,
+  },
+  {
+    userId: 22,
+    spotId: 9,
+    imageId: 32,
+    review: "Great place and great location!",
+    stars: 4,
+  },
+  {
+    userId: 23,
+    spotId: 8,
+    imageId: 33,
+    review: "Would not recommend, the host was very impolite.",
+    stars: 5,
+  },
+  {
+    userId: 24,
+    spotId: 7,
+    imageId: 34,
+    review: "This was paradise in full swing! Thank you.",
+    stars: 4,
+  },
+  {
+    userId: 25,
+    spotId: 6,
+    imageId: 35,
+    review: "Was not the best of experiences.",
+    stars: 2,
+  },
+  {
+    userId: 26,
+    spotId: 5,
+    imageId: 36,
+    review:
+      "The space is convenient, clean in an incredible spot with a great view. Everything was as you see it in the photos.",
+    stars: 5,
+  },
+  {
+    userId: 27,
+    spotId: 4,
+    imageId: 37,
+    review:
+      "It was so nice. The area around the neighborhood was quiet and friendly. The station wasn't far away, so I was able to have a comfortable trip!",
+    stars: 4,
+  },
+  {
+    userId: 28,
+    spotId: 3,
+    imageId: 38,
+    review:
+      "If this is available book it, you won't regret it. Most amazing view ever, super clean and made to feel welcome. Very nice place, and easy to work with.",
+    stars: 4,
+  },
+  {
+    userId: 29,
+    spotId: 2,
+    imageId: 39,
+    review:
+      "This Airbnb is probably one of my favorites. It was lovely. And perfect for our kiddos. Highly recommend and hope to be back.",
+    stars: 5,
+  },
+  {
+    userId: 30,
+    spotId: 1,
+    imageId: 40,
+    review: "Great stay will stay their everytime I come back.",
+    stars: 5,
   },
 ];
 
