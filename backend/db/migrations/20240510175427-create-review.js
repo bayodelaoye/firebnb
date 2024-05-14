@@ -33,11 +33,12 @@ module.exports = {
         },
         imageId: {
           type: Sequelize.INTEGER,
-          allowNull: false,
+          allowNull: true,
         },
         review: {
           type: Sequelize.STRING,
           allowNull: false,
+          unique: true,
         },
         stars: {
           type: Sequelize.INTEGER,
