@@ -1,13 +1,18 @@
 const express = require("express");
 const { Spot, User, SpotImage, Review } = require("../../db/models");
+const { where } = require("sequelize");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+const populateRatingAndImageColumn = async () => {
   const spots = await Spot.findAll();
+  const previewImages = await SpotImage.findAll({
+    where: {
+      preview: true,
+    },
+  });
 
-  const payLoadSpotsArray = [];
-  let avgRatingArray = [];
+  const avgRatingArray = [];
 
   for (let i = 1; i <= spots.length; i++) {
     let ratingAmount = 0;
@@ -25,25 +30,20 @@ router.get("/", async (req, res) => {
   }
 
   for (let k = 0; k < spots.length; k++) {
-    const payload = {
-      id: spots[k].id,
-      ownerId: spots[k].ownerId,
-      address: spots[k].address,
-      city: spots[k].city,
-      state: spots[k].state,
-      country: spots[k].country,
-      lat: spots[k].lat,
-      lng: spots[k].lng,
-      name: spots[k].name,
-      description: spots[k].description,
-      price: spots[k].price,
-      avgRating: avgRatingArray[k],
-    };
+    spots[k].avgRating = avgRatingArray[k];
+    spots[k].previewImage = previewImages[k].url;
 
-    payLoadSpotsArray.push(payload);
+    await spots[k].save();
+    console.log(spots[k]);
   }
 
-  res.json(payLoadSpotsArray);
+  return spots;
+};
+
+router.get("/", async (req, res) => {
+  const spots = await populateRatingAndImageColumn();
+
+  res.json(spots);
 });
 
 router.post("/", async (req, res) => {
@@ -143,6 +143,22 @@ router.post("/:spotId/images", async (req, res) => {
       });
     }
 
+    const spotImages = await SpotImage.findAll({
+      where: {
+        spotId: spot.id,
+      },
+    });
+
+    if (preview === true && spotImages.length > 0) {
+      for (let i = 0; i < spotImages.length; i++) {
+        if (spotImages[i].preview === true) {
+          spotImages[i].preview = false;
+
+          await spotImages[i].save();
+        }
+      }
+    }
+
     const spotImage = await SpotImage.create({
       spotId: spot.id,
       url,
@@ -167,6 +183,30 @@ router.post("/:spotId/images", async (req, res) => {
 
     return res.json(error);
   }
+});
+
+router.get("/current", async (req, res) => {
+  const spots = await populateRatingAndImageColumn();
+  const { user } = req;
+  if (user) {
+    const safeUser = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      username: user.username,
+    };
+
+    const userSpots = await Spot.findAll({
+      where: {
+        ownerId: safeUser.id,
+      },
+    });
+
+    return res.json({
+      userSpots,
+    });
+  } else return res.json({ message: `User not logged in` });
 });
 
 module.exports = router;
