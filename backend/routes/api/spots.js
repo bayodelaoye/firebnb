@@ -204,7 +204,7 @@ router.get("/current", async (req, res) => {
     });
 
     return res.json({
-      userSpots,
+      Spots: userSpots,
     });
   } else return res.json({ message: `User not logged in` });
 });
