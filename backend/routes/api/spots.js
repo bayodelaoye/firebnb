@@ -34,7 +34,6 @@ const populateRatingAndImageColumn = async () => {
     spots[k].previewImage = previewImages[k].url;
 
     await spots[k].save();
-    console.log(spots[k]);
   }
 
   return spots;
