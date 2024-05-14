@@ -17,6 +17,7 @@ router.post("/:reviewId/images", async (req, res) => {
   };
   const { user } = req;
   const { url } = req.body;
+  const reviewImagesSet = new Set();
 
   if (user) {
     if (url) {
@@ -29,14 +30,28 @@ router.post("/:reviewId/images", async (req, res) => {
       if (!review) {
         res.statusCode = 404;
         res.json({ message: "Review couldn't be found" });
+      } else {
+        const reviewImages = await ReviewImage.findAll();
+
+        for (let i = 0; i < reviewImages.length; i++) {
+          reviewImagesSet.add(reviewImages[i].reviewId);
+        }
+
+        if (reviewImagesSet.has(+req.params.reviewId)) {
+          console.log("t");
+          res.statusCode = 400;
+          res.json({
+            message: "The limit to the amount of review images is reached",
+          });
+        } else {
+          const reviewImage = await ReviewImage.create({
+            reviewId: req.params.reviewId,
+            url,
+          });
+
+          res.json(reviewImage);
+        }
       }
-
-      const reviewImage = await ReviewImage.create({
-        reviewId: req.params.reviewId,
-        url,
-      });
-
-      res.json(reviewImage);
     } else {
       const reviewImageObj = {
         url,
