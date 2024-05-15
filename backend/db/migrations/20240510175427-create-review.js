@@ -38,7 +38,6 @@ module.exports = {
         review: {
           type: Sequelize.STRING,
           allowNull: false,
-          unique: true,
         },
         stars: {
           type: Sequelize.INTEGER,

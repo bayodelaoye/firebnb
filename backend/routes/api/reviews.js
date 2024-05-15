@@ -74,4 +74,67 @@ router.post("/:reviewId/images", async (req, res) => {
   }
 });
 
+router.get("/current", async (req, res) => {
+  const { user } = req;
+
+  if (user) {
+    const reviews = await Review.findAll({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    res.json(reviews);
+  } else {
+    res.statusCode = 403;
+    res.json({ message: "Forbidden" });
+  }
+});
+
+router.put("/:reviewId", async (req, res) => {
+  const { user } = req;
+  const { review, stars } = req.body;
+  const error = {
+    message: {},
+    errors: {},
+  };
+
+  if (user) {
+    if (review && stars) {
+      const editReview = await Review.findByPk(req.params.reviewId);
+
+      if (!editReview) {
+        res.statusCode = 404;
+        res.json({ message: "Review couldn't be found" });
+      }
+
+      editReview.review = review;
+      editReview.stars = stars;
+
+      const updatedReview = await editReview.save();
+
+      res.json(updatedReview);
+    } else {
+      const reviewObj = {
+        review,
+        stars,
+      };
+
+      res.statusCode = 400;
+      error.message = "Bad Request";
+
+      for (let key in reviewObj) {
+        if (reviewObj[key] === undefined || reviewObj[key] === "") {
+          error["errors"][key] = key + " is required";
+        }
+      }
+
+      return res.json(error);
+    }
+  } else {
+    res.statusCode = 403;
+    res.json({ message: "Forbidden" });
+  }
+});
+
 module.exports = router;
