@@ -4,8 +4,10 @@ const { where } = require("sequelize");
 
 const router = express.Router();
 
-const populateRatingAndImageColumn = async () => {
-  const spots = await Spot.findAll();
+const populateRatingAndImageColumn = async (query) => {
+  const spots = await Spot.findAll({
+    ...query,
+  });
   const previewImages = await SpotImage.findAll({
     where: {
       preview: true,
@@ -41,10 +43,52 @@ const populateRatingAndImageColumn = async () => {
 
 router.get("/", async (req, res) => {
   const { user } = req;
+  const error = {
+    message: {},
+    errors: {},
+  };
 
   if (user) {
-    const spots = await populateRatingAndImageColumn();
-    res.json(spots);
+    const query = {};
+
+    let { page, size } = req.query;
+
+    page = +page;
+    size = +size;
+
+    if (isNaN(page)) page = 1;
+    if (isNaN(size)) size = 20;
+
+    if ((page < 1 || page > 10) && (size < 1 || size > 20)) {
+      res.statusCode = 400;
+      error.message = "Bad Request";
+      error["errors"].page =
+        "Page must be greater than or equal to 1; or less than or equal to 10";
+      error["errors"].size =
+        "Size must be greater than or equal to 1; or less than or equal to 20";
+      res.json(error);
+    } else if (page < 1 || page > 10) {
+      res.statusCode = 400;
+      error.message = "Bad Request";
+      error["errors"].page =
+        "Page must be greater than or equal to 1; or less than or equal to 10";
+      res.json(error);
+    } else if (size < 1 || size > 20) {
+      res.statusCode = 400;
+      error.message = "Bad Request";
+      error["errors"].size =
+        "Size must be greater than or equal to 1; or less than or equal to 20";
+      res.json(error);
+    }
+
+    if (page > 0 && size > 0) {
+      query.limit = size;
+      query.offset = size * (page - 1);
+    }
+
+    const spots = await populateRatingAndImageColumn(query);
+
+    res.json({ spots, page, size });
   } else {
     res.statusCode = 401;
     res.json({ message: "Authentication required" });
