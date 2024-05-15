@@ -30,21 +30,20 @@ module.exports = (sequelize, DataTypes) => {
       startDate: {
         type: DataTypes.DATE,
         allowNull: false,
-        validate: {
-          isAfter: "2024-05-10",
-        },
       },
       endDate: {
         type: DataTypes.DATE,
         allowNull: false,
-        validate: {
-          isAfter: "2024-05-11",
-        },
       },
     },
     {
       sequelize,
       modelName: "Booking",
+      defaultScope: {
+        attributes: {
+          exclude: ["id", "userId", "createdAt", "updatedAt"],
+        },
+      },
     }
   );
   return Booking;

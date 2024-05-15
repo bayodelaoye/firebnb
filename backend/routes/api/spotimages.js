@@ -19,6 +19,9 @@ router.delete("/:spotImageId", async (req, res) => {
       res.statusCode = 403;
       res.json({ message: "Forbidden" });
     }
+  } else {
+    res.statusCode = 401;
+    res.json({ message: "Authentication required" });
   }
 });
 

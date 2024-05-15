@@ -11,13 +11,13 @@ const { where } = require("sequelize");
 const router = express.Router();
 
 router.post("/:reviewId/images", async (req, res) => {
+  const { user } = req;
+  const { url } = req.body;
+  const reviewImagesSet = new Set();
   const error = {
     message: {},
     errors: {},
   };
-  const { user } = req;
-  const { url } = req.body;
-  const reviewImagesSet = new Set();
 
   if (user) {
     if (url) {
@@ -31,25 +31,35 @@ router.post("/:reviewId/images", async (req, res) => {
         res.statusCode = 404;
         res.json({ message: "Review couldn't be found" });
       } else {
-        const reviewImages = await ReviewImage.findAll();
+        const ownerReview = await Review.findOne({
+          where: {
+            userId: user.id,
+          },
+        });
 
-        for (let i = 0; i < reviewImages.length; i++) {
-          reviewImagesSet.add(reviewImages[i].reviewId);
-        }
-
-        if (reviewImagesSet.has(+req.params.reviewId)) {
-          console.log("t");
-          res.statusCode = 400;
-          res.json({
-            message: "The limit to the amount of review images is reached",
-          });
+        if (!ownerReview) {
+          res.statusCode = 403;
+          res.json({ message: "Forbidden" });
         } else {
-          const reviewImage = await ReviewImage.create({
-            reviewId: req.params.reviewId,
-            url,
-          });
+          const reviewImages = await ReviewImage.findAll();
 
-          res.json(reviewImage);
+          for (let i = 0; i < reviewImages.length; i++) {
+            reviewImagesSet.add(reviewImages[i].reviewId);
+          }
+
+          if (reviewImagesSet.has(+req.params.reviewId)) {
+            res.statusCode = 400;
+            res.json({
+              message: "The limit to the amount of review images is reached",
+            });
+          } else {
+            const reviewImage = await ReviewImage.create({
+              reviewId: req.params.reviewId,
+              url,
+            });
+
+            res.json(reviewImage);
+          }
         }
       }
     } else {
@@ -69,8 +79,8 @@ router.post("/:reviewId/images", async (req, res) => {
       return res.json(error);
     }
   } else {
-    res.statusCode = 403;
-    res.json({ message: "Forbidden" });
+    res.statusCode = 401;
+    res.json({ message: "Authentication required" });
   }
 });
 
@@ -86,8 +96,8 @@ router.get("/current", async (req, res) => {
 
     res.json(reviews);
   } else {
-    res.statusCode = 403;
-    res.json({ message: "Forbidden" });
+    res.statusCode = 401;
+    res.json({ message: "Authentication required" });
   }
 });
 
@@ -102,18 +112,29 @@ router.put("/:reviewId", async (req, res) => {
   if (user) {
     if (review && stars) {
       const editReview = await Review.findByPk(req.params.reviewId);
+      const userReview = await Review.findOne({
+        where: {
+          id: req.params.reviewId,
+          userId: user.id,
+        },
+      });
 
       if (!editReview) {
         res.statusCode = 404;
         res.json({ message: "Review couldn't be found" });
       }
 
-      editReview.review = review;
-      editReview.stars = stars;
+      if (!userReview) {
+        res.statusCode = 403;
+        res.json({ message: "Forbidden" });
+      } else {
+        editReview.review = review;
+        editReview.stars = stars;
 
-      const updatedReview = await editReview.save();
+        const updatedReview = await editReview.save();
 
-      res.json(updatedReview);
+        res.json(updatedReview);
+      }
     } else {
       const reviewObj = {
         review,
@@ -132,8 +153,8 @@ router.put("/:reviewId", async (req, res) => {
       return res.json(error);
     }
   } else {
-    res.statusCode = 403;
-    res.json({ message: "Forbidden" });
+    res.statusCode = 401;
+    res.json({ message: "Authentication required" });
   }
 });
 
