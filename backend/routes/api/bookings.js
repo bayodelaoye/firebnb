@@ -33,7 +33,6 @@ router.get("/current", async (req, res) => {
 
 router.put("/:bookingId", async (req, res) => {
   const { user } = req;
-  let isConflictingBooking = null;
   const error = {
     message: {},
     errors: {},
@@ -190,6 +189,38 @@ router.put("/:bookingId", async (req, res) => {
       }
 
       return res.json(error);
+    }
+  } else {
+    res.statusCode = 401;
+    res.json({ message: "Authentication required" });
+  }
+});
+
+router.delete("/:bookingId", async (req, res) => {
+  const { user } = req;
+
+  if (user) {
+    const booking = await Booking.findByPk(req.params.bookingId);
+
+    if (!booking) {
+      res.statusCode = 404;
+      res.json({ message: "Booking couldn't be found" });
+    } else {
+      const userBooking = await Booking.findOne({
+        where: {
+          id: req.params.bookingId,
+          userId: user.id,
+        },
+      });
+
+      if (!userBooking) {
+        res.statusCode = 403;
+        res.json({ message: "Forbidden" });
+      } else {
+        await userBooking.destroy();
+
+        res.json({ message: "Successfully deleted" });
+      }
     }
   } else {
     res.statusCode = 401;

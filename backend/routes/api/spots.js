@@ -355,15 +355,26 @@ router.put("/:spotId", async (req, res) => {
 router.delete("/:spotId", async (req, res) => {
   const { user } = req;
   if (user) {
-    const userSpots = await Spot.findAll({
-      where: {
-        ownerId: user.id,
-      },
-    });
+    const spot = await Spot.findByPk(req.params.spotId);
 
-    if (userSpots.length === 0) {
-      res.statusCode = 403;
-      res.json({ message: "Forbidden" });
+    if (!spot) {
+      res.statusCode = 404;
+      res.json({ message: "Spot couldn't be found" });
+    } else {
+      const userSpot = await Spot.findOne({
+        where: {
+          ownerId: user.id,
+        },
+      });
+
+      if (!userSpot) {
+        res.statusCode = 403;
+        res.json({ message: "Forbidden" });
+      } else {
+        await spot.destroy();
+
+        res.json({ message: "Successfully deleted" });
+      }
     }
   } else {
     res.statusCode = 401;

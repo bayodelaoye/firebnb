@@ -158,4 +158,36 @@ router.put("/:reviewId", async (req, res) => {
   }
 });
 
+router.delete("/:reviewId", async (req, res) => {
+  const { user } = req;
+
+  if (user) {
+    const review = await Review.findByPk(req.params.reviewId);
+
+    if (!review) {
+      res.statusCode = 404;
+      res.json({ message: "Review couldn't be found" });
+    } else {
+      const userReview = await Review.findOne({
+        where: {
+          id: req.params.reviewId,
+          userId: user.id,
+        },
+      });
+
+      if (!userReview) {
+        res.statusCode = 403;
+        res.json({ message: "Forbidden" });
+      } else {
+        await review.destroy();
+
+        res.json({ message: "Successfully deleted" });
+      }
+    }
+  } else {
+    res.statusCode = 401;
+    res.json({ message: "Authentication required" });
+  }
+});
+
 module.exports = router;

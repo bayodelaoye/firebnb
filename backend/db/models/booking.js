@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       spotId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        onDelete: "CASCADE",
       },
       startDate: {
         type: DataTypes.DATE,
@@ -41,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Booking",
       defaultScope: {
         attributes: {
-          exclude: ["id", "userId", "createdAt", "updatedAt"],
+          exclude: ["userId", "createdAt", "updatedAt"],
         },
       },
     }

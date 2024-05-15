@@ -27,6 +27,7 @@ module.exports = {
         spotId: {
           type: Sequelize.INTEGER,
           allowNull: false,
+          onDelete: "CASCADE",
           references: {
             model: "Spots",
           },
@@ -34,6 +35,7 @@ module.exports = {
         imageId: {
           type: Sequelize.INTEGER,
           allowNull: true,
+          onDelete: "CASCADE",
         },
         review: {
           type: Sequelize.STRING,
