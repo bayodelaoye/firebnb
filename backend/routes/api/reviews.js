@@ -1,12 +1,5 @@
 const express = require("express");
-const {
-  Spot,
-  User,
-  SpotImage,
-  Review,
-  ReviewImage,
-} = require("../../db/models");
-const { where } = require("sequelize");
+const { Spot, User, Review, ReviewImage } = require("../../db/models");
 
 const router = express.Router();
 

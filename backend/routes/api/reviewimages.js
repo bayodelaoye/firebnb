@@ -1,13 +1,5 @@
 const express = require("express");
-const {
-  Spot,
-  User,
-  SpotImage,
-  Review,
-  ReviewImage,
-  Booking,
-} = require("../../db/models");
-const { where } = require("sequelize");
+const { Review, ReviewImage } = require("../../db/models");
 
 const router = express.Router();
 
@@ -15,15 +7,28 @@ router.delete("/:reviewImageId", async (req, res) => {
   const { user } = req;
 
   if (user) {
-    const reviewImage = await Booking.findByPk(req.params.reviewImageId);
+    const reviewImage = await ReviewImage.unscoped().findByPk(
+      req.params.reviewImageId
+    );
 
     if (!reviewImage) {
       res.statusCode = 404;
       res.json({ message: "Review image couldn't be found" });
     } else {
-      await reviewImage.destroy();
+      const review = await Review.findOne({
+        where: {
+          id: reviewImage.reviewId,
+        },
+      });
 
-      res.json({ message: "Successfully deleted" });
+      if (user.id !== review.userId) {
+        res.statusCode = 403;
+        res.json({ message: "Forbidden" });
+      } else {
+        await reviewImage.destroy();
+
+        res.json({ message: "Successfully deleted" });
+      }
     }
   } else {
     res.statusCode = 401;

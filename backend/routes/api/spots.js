@@ -7,8 +7,6 @@ const {
   Booking,
   ReviewImage,
 } = require("../../db/models");
-const { where } = require("sequelize");
-const e = require("express");
 
 const router = express.Router();
 
@@ -44,14 +42,10 @@ const populateRatingAndImageColumn = async (query) => {
   }
 
   for (let k = 0; k < spots.length; k++) {
-    if (previewImages[k] === undefined) {
-      spots[k].previewImage = null;
-    } else {
-      spots[k].avgRating = avgRatingArray[k];
-      spots[k].previewImage = previewImages[k].url;
+    spots[k].avgRating = avgRatingArray[k];
+    spots[k].previewImage = previewImages[k].url;
 
-      await spots[k].save();
-    }
+    await spots[k].save();
   }
 
   return spots;
@@ -74,18 +68,18 @@ router.get("/", async (req, res) => {
     if (isNaN(page) && isNaN(size)) {
       res.statusCode = 400;
       error.message = "Bad Request";
-      error["errors"].page = "Page can not be text";
-      error["errors"].size = "Size can not be text";
+      error["errors"].page = "Page must be a number";
+      error["errors"].size = "Size must be a number";
       res.json(error);
     } else if (isNaN(size)) {
       res.statusCode = 400;
       error.message = "Bad Request";
-      error["errors"].size = "Size can not be text";
+      error["errors"].size = "Size must be a number";
       res.json(error);
     } else if (isNaN(page)) {
       res.statusCode = 400;
       error.message = "Bad Request";
-      error["errors"].page = "Page can not be text";
+      error["errors"].page = "Page must be a number";
       res.json(error);
     }
 

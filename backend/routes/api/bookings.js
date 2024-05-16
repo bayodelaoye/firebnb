@@ -1,13 +1,5 @@
 const express = require("express");
-const {
-  Spot,
-  User,
-  SpotImage,
-  Review,
-  ReviewImage,
-  Booking,
-} = require("../../db/models");
-const { where } = require("sequelize");
+const { Spot, Booking } = require("../../db/models");
 
 const router = express.Router();
 
@@ -242,13 +234,30 @@ router.delete("/:bookingId", async (req, res) => {
         },
       });
 
-      if (!userBooking) {
+      const userSpot = await Spot.findOne({
+        where: {
+          id: booking.spotId,
+          ownerId: user.id,
+        },
+      });
+
+      if (!userBooking && !userSpot) {
         res.statusCode = 403;
         res.json({ message: "Forbidden" });
       } else {
-        await userBooking.destroy();
+        if (
+          Date.now() > new Date(booking.startDate) &&
+          Date.now() < new Date(booking.endDate)
+        ) {
+          res.statusCode = 403;
+          res.json({
+            message: "Bookings that have been started can't be deleted",
+          });
+        } else {
+          await userBooking.destroy();
 
-        res.json({ message: "Successfully deleted" });
+          res.json({ message: "Successfully deleted" });
+        }
       }
     }
   } else {

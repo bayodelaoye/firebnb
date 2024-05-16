@@ -1,6 +1,5 @@
 const express = require("express");
-const { Spot, User, SpotImage, Review } = require("../../db/models");
-const { where } = require("sequelize");
+const { Spot, SpotImage } = require("../../db/models");
 
 const router = express.Router();
 
@@ -32,13 +31,19 @@ router.delete("/:spotImageId", async (req, res) => {
             },
           });
 
-          newSpotImage.preview = true;
+          if (!newSpotImage) {
+            await spotImage.destroy();
 
-          await newSpotImage.save();
+            res.json({ message: "Successfully deleted" });
+          } else {
+            newSpotImage.preview = true;
 
-          await spotImage.destroy();
+            await newSpotImage.save();
 
-          res.json({ message: "Successfully deleted" });
+            await spotImage.destroy();
+
+            res.json({ message: "Successfully deleted" });
+          }
         } else {
           await spotImage.destroy();
 
