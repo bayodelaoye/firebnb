@@ -33,10 +33,12 @@ const populateRatingAndImageColumn = async (query) => {
 
   for (let k = 0; k < spots.length; k++) {
     spots[k].avgRating = avgRatingArray[k];
-    spots[k].previewImage = previewImages[k].url;
+    // spots[k].previewImage = previewImages[k].url;
 
     await spots[k].save();
   }
+
+  console.log(spots);
 
   return spots;
 };
@@ -53,37 +55,54 @@ router.get("/", async (req, res) => {
 
     let { page, size } = req.query;
 
-    page = +page;
-    size = +size;
+    if (page && size) {
+      page = +page;
+      size = +size;
 
-    if (isNaN(page)) page = 1;
-    if (isNaN(size)) size = 20;
+      if (isNaN(page) && isNaN(size)) {
+        res.statusCode = 400;
+        error.message = "Bad Request";
+        error["errors"].page = "Page can not be text";
+        error["errors"].size = "Size can not be text";
+        res.json(error);
+      } else if (isNaN(size)) {
+        res.statusCode = 400;
+        error.message = "Bad Request";
+        error["errors"].size = "Size can not be text";
+        res.json(error);
+      } else if (isNaN(page)) {
+        res.statusCode = 400;
+        error.message = "Bad Request";
+        error["errors"].page = "Page can not be text";
+        res.json(error);
+      }
 
-    if ((page < 1 || page > 10) && (size < 1 || size > 20)) {
-      res.statusCode = 400;
-      error.message = "Bad Request";
-      error["errors"].page =
-        "Page must be greater than or equal to 1; or less than or equal to 10";
-      error["errors"].size =
-        "Size must be greater than or equal to 1; or less than or equal to 20";
-      res.json(error);
-    } else if (page < 1 || page > 10) {
-      res.statusCode = 400;
-      error.message = "Bad Request";
-      error["errors"].page =
-        "Page must be greater than or equal to 1; or less than or equal to 10";
-      res.json(error);
-    } else if (size < 1 || size > 20) {
-      res.statusCode = 400;
-      error.message = "Bad Request";
-      error["errors"].size =
-        "Size must be greater than or equal to 1; or less than or equal to 20";
-      res.json(error);
-    }
+      if ((page < 1 || page > 10) && (size < 1 || size > 20)) {
+        res.statusCode = 400;
+        error.message = "Bad Request";
+        error["errors"].page =
+          "Page must be greater than or equal to 1; or less than or equal to 10";
+        error["errors"].size =
+          "Size must be greater than or equal to 1; or less than or equal to 20";
+        res.json(error);
+      } else if (page < 1 || page > 10) {
+        res.statusCode = 400;
+        error.message = "Bad Request";
+        error["errors"].page =
+          "Page must be greater than or equal to 1; or less than or equal to 10";
+        res.json(error);
+      } else if (size < 1 || size > 20) {
+        res.statusCode = 400;
+        error.message = "Bad Request";
+        error["errors"].size =
+          "Size must be greater than or equal to 1; or less than or equal to 20";
+        res.json(error);
+      }
 
-    if (page > 0 && size > 0) {
-      query.limit = size;
-      query.offset = size * (page - 1);
+      if (page > 0 && size > 0) {
+        query.limit = size;
+        query.offset = size * (page - 1);
+      }
     }
 
     const spots = await populateRatingAndImageColumn(query);
@@ -104,7 +123,6 @@ router.post("/", async (req, res) => {
 
   if (user) {
     const {
-      ownerId,
       address,
       city,
       state,
@@ -116,10 +134,7 @@ router.post("/", async (req, res) => {
       price,
     } = req.body;
 
-    const numberOUsers = await User.findAll();
-
     if (
-      ownerId &&
       address &&
       city &&
       state &&
@@ -130,13 +145,8 @@ router.post("/", async (req, res) => {
       description &&
       price
     ) {
-      if (numberOUsers.length < ownerId) {
-        res.statusCode = 500;
-        res.json({ message: `There is no owner with the id of ${ownerId}` });
-      }
-
       const newSpot = await Spot.create({
-        ownerId,
+        ownerId: user.id,
         address,
         city,
         state,
@@ -148,10 +158,10 @@ router.post("/", async (req, res) => {
         price,
       });
 
+      res.statusCode = 201;
       res.json(newSpot);
     } else {
       const spotObj = {
-        ownerId,
         address,
         city,
         state,
@@ -258,21 +268,13 @@ router.post("/:spotId/images", async (req, res) => {
 });
 
 router.get("/current", async (req, res) => {
-  const spots = await populateRatingAndImageColumn();
+  // const spots = await populateRatingAndImageColumn();
   const { user } = req;
 
   if (user) {
-    const safeUser = {
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      username: user.username,
-    };
-
     const userSpots = await Spot.findAll({
       where: {
-        ownerId: safeUser.id,
+        ownerId: user.id,
       },
     });
 
@@ -286,22 +288,17 @@ router.get("/current", async (req, res) => {
 });
 
 router.get("/:spotId", async (req, res) => {
-  const { user } = req;
+  const spots = await populateRatingAndImageColumn();
+  const spot = await Spot.findByPk(req.params.spotId, {
+    include: [{ model: SpotImage }, { model: User, as: "Owner" }],
+  });
 
-  if (user) {
-    const spot = await Spot.findByPk(req.params.spotId, {
-      include: [{ model: SpotImage }, { model: User, as: "Owner" }],
-    });
-
-    if (!spot) {
-      res.statusCode = 404;
-      res.json({ message: "Spot couldn't be found" });
-    }
-    res.json(spot);
-  } else {
-    res.statusCode = 401;
-    res.json({ message: "Authentication required" });
+  if (!spot) {
+    res.statusCode = 404;
+    res.json({ message: "Spot couldn't be found" });
   }
+
+  res.json(spot);
 });
 
 router.put("/:spotId", async (req, res) => {
