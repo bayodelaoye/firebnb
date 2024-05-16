@@ -6,8 +6,6 @@ const router = express.Router();
 router.post("/:reviewId/images", async (req, res) => {
   const { user } = req;
   const { url } = req.body;
-  const reviewImagesSet = new Set();
-  const maxReviewObj = {};
   const error = {
     message: {},
     errors: {},
