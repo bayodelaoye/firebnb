@@ -14,6 +14,7 @@ router.post("/:reviewId/images", async (req, res) => {
   const { user } = req;
   const { url } = req.body;
   const reviewImagesSet = new Set();
+  const maxReviewObj = {};
   const error = {
     message: {},
     errors: {},
@@ -33,6 +34,7 @@ router.post("/:reviewId/images", async (req, res) => {
       } else {
         const ownerReview = await Review.findOne({
           where: {
+            id: req.params.reviewId,
             userId: user.id,
           },
         });
@@ -41,16 +43,16 @@ router.post("/:reviewId/images", async (req, res) => {
           res.statusCode = 403;
           res.json({ message: "Forbidden" });
         } else {
-          const reviewImages = await ReviewImage.findAll();
+          const reviewImages = await ReviewImage.findAll({
+            where: {
+              reviewId: req.params.reviewId,
+            },
+          });
 
-          for (let i = 0; i < reviewImages.length; i++) {
-            reviewImagesSet.add(reviewImages[i].reviewId);
-          }
-
-          if (reviewImagesSet.has(+req.params.reviewId)) {
-            res.statusCode = 400;
+          if (reviewImages.length > 10) {
+            res.statusCode = 403;
             res.json({
-              message: "The limit to the amount of review images is reached",
+              message: "Maximum number of images for this resource was reached",
             });
           } else {
             const reviewImage = await ReviewImage.create({
@@ -92,9 +94,10 @@ router.get("/current", async (req, res) => {
       where: {
         userId: user.id,
       },
+      include: [{ model: User }, { model: Spot }, { model: ReviewImage }],
     });
 
-    res.json(reviews);
+    res.json({ Reviews: reviews });
   } else {
     res.statusCode = 401;
     res.json({ message: "Authentication required" });

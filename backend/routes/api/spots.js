@@ -1,6 +1,14 @@
 const express = require("express");
-const { Spot, User, SpotImage, Review, Booking } = require("../../db/models");
+const {
+  Spot,
+  User,
+  SpotImage,
+  Review,
+  Booking,
+  ReviewImage,
+} = require("../../db/models");
 const { where } = require("sequelize");
+const e = require("express");
 
 const router = express.Router();
 
@@ -25,93 +33,93 @@ const populateRatingAndImageColumn = async (query) => {
       },
     });
 
-    for (let j = 0; j < reviewSpecificSpotId.length; j++) {
-      ratingAmount += reviewSpecificSpotId[j].stars;
+    if (!reviewSpecificSpotId) {
+      avgRatingArray.push(null);
+    } else {
+      for (let j = 0; j < reviewSpecificSpotId.length; j++) {
+        ratingAmount += reviewSpecificSpotId[j].stars;
+      }
+      avgRatingArray.push(ratingAmount / reviewSpecificSpotId.length);
     }
-    avgRatingArray.push(ratingAmount / reviewSpecificSpotId.length);
   }
 
   for (let k = 0; k < spots.length; k++) {
-    spots[k].avgRating = avgRatingArray[k];
-    // spots[k].previewImage = previewImages[k].url;
+    if (previewImages[k] === undefined) {
+      spots[k].previewImage = null;
+    } else {
+      spots[k].avgRating = avgRatingArray[k];
+      spots[k].previewImage = previewImages[k].url;
 
-    await spots[k].save();
+      await spots[k].save();
+    }
   }
-
-  console.log(spots);
 
   return spots;
 };
 
 router.get("/", async (req, res) => {
-  const { user } = req;
   const error = {
     message: {},
     errors: {},
   };
 
-  if (user) {
-    const query = {};
+  const query = {};
 
-    let { page, size } = req.query;
+  let { page, size } = req.query;
 
-    if (page && size) {
-      page = +page;
-      size = +size;
+  if (page && size) {
+    page = +page;
+    size = +size;
 
-      if (isNaN(page) && isNaN(size)) {
-        res.statusCode = 400;
-        error.message = "Bad Request";
-        error["errors"].page = "Page can not be text";
-        error["errors"].size = "Size can not be text";
-        res.json(error);
-      } else if (isNaN(size)) {
-        res.statusCode = 400;
-        error.message = "Bad Request";
-        error["errors"].size = "Size can not be text";
-        res.json(error);
-      } else if (isNaN(page)) {
-        res.statusCode = 400;
-        error.message = "Bad Request";
-        error["errors"].page = "Page can not be text";
-        res.json(error);
-      }
-
-      if ((page < 1 || page > 10) && (size < 1 || size > 20)) {
-        res.statusCode = 400;
-        error.message = "Bad Request";
-        error["errors"].page =
-          "Page must be greater than or equal to 1; or less than or equal to 10";
-        error["errors"].size =
-          "Size must be greater than or equal to 1; or less than or equal to 20";
-        res.json(error);
-      } else if (page < 1 || page > 10) {
-        res.statusCode = 400;
-        error.message = "Bad Request";
-        error["errors"].page =
-          "Page must be greater than or equal to 1; or less than or equal to 10";
-        res.json(error);
-      } else if (size < 1 || size > 20) {
-        res.statusCode = 400;
-        error.message = "Bad Request";
-        error["errors"].size =
-          "Size must be greater than or equal to 1; or less than or equal to 20";
-        res.json(error);
-      }
-
-      if (page > 0 && size > 0) {
-        query.limit = size;
-        query.offset = size * (page - 1);
-      }
+    if (isNaN(page) && isNaN(size)) {
+      res.statusCode = 400;
+      error.message = "Bad Request";
+      error["errors"].page = "Page can not be text";
+      error["errors"].size = "Size can not be text";
+      res.json(error);
+    } else if (isNaN(size)) {
+      res.statusCode = 400;
+      error.message = "Bad Request";
+      error["errors"].size = "Size can not be text";
+      res.json(error);
+    } else if (isNaN(page)) {
+      res.statusCode = 400;
+      error.message = "Bad Request";
+      error["errors"].page = "Page can not be text";
+      res.json(error);
     }
 
-    const spots = await populateRatingAndImageColumn(query);
+    if ((page < 1 || page > 10) && (size < 1 || size > 20)) {
+      res.statusCode = 400;
+      error.message = "Bad Request";
+      error["errors"].page =
+        "Page must be greater than or equal to 1; or less than or equal to 10";
+      error["errors"].size =
+        "Size must be greater than or equal to 1; or less than or equal to 20";
+      res.json(error);
+    } else if (page < 1 || page > 10) {
+      res.statusCode = 400;
+      error.message = "Bad Request";
+      error["errors"].page =
+        "Page must be greater than or equal to 1; or less than or equal to 10";
+      res.json(error);
+    } else if (size < 1 || size > 20) {
+      res.statusCode = 400;
+      error.message = "Bad Request";
+      error["errors"].size =
+        "Size must be greater than or equal to 1; or less than or equal to 20";
+      res.json(error);
+    }
 
-    res.json({ spots, page, size });
-  } else {
-    res.statusCode = 401;
-    res.json({ message: "Authentication required" });
+    if (page > 0 && size > 0) {
+      query.limit = size;
+      query.offset = size * (page - 1);
+    }
   }
+
+  const spots = await populateRatingAndImageColumn(query);
+
+  res.json({ spots, page, size });
 });
 
 router.post("/", async (req, res) => {
@@ -198,68 +206,69 @@ router.post("/:spotId/images", async (req, res) => {
   };
 
   if (user) {
-    const userSpots = await Spot.findAll({
-      where: {
-        ownerId: user.id,
-      },
-    });
-
-    if (userSpots.length === 0) {
-      res.statusCode = 403;
-      res.json({ message: "Forbidden" });
-    }
-
-    const { url, preview } = req.body;
-
     const spot = await Spot.findByPk(req.params.spotId);
 
-    if (url && preview) {
-      if (spot === null) {
-        res.statusCode = 500;
-        res.json({
-          message: `Spot couldn't be found`,
-        });
-      }
-
-      const spotImages = await SpotImage.findAll({
+    if (!spot) {
+      res.statusCode = 404;
+      res.json({ message: "Spot couldn't be found" });
+    } else {
+      const userSpot = await Spot.findOne({
         where: {
-          spotId: spot.id,
+          id: req.params.spotId,
+          ownerId: user.id,
         },
       });
 
-      if (preview === true && spotImages.length > 0) {
-        for (let i = 0; i < spotImages.length; i++) {
-          if (spotImages[i].preview === true) {
-            spotImages[i].preview = false;
+      if (!userSpot) {
+        res.statusCode = 403;
+        res.json({ message: "Forbidden" });
+      }
 
-            await spotImages[i].save();
+      const { url, preview } = req.body;
+
+      if (url && (preview === true || preview === false)) {
+        const spotImages = await SpotImage.findAll({
+          where: {
+            spotId: spot.id,
+          },
+        });
+
+        if (preview === true && spotImages.length > 0) {
+          for (let i = 0; i < spotImages.length; i++) {
+            if (spotImages[i].preview === true) {
+              spotImages[i].preview = false;
+
+              await spotImages[i].save();
+            }
           }
         }
-      }
 
-      const spotImage = await SpotImage.create({
-        spotId: spot.id,
-        url,
-        preview,
-      });
+        const spotImage = await SpotImage.create({
+          spotId: spot.id,
+          url,
+          preview,
+        });
 
-      res.json(spotImage);
-    } else {
-      const spotImageObj = {
-        url,
-        preview,
-      };
+        const spots = await populateRatingAndImageColumn();
 
-      res.statusCode = 400;
-      error.message = "Bad Request";
+        res.json(spotImage);
+      } else {
+        const spotImageObj = {
+          url,
+          preview,
+        };
 
-      for (let key in spotImageObj) {
-        if (spotImageObj[key] === undefined || spotImageObj[key] === "") {
-          error["errors"][key] = key + " is required";
+        res.statusCode = 400;
+        error.message = "Bad Request";
+
+        for (let key in spotImageObj) {
+          if (spotImageObj[key] === undefined || spotImageObj[key] === "") {
+            error["errors"][key] = key + " is required";
+          }
         }
-      }
 
-      return res.json(error);
+        return res.json(error);
+      }
     }
   } else {
     res.statusCode = 401;
@@ -268,7 +277,7 @@ router.post("/:spotId/images", async (req, res) => {
 });
 
 router.get("/current", async (req, res) => {
-  // const spots = await populateRatingAndImageColumn();
+  const spots = await populateRatingAndImageColumn();
   const { user } = req;
 
   if (user) {
@@ -309,62 +318,25 @@ router.put("/:spotId", async (req, res) => {
   };
 
   if (user) {
-    const userSpots = await Spot.findAll({
-      where: {
-        ownerId: user.id,
-      },
-    });
-
-    if (userSpots.length === 0) {
-      res.statusCode = 403;
-      res.json({ message: "Forbidden" });
-    }
-
-    const {
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    } = req.body;
-
     const spot = await Spot.findByPk(req.params.spotId);
 
     if (!spot) {
       res.statusCode = 404;
       res.json({ message: "Spot couldn't be found" });
-    }
-
-    if (
-      address &&
-      city &&
-      state &&
-      country &&
-      lat &&
-      lng &&
-      name &&
-      description &&
-      price
-    ) {
-      spot.address = address;
-      spot.city = city;
-      spot.state = state;
-      spot.country = country;
-      spot.lat = lat;
-      spot.lng = lng;
-      spot.name = name;
-      spot.description = description;
-      spot.price = price;
-
-      await spot.save();
-
-      res.json(spot);
     } else {
-      const spotObj = {
+      const userSpot = await Spot.findOne({
+        where: {
+          id: req.params.spotId,
+          ownerId: user.id,
+        },
+      });
+
+      if (!userSpot) {
+        res.statusCode = 403;
+        res.json({ message: "Forbidden" });
+      }
+
+      const {
         address,
         city,
         state,
@@ -374,18 +346,56 @@ router.put("/:spotId", async (req, res) => {
         name,
         description,
         price,
-      };
+      } = req.body;
 
-      res.statusCode = 400;
-      error.message = "Bad Request";
+      if (
+        address &&
+        city &&
+        state &&
+        country &&
+        lat &&
+        lng &&
+        name &&
+        description &&
+        price
+      ) {
+        spot.address = address;
+        spot.city = city;
+        spot.state = state;
+        spot.country = country;
+        spot.lat = lat;
+        spot.lng = lng;
+        spot.name = name;
+        spot.description = description;
+        spot.price = price;
 
-      for (let key in spotObj) {
-        if (spotObj[key] === undefined || spotObj[key] === "") {
-          error["errors"][key] = key + " is required";
+        await spot.save();
+
+        res.json(spot);
+      } else {
+        const spotObj = {
+          address,
+          city,
+          state,
+          country,
+          lat,
+          lng,
+          name,
+          description,
+          price,
+        };
+
+        res.statusCode = 400;
+        error.message = "Bad Request";
+
+        for (let key in spotObj) {
+          if (spotObj[key] === undefined || spotObj[key] === "") {
+            error["errors"][key] = key + " is required";
+          }
         }
-      }
 
-      return res.json(error);
+        return res.json(error);
+      }
     }
   } else {
     res.statusCode = 401;
@@ -395,6 +405,7 @@ router.put("/:spotId", async (req, res) => {
 
 router.delete("/:spotId", async (req, res) => {
   const { user } = req;
+
   if (user) {
     const spot = await Spot.findByPk(req.params.spotId);
 
@@ -404,6 +415,7 @@ router.delete("/:spotId", async (req, res) => {
     } else {
       const userSpot = await Spot.findOne({
         where: {
+          id: req.params.spotId,
           ownerId: user.id,
         },
       });
@@ -440,42 +452,47 @@ router.post("/:spotId/reviews", async (req, res) => {
     if (!spot) {
       res.statusCode = 404;
       res.json({ message: "Spot couldn't be found" });
-    }
-
-    for (let i = 0; i < reviews.length; i++) {
-      reviewsSet.add(`${reviews[i].userId}, ${reviews[i].spotId}`);
-    }
-
-    if (review && stars) {
-      if (reviewsSet.has(`${user.id}, ${req.params.spotId}`)) {
-        res.statusCode = 400;
-        res.json({ message: "can only leave one review per spot" });
-      }
-
-      const newReview = await Review.create({
-        userId: user.id,
-        spotId: req.params.spotId,
-        review,
-        stars,
-      });
-
-      res.json(newReview);
     } else {
-      const reviewObj = {
-        review,
-        stars,
-      };
-
-      res.statusCode = 400;
-      error.message = "Bad Request";
-
-      for (let key in reviewObj) {
-        if (reviewObj[key] === undefined || reviewObj[key] === "") {
-          error["errors"][key] = key + " is required";
-        }
+      for (let i = 0; i < reviews.length; i++) {
+        reviewsSet.add(`${reviews[i].userId}, ${reviews[i].spotId}`);
       }
 
-      return res.json(error);
+      if (review && stars > 0 && stars < 6) {
+        if (reviewsSet.has(`${user.id}, ${req.params.spotId}`)) {
+          res.statusCode = 500;
+          res.json({ message: "User already has a review for this spot" });
+        } else {
+          const newReview = await Review.create({
+            userId: user.id,
+            spotId: req.params.spotId,
+            review,
+            stars,
+          });
+
+          res.statusCode = 201;
+          res.json(newReview);
+        }
+      } else {
+        const reviewObj = {
+          review,
+          stars,
+        };
+
+        res.statusCode = 400;
+        error.message = "Bad Request";
+
+        for (let key in reviewObj) {
+          if (reviewObj[key] === undefined || reviewObj[key] === "") {
+            error["errors"][key] = key + " is required";
+          }
+
+          if (stars < 1 || stars > 5) {
+            error["errors"]["stars"] = "Stars must be an integer from 1 to 5";
+          }
+        }
+
+        res.json(error);
+      }
     }
   } else {
     res.statusCode = 401;
@@ -484,27 +501,21 @@ router.post("/:spotId/reviews", async (req, res) => {
 });
 
 router.get("/:spotId/reviews", async (req, res) => {
-  const { user } = req;
+  const spot = await Spot.findByPk(req.params.spotId);
 
-  if (user) {
-    const spot = await Spot.findByPk(req.params.spotId);
-
-    if (!spot) {
-      res.statusCode = 404;
-      res.json({ message: "Spot couldn't be found" });
-    }
-
-    const reviews = await Review.findAll({
-      where: {
-        spotId: req.params.spotId,
-      },
-    });
-
-    res.json(reviews);
-  } else {
-    res.statusCode = 401;
-    res.json({ message: "Authentication required" });
+  if (!spot) {
+    res.statusCode = 404;
+    res.json({ message: "Spot couldn't be found" });
   }
+
+  const reviews = await Review.findAll({
+    where: {
+      spotId: req.params.spotId,
+    },
+    include: [{ model: User }, { model: ReviewImage }],
+  });
+
+  res.json({ Reviews: reviews });
 });
 
 router.post("/:spotId/bookings", async (req, res) => {
