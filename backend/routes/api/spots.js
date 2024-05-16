@@ -609,7 +609,7 @@ router.post("/:spotId/bookings", async (req, res) => {
             error["errors"].startDate = "The start date cannot be in the past";
             res.json(error);
           } else if (isConflictingBooking) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message =
               "Sorry, this spot is already booked for the specified dates";
             error["errors"].startDate =
@@ -629,7 +629,7 @@ router.post("/:spotId/bookings", async (req, res) => {
             res.statusCode = 400;
             error.message = "Bad Request";
             error["errors"].startDate = "Start date must be before end date";
-            error["errors"].endDate = "Start date must be before end date";
+            error["errors"].endDate = "End date must be after start date";
             res.json(error);
           } else if (bookingSet.has(`startDate: ${startDate}`)) {
             res.statusCode = 400;
@@ -747,7 +747,7 @@ router.get("/:spotId/bookings", async (req, res) => {
     }
 
     if (user.id === spot.ownerId) {
-      const bookings = await Booking.findAll({
+      const bookings = await Booking.unscoped().findAll({
         where: {
           spotId: spot.id,
         },

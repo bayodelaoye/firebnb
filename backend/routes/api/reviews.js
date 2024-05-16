@@ -115,28 +115,29 @@ router.put("/:reviewId", async (req, res) => {
   if (user) {
     if (review && stars) {
       const editReview = await Review.findByPk(req.params.reviewId);
-      const userReview = await Review.findOne({
-        where: {
-          id: req.params.reviewId,
-          userId: user.id,
-        },
-      });
 
       if (!editReview) {
         res.statusCode = 404;
         res.json({ message: "Review couldn't be found" });
-      }
-
-      if (!userReview) {
-        res.statusCode = 403;
-        res.json({ message: "Forbidden" });
       } else {
-        editReview.review = review;
-        editReview.stars = stars;
+        const userReview = await Review.findOne({
+          where: {
+            id: req.params.reviewId,
+            userId: user.id,
+          },
+        });
 
-        const updatedReview = await editReview.save();
+        if (!userReview) {
+          res.statusCode = 403;
+          res.json({ message: "Forbidden" });
+        } else {
+          editReview.review = review;
+          editReview.stars = stars;
 
-        res.json(updatedReview);
+          const updatedReview = await editReview.save();
+
+          res.json(updatedReview);
+        }
       }
     } else {
       const reviewObj = {
