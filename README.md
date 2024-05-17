@@ -1,4 +1,5 @@
 # `FireBnb`
+
 ## Database Schema Design
 
 ![db-schema]
