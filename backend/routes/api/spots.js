@@ -31,8 +31,7 @@ const populateRatingAndImageColumn = async (query) => {
       },
     });
 
-    if (!reviewSpecificSpotId) {
-      avgRatingArray.push(null);
+    if (reviewSpecificSpotId.length === 0) {
     } else {
       for (let j = 0; j < reviewSpecificSpotId.length; j++) {
         ratingAmount += reviewSpecificSpotId[j].stars;
@@ -42,8 +41,8 @@ const populateRatingAndImageColumn = async (query) => {
   }
 
   for (let k = 0; k < spots.length; k++) {
-    spots[k].avgRating = avgRatingArray[k];
     spots[k].previewImage = previewImages[k].url;
+    spots[k].avgRating = avgRatingArray[k];
 
     await spots[k].save();
   }

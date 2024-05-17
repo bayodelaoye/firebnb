@@ -20,7 +20,6 @@ module.exports = {
         userId: {
           type: Sequelize.INTEGER,
           allowNull: false,
-          onDelete: "CASCADE",
           references: {
             model: "Users",
           },
@@ -32,11 +31,6 @@ module.exports = {
           references: {
             model: "Spots",
           },
-        },
-        imageId: {
-          type: Sequelize.INTEGER,
-          allowNull: true,
-          onDelete: "CASCADE",
         },
         review: {
           type: Sequelize.STRING,
