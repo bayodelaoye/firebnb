@@ -327,46 +327,8 @@ router.put("/:spotId", async (req, res) => {
       if (!userSpot) {
         res.statusCode = 403;
         res.json({ message: "Forbidden" });
-      }
-
-      const {
-        address,
-        city,
-        state,
-        country,
-        lat,
-        lng,
-        name,
-        description,
-        price,
-      } = req.body;
-
-      if (
-        address &&
-        city &&
-        state &&
-        country &&
-        lat &&
-        lng &&
-        name &&
-        description &&
-        price
-      ) {
-        spot.address = address;
-        spot.city = city;
-        spot.state = state;
-        spot.country = country;
-        spot.lat = lat;
-        spot.lng = lng;
-        spot.name = name;
-        spot.description = description;
-        spot.price = price;
-
-        await spot.save();
-
-        res.json(spot);
       } else {
-        const spotObj = {
+        const {
           address,
           city,
           state,
@@ -376,18 +338,56 @@ router.put("/:spotId", async (req, res) => {
           name,
           description,
           price,
-        };
+        } = req.body;
 
-        res.statusCode = 400;
-        error.message = "Bad Request";
+        if (
+          address &&
+          city &&
+          state &&
+          country &&
+          lat &&
+          lng &&
+          name &&
+          description &&
+          price
+        ) {
+          spot.address = address;
+          spot.city = city;
+          spot.state = state;
+          spot.country = country;
+          spot.lat = lat;
+          spot.lng = lng;
+          spot.name = name;
+          spot.description = description;
+          spot.price = price;
 
-        for (let key in spotObj) {
-          if (spotObj[key] === undefined || spotObj[key] === "") {
-            error["errors"][key] = key + " is required";
+          await spot.save();
+
+          res.json(spot);
+        } else {
+          const spotObj = {
+            address,
+            city,
+            state,
+            country,
+            lat,
+            lng,
+            name,
+            description,
+            price,
+          };
+
+          res.statusCode = 400;
+          error.message = "Bad Request";
+
+          for (let key in spotObj) {
+            if (spotObj[key] === undefined || spotObj[key] === "") {
+              error["errors"][key] = key + " is required";
+            }
           }
-        }
 
-        return res.json(error);
+          return res.json(error);
+        }
       }
     }
   } else {
@@ -598,6 +598,7 @@ router.post("/:spotId/bookings", async (req, res) => {
           }
 
           if (new Date(startDate) < Date.now()) {
+            res.statusCode = 403;
             error.message = "Dates cannot be in the past";
             error["errors"].startDate = "The start date cannot be in the past";
             res.json(error);
@@ -611,7 +612,7 @@ router.post("/:spotId/bookings", async (req, res) => {
               "End date conflicts with an existing booking";
             res.json(error);
           } else if (startDate.toString() === endDate.toString()) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message = "Bad Request";
             error["errors"].startDate =
               "Canot book a spot with the same start and end date";
@@ -619,13 +620,13 @@ router.post("/:spotId/bookings", async (req, res) => {
               "Canot book a spot with the same start and end date";
             res.json(error);
           } else if (startDate > endDate) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message = "Bad Request";
             error["errors"].startDate = "Start date must be before end date";
             error["errors"].endDate = "End date must be after start date";
             res.json(error);
           } else if (bookingSet.has(`startDate: ${startDate}`)) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message = "Bad Request";
             error["errors"].startDate =
               "A booking with this start date already exists";
@@ -633,7 +634,7 @@ router.post("/:spotId/bookings", async (req, res) => {
               "A booking with this start date already exists";
             res.json(error);
           } else if (bookingSet.has(`endDate: ${startDate}`)) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message = "Bad Request";
             error["errors"].startDate =
               "You cannot make a booking, as the start date is the same as an already existsing end date i.e. the date that someone is leaving";
@@ -641,7 +642,7 @@ router.post("/:spotId/bookings", async (req, res) => {
               "You cannot make a booking, as the start date is the same as an already existsing end date i.e. the date that someone is leaving";
             res.json(error);
           } else if (bookingSet.has(`startDate: ${endDate}`)) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message = "Bad Request";
             error["errors"].startDate =
               "Cannot make a booking. The end date is the same as an already existsing start date";
@@ -649,7 +650,7 @@ router.post("/:spotId/bookings", async (req, res) => {
               "Cannot make a booking. The end date is the same as an already existsing start date";
             res.json(error);
           } else if (bookingSet.has(`endDate: ${endDate}`)) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message = "Bad Request";
             error["errors"].startDate =
               "A booking with this end date already exists";
@@ -657,7 +658,7 @@ router.post("/:spotId/bookings", async (req, res) => {
               "A booking with this end date already exists";
             res.json(error);
           } else if (isValidStartDate === false) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message = "Bad Request";
             error["errors"].startDate =
               "Start date cannot be during an existing booking";
@@ -665,7 +666,7 @@ router.post("/:spotId/bookings", async (req, res) => {
               "Start date cannot be during an existing booking";
             res.json(error);
           } else if (isValidEndDate === false) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message = "Bad Request";
             error["errors"].startDate =
               "End date cannot be during an existing booking";
@@ -676,7 +677,7 @@ router.post("/:spotId/bookings", async (req, res) => {
             isValidStartDate === "dates within" &&
             isValidEndDate === "dates within"
           ) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message = "Bad Request";
             error["errors"].startDate =
               "Dates cannot be within an existing booking";
@@ -687,7 +688,7 @@ router.post("/:spotId/bookings", async (req, res) => {
             isValidStartDate === "dates surround" &&
             isValidEndDate === "dates surround"
           ) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message = "Bad Request";
             error["errors"].startDate =
               "Dates cannot surround an existing booking";

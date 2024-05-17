@@ -79,6 +79,7 @@ router.put("/:bookingId", async (req, res) => {
             res.statusCode = 403;
             res.json({ message: "Past bookings can't be modified" });
           } else if (new Date(startDate) < Date.now()) {
+            res.statusCode = 403;
             error.message = "Dates cannot be in the past";
             error["errors"].startDate = "The start date cannot be in the past";
             res.json(error);
@@ -87,7 +88,7 @@ router.put("/:bookingId", async (req, res) => {
               new Date(startDate).getTime() &&
             new Date(booking.endDate).getTime() === new Date(endDate).getTime()
           ) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message =
               "The start and end date is already the same as your inputed values";
             error["errors"].startDate =
@@ -96,7 +97,7 @@ router.put("/:bookingId", async (req, res) => {
               "The end date of this booking is already the same as your inputed value";
             res.json(error);
           } else if (startDate === endDate) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message = "The start and end date cannot be the same";
             error["errors"].startDate =
               "The start date is the same as the end date";
@@ -104,7 +105,7 @@ router.put("/:bookingId", async (req, res) => {
               "The end date is the same as the start date";
             res.json(error);
           } else if (startDate > endDate) {
-            res.statusCode = 400;
+            res.statusCode = 403;
             error.message = "End date cannot be before start date";
             error["errors"].startDate =
               "The start date must be before the end date";
@@ -115,6 +116,7 @@ router.put("/:bookingId", async (req, res) => {
             new Date(booking.startDate).getTime() ===
             new Date(startDate).getTime()
           ) {
+            res.statusCode = 403;
             error.message =
               "Start date cannot be the same as the existing start date";
             error["errors"].startDate =
@@ -124,6 +126,7 @@ router.put("/:bookingId", async (req, res) => {
             new Date(startDate).getTime() ===
             new Date(booking.endDate).getTime()
           ) {
+            res.statusCode = 403;
             error.message =
               "Start date cannot be the same as the existing end date";
             error["errors"].startDate =
@@ -133,6 +136,7 @@ router.put("/:bookingId", async (req, res) => {
             new Date(endDate).getTime() ===
             new Date(booking.startDate).getTime()
           ) {
+            res.statusCode = 403;
             error.message =
               "End date cannot be the same as the existing start date";
             error["errors"].endDate =
@@ -141,6 +145,7 @@ router.put("/:bookingId", async (req, res) => {
           } else if (
             new Date(endDate).getTime() === new Date(booking.endDate).getTime()
           ) {
+            res.statusCode = 403;
             error.message =
               "End date cannot be the same as the existing end date";
             error["errors"].endDate =
@@ -152,6 +157,7 @@ router.put("/:bookingId", async (req, res) => {
             new Date(endDate) > new Date(startDate) &&
             new Date(endDate) < new Date(booking.endDate)
           ) {
+            res.statusCode = 403;
             error.message = "Dates cannot be within an existing booking";
             error["errors"].startDate =
               "The start date cannot be within an existing booking";
@@ -162,6 +168,7 @@ router.put("/:bookingId", async (req, res) => {
             new Date(startDate) < new Date(booking.startDate) &&
             new Date(endDate) > new Date(booking.endDate)
           ) {
+            res.statusCode = 403;
             error.message = "Dates cannot surround an existing booking";
             error["errors"].startDate =
               "The start date cannot surround an existing booking";
@@ -172,6 +179,7 @@ router.put("/:bookingId", async (req, res) => {
             new Date(startDate) > new Date(booking.startDate) &&
             new Date(startDate) < new Date(booking.endDate)
           ) {
+            res.statusCode = 403;
             error.message = "Start date cannot be during the existing booking";
             error["errors"].startDate =
               "The start date needs to be outside the existing booking";
@@ -180,6 +188,7 @@ router.put("/:bookingId", async (req, res) => {
             new Date(endDate) > new Date(booking.startDate) &&
             new Date(endDate) < new Date(booking.endDate)
           ) {
+            res.statusCode = 403;
             error.message = "End date cannot be during the existing booking";
             error["errors"].endDate =
               "The end date needs to be outside the existing booking";
