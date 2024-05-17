@@ -227,7 +227,7 @@ router.delete("/:bookingId", async (req, res) => {
       res.statusCode = 404;
       res.json({ message: "Booking couldn't be found" });
     } else {
-      const userBooking = await Booking.findOne({
+      const userBooking = await Booking.unscoped().findOne({
         where: {
           id: req.params.bookingId,
           userId: user.id,
