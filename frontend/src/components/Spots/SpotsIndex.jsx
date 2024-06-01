@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllSpots } from "../../store/spotReducer";
 import SpotIndexItem from "./SpotIndexItem";
+import "./SpotsIndex.css";
 
 const SpotsIndex = () => {
   const spotsObj = useSelector((state) => state.spots.allSpots);
@@ -14,9 +15,9 @@ const SpotsIndex = () => {
 
   return (
     <div>
-      <div>
+      <div className="spots-container">
         {spots.map((spot) => {
-          <SpotIndexItem spot={spot} key={spot.id} />;
+          return <SpotIndexItem spot={spot} key={spot.id} />;
         })}
       </div>
     </div>

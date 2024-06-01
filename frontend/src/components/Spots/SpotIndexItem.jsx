@@ -1,14 +1,25 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import "./SpotsIndex.css";
+import { FaStar } from "react-icons/fa";
 
 const SpotIndexItem = ({ spot }) => {
-  console.log("TEST!", spot);
   return (
-    <div>
-      jjhjbjhqbdhj
-      <Link>
-        <div>
+    <div className="spot-container">
+      <Link to={`/spots/${spot.id}`}>
+        <div className="spot-image-container">
           <img src={spot.previewImage} />
+        </div>
+        <div className="spot-text-container">
+          <h2>{spot.name}</h2>
+          <div className="spot-location-rating-container">
+            <p>
+              {spot.city}, {spot.state}
+            </p>
+            <p>
+              <FaStar /> {spot.avgRating ? spot.avgRating : "New"}
+            </p>
+          </div>
+          <p>${spot.price} night</p>
         </div>
       </Link>
     </div>
