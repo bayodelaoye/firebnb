@@ -1,9 +1,8 @@
 import { csrfFetch } from "./csrf";
 
 const LOAD_SPOTS = "spots/LOAD_SPOTS";
-const LOAD_SPOT = "spots/LOAD_SPOT";
+const RECEIVE_SPOT = "spots/RECEIVE_SPOT";
 
-// actions
 export const loadSpots = (spots) => {
   return {
     type: LOAD_SPOTS,
@@ -11,14 +10,13 @@ export const loadSpots = (spots) => {
   };
 };
 
-export const loadSpot = (spot) => {
+export const receiveSpot = (spot) => {
   return {
-    type: LOAD_SPOT,
+    type: RECEIVE_SPOT,
     spot,
   };
 };
 
-// thunks
 export const getAllSpots = () => async (dispatch) => {
   const res = await fetch("/api/spots");
 
@@ -32,16 +30,17 @@ export const getAllSpots = () => async (dispatch) => {
 };
 
 export const getSingleSpot = (spotId) => async (dispatch) => {
-  const res = await fetch(`/api/spots/${spotId}`);
+  const res = await csrfFetch(`/api/spots/${spotId}`);
 
   if (res.ok) {
     const data = await res.json();
 
-    dispatch(loadSpot(data));
+    dispatch(receiveSpot(data));
 
     return data;
   } else {
     const data = await res.json();
+
     return data;
   }
 };
@@ -57,13 +56,12 @@ export const spotReducer = (state = initialState, action) => {
       });
       return newState;
     }
-    case LOAD_SPOT: {
-      const newState = {
-        currentSpot: action.spot,
-      };
+    case RECEIVE_SPOT: {
+      const newState = { ...state, currentSpot: action.spot };
       return newState;
     }
-    default:
+    default: {
       return state;
+    }
   }
 };
