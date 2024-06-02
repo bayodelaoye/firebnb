@@ -14,6 +14,7 @@ const SpotDetailsPage = () => {
   //   const spot = useSelector((state) => state);
   const dispatch = useDispatch();
   console.log(spot);
+  console.log(spotReviews);
 
   useEffect(() => {
     dispatch(getSingleSpot(spotId)).then(() =>
@@ -23,7 +24,7 @@ const SpotDetailsPage = () => {
 
   return (
     <div className="details-page-container">
-      <h2>{spot.name}</h2>
+      {/* <h2>{spot.name}</h2>
       <div className="details-page-image-container">
         <div className="main-image-container">
           <img src={spot.previewImage} />
@@ -51,11 +52,13 @@ const SpotDetailsPage = () => {
             </p>
           </div>
           <div className="btn-container">
-            <button>Reserve</button>
+            <button onClick={() => alert("Feature comming soon")}>
+              Reserve
+            </button>
           </div>
         </div>
       </div>
-      <div className="line-break"></div>
+      <div className="line-break"></div> */}
     </div>
   );
 };

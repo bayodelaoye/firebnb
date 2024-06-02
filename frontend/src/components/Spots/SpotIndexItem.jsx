@@ -5,7 +5,6 @@ import { FaStar } from "react-icons/fa";
 const SpotIndexItem = ({ spot }) => {
   return (
     <div className="spot-container">
-      <h2>{spot.id}</h2>
       <Link to={`/spots/${spot.id}`}>
         <div className="spot-image-container">
           <img src={spot.previewImage} />
