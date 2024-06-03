@@ -9,6 +9,9 @@ const SpotIndexItem = ({ spot }) => {
         <div className="spot-image-container">
           <img src={spot.previewImage} />
         </div>
+        <div className="tooltip">
+          <span className="tooltiptext">{spot.name}</span>
+        </div>
         <div className="spot-text-container">
           <h2>{spot.name}</h2>
           <div className="spot-location-rating-container">
@@ -16,7 +19,7 @@ const SpotIndexItem = ({ spot }) => {
               {spot.city}, {spot.state}
             </p>
             <p>
-              <FaStar /> {spot.avgRating ? spot.avgRating : "New"}
+              <FaStar /> {spot.avgRating ? spot.avgRating.toFixed(2) : "New"}
             </p>
           </div>
           <p>${spot.price} night</p>

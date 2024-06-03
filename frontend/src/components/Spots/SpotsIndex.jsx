@@ -9,6 +9,10 @@ const SpotsIndex = () => {
   const spots = Object.values(spotsObj);
   const dispatch = useDispatch();
 
+  //
+  const spotReviews = useSelector((state) => state);
+  console.log(spotReviews);
+
   useEffect(() => {
     dispatch(getAllSpots());
   }, [dispatch]);

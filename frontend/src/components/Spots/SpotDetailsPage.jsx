@@ -24,7 +24,10 @@ const SpotDetailsPage = () => {
 
   return (
     <div className="details-page-container">
-      {/* <h2>{spot.name}</h2>
+      <h2>{spot.name}</h2>
+      <p>
+        {spot.city} {spot.state} {spot.country}
+      </p>
       <div className="details-page-image-container">
         <div className="main-image-container">
           <img src={spot.previewImage} />
@@ -40,7 +43,9 @@ const SpotDetailsPage = () => {
 
       <div className="spot-info-container">
         <div className="owner-description-container">
-          <h2>Hosted by {spot.Owner.firstName}</h2>
+          <h2>
+            Hosted by {spot.Owner.firstName} {spot.Owner.lastName}
+          </h2>
           <p>{spot.description}</p>
         </div>
 
@@ -58,7 +63,7 @@ const SpotDetailsPage = () => {
           </div>
         </div>
       </div>
-      <div className="line-break"></div> */}
+      <div className="line-break"></div>
     </div>
   );
 };
