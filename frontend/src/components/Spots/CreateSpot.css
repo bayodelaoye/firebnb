@@ -1,0 +1,72 @@
+.create-spot-container {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  align-items: center;
+  margin-top: 50px;
+}
+.create-spot-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+}
+
+.form-title {
+  margin-bottom: 20px;
+}
+
+.form-subtitle {
+  margin-bottom: 20px;
+}
+
+.form-info {
+  margin-bottom: 20px;
+}
+
+.input-area-spots {
+  background-color: white;
+  border-radius: 7px;
+  border: #51636d71 1px solid;
+  height: 25px;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  margin-bottom: 25px;
+  color: red;
+}
+
+.signup-label {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-text-area {
+  background-color: white;
+  border-radius: 7px;
+  border: #51636d71 1px solid;
+  height: 70px;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  margin-bottom: 1rem;
+}
+
+.added-text {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.spot-button {
+  height: 3rem;
+  color: black;
+  box-shadow: 4px 3px 5px rgb(133, 117, 117);
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+}

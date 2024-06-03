@@ -23,7 +23,7 @@ function Navigation({ isLoaded }) {
   const sessionLinks = sessionUser ? (
     <div className="user-menu-container">
       <div className="three-links">
-        <Link>Create a New spot</Link>
+        <Link to="/spots">Create a New spot</Link>
         <MdAccountCircle
           className="icon-nav-bar"
           onClick={() => {

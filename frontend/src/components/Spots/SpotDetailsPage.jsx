@@ -14,8 +14,6 @@ const SpotDetailsPage = () => {
   const spotReviews = useSelector((state) => state.reviews.spot);
   const userId = useSelector((state) => state.session.user.id);
   const ownerId = spot.ownerId;
-  console.log(ownerId);
-  console.log(userId);
   const reviewsArray = Object.values(spotReviews);
   let reviewCount = reviewsArray.length;
   const [isLoaded, setIsLoaded] = useState(false);
