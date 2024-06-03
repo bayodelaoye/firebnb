@@ -80,7 +80,7 @@ const CreateSpot = () => {
 
       await dispatch(createSpot(spotObj));
     } else {
-      alert("Please fix your errors");
+      alert("Please fix your errors before creating a spot");
     }
   };
 
