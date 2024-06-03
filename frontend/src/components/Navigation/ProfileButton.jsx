@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const navigate = useNavigate();
 
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
@@ -29,21 +31,23 @@ function ProfileButton({ user }) {
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
+    navigate("/");
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
     <>
-      <button onClick={toggleMenu}>
+      {/* <button onClick={toggleMenu}>
         <i className="fas fa-user-circle" />
-      </button>
+      </button> */}
       <ul className={ulClassName} ref={ulRef}>
-        <li>{user.username}</li>
-        <li>
-          {user.firstName} {user.lastName}
-        </li>
+        {/* <li>{user.username}</li> */}
+        <li>Hello, {user.firstName}</li>
         <li>{user.email}</li>
+        <li>
+          <NavLink>Manage Spots</NavLink>
+        </li>
         <li>
           <button onClick={logout}>Log Out</button>
         </li>

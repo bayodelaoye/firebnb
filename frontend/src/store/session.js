@@ -19,6 +19,7 @@ export const login =
       method: "POST",
       body: JSON.stringify({ credential, password }),
     });
+
     const data = await response.json();
     dispatch(setUser(data.user));
     return response;

@@ -135,4 +135,10 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/all", async (req, res) => {
+  let allUsers = await User.unscoped().findAll();
+  res.status(200);
+  return res.json(allUsers);
+});
+
 module.exports = router;

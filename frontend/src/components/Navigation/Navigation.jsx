@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import OpenModalButton from "../OpenModalButton";
@@ -7,14 +7,37 @@ import SignupFormModal from "../SignupFormModal";
 import "./Navigation.css";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import mainLogo from "../../../public/Assets/firebnb-logo-3.png";
+import { MdAccountCircle } from "react-icons/md";
+import { useState, useEffect, useRef } from "react";
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
+  const [visible, setvisible] = useState(false);
+
+  // const root = document.getElementById("root");
+  // document.body.addEventListener("click", () => {
+  //   const t = document.getElementById("login-sign-up-btns");
+  //   console.log(t);
+  // });
 
   const sessionLinks = sessionUser ? (
-    <li>
-      <ProfileButton user={sessionUser} className="login-sign-up-btns" />
-    </li>
+    <div className="user-menu-container">
+      <div className="three-links">
+        <Link>Create a New spot</Link>
+        <MdAccountCircle
+          className="icon-nav-bar"
+          onClick={() => {
+            visible ? setvisible(false) : setvisible(true);
+          }}
+        />
+      </div>
+
+      {visible && (
+        <li className="drop-down-menu">
+          <ProfileButton user={sessionUser} id="login-sign-up-btns" />{" "}
+        </li>
+      )}
+    </div>
   ) : (
     <>
       <li>
@@ -38,13 +61,10 @@ function Navigation({ isLoaded }) {
 
   return (
     <nav className="nav-bar">
-      <ul>
-        <li>
-          <NavLink to="/">
-            <img src={mainLogo} className="logo" />
-          </NavLink>
-        </li>
-      </ul>
+      <NavLink to="/">
+        <img src={mainLogo} className="logo" />
+      </NavLink>
+
       <div className="search-box-container">
         <p>Anywhere</p>
         <div className="border-right"></div>
