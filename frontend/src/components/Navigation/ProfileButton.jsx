@@ -9,10 +9,10 @@ function ProfileButton({ user }) {
   const ulRef = useRef();
   const navigate = useNavigate();
 
-  const toggleMenu = (e) => {
-    e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
-    setShowMenu(!showMenu);
-  };
+  // const toggleMenu = (e) => {
+  //   e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
+  //   setShowMenu(!showMenu);
+  // };
 
   useEffect(() => {
     if (!showMenu) return;

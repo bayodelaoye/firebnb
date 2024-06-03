@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
@@ -37,6 +37,7 @@ function SignupFormModal() {
     }
 
     setFormErrors(errors);
+    setErrors(errors);
 
     // setErrors(errors);
   }, [email, username, firstName, lastName, password, confirmPassword]);
@@ -87,7 +88,7 @@ function SignupFormModal() {
             placeholder="Email"
           />
         </label>
-        {Object.keys(formErrors).length >= 1 ? (
+        {Object.keys(formErrors).length >= 1 || Object.keys(errors).length ? (
           <p>{formErrors.email}</p>
         ) : (
           <></>

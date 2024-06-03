@@ -1,5 +1,3 @@
-import { csrfFetch } from "./csrf";
-
 const LOAD_REVIEWS_BY_SPOT_ID = "reviews/LOAD_REVIEWS_BY_SPOT_ID";
 
 export const loadReviewsBySpotId = (reviews) => {

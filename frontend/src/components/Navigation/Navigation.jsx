@@ -8,7 +8,7 @@ import "./Navigation.css";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import mainLogo from "../../../public/Assets/firebnb-logo-3.png";
 import { MdAccountCircle } from "react-icons/md";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);

@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { getAllReviewsForSpot } from "../../store/reviewReducer";
@@ -12,6 +12,10 @@ const SpotDetailsPage = () => {
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spots.currentSpot);
   const spotReviews = useSelector((state) => state.reviews.spot);
+  const userId = useSelector((state) => state.session.user.id);
+  const ownerId = spot.ownerId;
+  console.log(ownerId);
+  console.log(userId);
   const reviewsArray = Object.values(spotReviews);
   let reviewCount = reviewsArray.length;
   const [isLoaded, setIsLoaded] = useState(false);
@@ -92,8 +96,13 @@ const SpotDetailsPage = () => {
               )}
             </div>
             <div className="reviews-container">
+              {reviewCount === 0 && ownerId !== userId ? (
+                <p>Be the first to post a review!</p>
+              ) : (
+                <></>
+              )}
               {reviewsArray.map((review) => {
-                return <ReviewIndexItem review={review} />;
+                return <ReviewIndexItem review={review} key={review.id} />;
               })}
             </div>
           </div>
