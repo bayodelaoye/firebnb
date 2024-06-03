@@ -89,3 +89,29 @@
   margin: auto;
   border: 0.5px solid black;
 }
+
+.star-rating-review-summary {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.review-summary-container {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 20px;
+}
+
+.reviews-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.summary-review-container {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  padding-left: 70px;
+}

@@ -6,14 +6,15 @@ import { getSingleSpot } from "../../store/spotReducer";
 import "./SpotDetailsPage.css";
 import { FaStar } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
+import ReviewIndexItem from "../Reviews/ReviewIndexItem";
 
 const SpotDetailsPage = () => {
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spots.currentSpot);
-  const spotReviews = useSelector((state) => state);
-  //   const spot = useSelector((state) => state);
+  const spotReviews = useSelector((state) => state.reviews.spot);
+  const reviewsArray = Object.values(spotReviews);
   const dispatch = useDispatch();
-  console.log(spot);
+
   console.log(spotReviews);
 
   useEffect(() => {
@@ -53,8 +54,9 @@ const SpotDetailsPage = () => {
           <div className="stay-info-container">
             <h2>${spot.price} night</h2>
             <p>
-              <FaStar /> {spot.avgRating}
+              <FaStar /> {spot.avgRating.toFixed(2)}
             </p>
+            <GoDotFill /> {reviewsArray.length}
           </div>
           <div className="btn-container">
             <button onClick={() => alert("Feature comming soon")}>
@@ -64,6 +66,19 @@ const SpotDetailsPage = () => {
         </div>
       </div>
       <div className="line-break"></div>
+      <div className="summary-review-container">
+        <div className="review-summary-container">
+          <div className="star-rating-review-summary">
+            <FaStar /> {spot.avgRating.toFixed(2)}
+          </div>{" "}
+          <GoDotFill /> {reviewsArray.length}
+        </div>
+        <div className="reviews-container">
+          {reviewsArray.map((review) => {
+            return <ReviewIndexItem review={review} />;
+          })}
+        </div>
+      </div>
     </div>
   );
 };

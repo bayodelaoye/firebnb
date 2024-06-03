@@ -10,7 +10,7 @@ export const loadReviewsBySpotId = (reviews) => {
 };
 
 export const getAllReviewsForSpot = (spotId) => async (dispatch) => {
-  const res = await csrfFetch(`api/spots/${spotId}/reviews`);
+  const res = await fetch(`/api/spots/${spotId}/reviews`);
 
   if (res.ok) {
     const data = await res.json();
@@ -32,12 +32,9 @@ export const reviewReducer = (state = initialState, action) => {
     case LOAD_REVIEWS_BY_SPOT_ID: {
       console.log("REVIEWS", action.reviews);
       const newState = { ...state };
-      //   newState.spot = { ...newState.spot };
-      //   newState.user = { ...newState.user };
-      action.reviews.reviews.forEach((review) => {
+      action.reviews.Reviews.forEach((review) => {
         newState.spot[review.id] = review;
       });
-
       return newState;
     }
     default: {
