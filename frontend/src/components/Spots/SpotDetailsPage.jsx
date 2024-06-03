@@ -13,6 +13,7 @@ const SpotDetailsPage = () => {
   const spot = useSelector((state) => state.spots.currentSpot);
   const spotReviews = useSelector((state) => state.reviews.spot);
   const reviewsArray = Object.values(spotReviews);
+  let reviewCount = reviewsArray.length;
   const dispatch = useDispatch();
 
   console.log(spotReviews);
@@ -56,7 +57,14 @@ const SpotDetailsPage = () => {
             <p>
               <FaStar /> {spot.avgRating.toFixed(2)}
             </p>
-            <GoDotFill /> {reviewsArray.length}
+            {reviewsArray.length > 0 ? <GoDotFill /> : <></>}
+            {reviewsArray.length === 0 ? (
+              <p>New</p>
+            ) : reviewCount === 1 ? (
+              <p>{reviewCount} review</p>
+            ) : (
+              <p>{reviewCount} reviews</p>
+            )}
           </div>
           <div className="btn-container">
             <button onClick={() => alert("Feature comming soon")}>
@@ -71,7 +79,14 @@ const SpotDetailsPage = () => {
           <div className="star-rating-review-summary">
             <FaStar /> {spot.avgRating.toFixed(2)}
           </div>{" "}
-          <GoDotFill /> {reviewsArray.length}
+          {reviewsArray.length > 0 ? <GoDotFill /> : <></>}
+          {reviewsArray.length === 0 ? (
+            <p>New</p>
+          ) : reviewCount === 1 ? (
+            <p>{reviewCount} review</p>
+          ) : (
+            <p>{reviewCount} reviews</p>
+          )}
         </div>
         <div className="reviews-container">
           {reviewsArray.map((review) => {
