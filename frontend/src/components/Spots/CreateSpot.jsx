@@ -9,7 +9,7 @@ const CreateSpot = () => {
     dispatch(getAllSpots());
   }, [dispatch]);
 
-  return <div>test</div>;
+  return <div>test=</div>;
 };
 
 export default CreateSpot;
