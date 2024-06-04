@@ -9,6 +9,8 @@ import { Modal } from "./context/Modal";
 import SpotsIndex from "./components/Spots";
 import SpotDetailsPage from "./components/Spots/SpotDetailsPage";
 import CreateSpot from "./components/Spots/CreateSpot";
+import ManageSpots from "./components/Spots/ManageSpots";
+import UpdateSpot from "./components/Spots/UpdateSpot";
 
 function Layout() {
   const dispatch = useDispatch();
@@ -44,6 +46,14 @@ const router = createBrowserRouter([
       {
         path: "/spots",
         element: <CreateSpot />,
+      },
+      {
+        path: "/spots/current",
+        element: <ManageSpots />,
+      },
+      {
+        path: "/spots/:spotId/edit",
+        element: <UpdateSpot />,
       },
       // {
       //   path: 'login',

@@ -1,0 +1,14 @@
+.manage-spots-box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.spot-text-container {
+  width: 370px;
+}
+
+.manage-btns {
+  display: flex;
+  gap: 20px;
+}

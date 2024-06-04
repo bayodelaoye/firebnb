@@ -1,0 +1,18 @@
+.manage-spots-container {
+  padding-left: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+.manage-text-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.individual-spot-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
