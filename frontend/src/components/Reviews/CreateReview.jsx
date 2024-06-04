@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createReview } from "../../store/reviewReducer";
-// import { getSingleSpot } from "../../store/spots";
+import { getSingleSpot } from "../../store/spotReducer";
 import { useModal } from "../../context/Modal";
 import "./CreateReview.css";
 import { FaStar } from "react-icons/fa6";
 import { FaRegStar } from "react-icons/fa";
+import SpotDetailsPage from "../Spots/SpotDetailsPage";
 
 function CreateReview({ spot, user }) {
   const [stars, setStars] = useState(0);
@@ -31,7 +32,7 @@ function CreateReview({ spot, user }) {
     if (Object.values(errors).length > 0) {
       alert("Please fix the errors you have");
     } else {
-      let spotId = spot.id;
+      let spotId = parseInt(spot.id);
       let newReview = {
         stars,
         review,
@@ -39,6 +40,9 @@ function CreateReview({ spot, user }) {
 
       await dispatch(createReview(newReview, spotId))
         .then(closeModal)
+        .then(() => {
+          getSingleSpot(spotId);
+        })
         .then(() => {
           setStars(0);
           setReview("");

@@ -151,15 +151,17 @@ const SpotDetailsPage = () => {
                 />
               )}
 
-              {reviewsArray.map((review) => {
-                return (
-                  <ReviewIndexItem
-                    review={review}
-                    spot={spot}
-                    key={review.id}
-                  />
-                );
-              })}
+              {reviewsArray
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map((review) => {
+                  return (
+                    <ReviewIndexItem
+                      review={review}
+                      spot={spot}
+                      key={review.id}
+                    />
+                  );
+                })}
             </div>
           </div>
         </div>
