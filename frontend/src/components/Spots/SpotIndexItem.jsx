@@ -1,13 +1,16 @@
 import { Link } from "react-router-dom";
 import "./SpotsIndex.css";
 import { FaStar } from "react-icons/fa";
+import { sendPreviewImage } from "./CreateSpot";
 
 const SpotIndexItem = ({ spot }) => {
   return (
     <div className="spot-container">
       <Link to={`/spots/${spot.id}`}>
         <div className="spot-image-container">
-          <img src={spot.previewImage} />
+          <img src={spot.previewImage ? spot.previewImage : sendPreviewImage} />
+          {console.log(spot.previewImage)}
+          {console.log(sendPreviewImage())}
         </div>
         <div className="tooltip">
           <span className="tooltiptext">{spot.name}</span>

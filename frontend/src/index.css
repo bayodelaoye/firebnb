@@ -8,3 +8,9 @@
 a {
   text-decoration: none;
 }
+
+button {
+  width: fit-content;
+  padding: 12px;
+  cursor: pointer;
+}

@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createSpot } from "../../store/spotReducer";
 import "./CreateSpot.css";
+import { useNavigate } from "react-router-dom";
+
+let preview;
+
+export const sendPreviewImage = () => {
+  return preview;
+};
+
+console.log(preview);
 
 const CreateSpot = () => {
   const [country, setCountry] = useState("");
@@ -19,8 +28,14 @@ const CreateSpot = () => {
   const [imageUrl3, setImageUrl3] = useState("");
   const [imageUrl4, setImageUrl4] = useState("");
   // const [submitted, setSubmitted] = useState(false);
+  const newSpot = useSelector((state) => state.spots.createdSpot);
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isFirstTime, setIsFirstTime] = useState(true);
+  console.log(newSpot);
+
+  preview = previewImage;
 
   useEffect(() => {
     const errors = {};
@@ -33,16 +48,16 @@ const CreateSpot = () => {
       errors.city = "City is required";
     } else if (state.length < 1) {
       errors.state = "State is required";
-    } else if (lat.length < 1) {
-      errors.lat = "Lat is required";
-    } else if (lng.length < 1) {
-      errors.lng = "Lng is required";
+    } else if (isNaN(lat) || lat === "") {
+      errors.lat = "Lat is required and must be a number";
+    } else if (isNaN(lng) || lng === "") {
+      errors.lng = "Lng is required and must be a number";
     } else if (description.length < 1) {
       errors.description = "Description needs 30 or more characters";
     } else if (name.length < 1) {
       errors.name = "Name is required";
-    } else if (price.length < 1) {
-      errors.price = "Price is required";
+    } else if (isNaN(price) || price === "") {
+      errors.price = "Price is required and must be a number";
     } else if (previewImage.length < 1) {
       errors.previewImage = "Preview image is requried";
     }
@@ -64,21 +79,46 @@ const CreateSpot = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (Object.values(errors).length >= 1) {
+    if (Object.values(errors).length === 0) {
       const spotObj = {
-        country,
         address,
         city,
         state,
-        lat,
-        lng,
-        description,
+        country,
+        lat: parseInt(lat),
+        lng: parseInt(lng),
         name,
-        price,
-        previewImage,
+        description,
+        price: parseInt(price),
       };
+      console.log(spotObj);
 
-      await dispatch(createSpot(spotObj));
+      try {
+        dispatch(createSpot(spotObj))
+          .then(() => {
+            newSpot["previewImage"] = previewImage;
+          })
+          .then(() => {
+            navigate(`/spots/${newSpot.id}`);
+          });
+
+        setCountry("");
+        setAddress("");
+        setCity("");
+        setState("");
+        setLat("");
+        setLng("");
+        setDescription("");
+        setName("");
+        setPrice("");
+        setPreviewImage("");
+        setImageUrl1("");
+        setImageUrl2("");
+        setImageUrl3("");
+        setImageUrl4("");
+      } catch {
+        console.log("Uncaught in promise");
+      }
     } else {
       alert("Please fix your errors before creating a spot");
     }
@@ -104,11 +144,18 @@ const CreateSpot = () => {
             value={country}
             onChange={(e) => setCountry(e.target.value)}
           />
-          {Object.keys(errors).length >= 1 ? (
+          {country === "" && isFirstTime ? (
+            <>{setIsFirstTime(false)}</>
+          ) : Object.keys(errors).length >= 1 ? (
             <p className="error-message">{errors.country}</p>
           ) : (
             <></>
           )}
+          {/* {Object.keys(errors).length >= 1 ? (
+            <p className="error-message">{errors.country}</p>
+          ) : (
+            <></>
+          )} */}
         </label>
 
         <label className="signup-label">
@@ -122,7 +169,6 @@ const CreateSpot = () => {
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
-          {console.log(errors)}
           {Object.keys(errors).length >= 1 ? (
             <p className="error-message">{errors.address}</p>
           ) : (

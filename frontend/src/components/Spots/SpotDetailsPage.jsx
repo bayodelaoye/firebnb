@@ -7,19 +7,30 @@ import "./SpotDetailsPage.css";
 import { FaStar } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 import ReviewIndexItem from "../Reviews/ReviewIndexItem";
+import OpenModalButton from "../OpenModalButton";
+import CreateReview from "../Reviews/CreateReview";
 
 const SpotDetailsPage = () => {
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spots.currentSpot);
   const spotReviews = useSelector((state) => state.reviews.spot);
-  const userId = useSelector((state) => state.session.user.id);
-  const ownerId = spot.ownerId;
+  const userSession = useSelector((state) => state.session.user);
+  const allSpots = useSelector((state) => state.spots.allSpots);
+  let countReviews = 0;
+  let isReviewPresent = false;
+  const findSpot = Object.values(allSpots).find((spot) => {
+    return +spotId === +spot.id;
+  });
+  const ownerId = findSpot.ownerId;
   const reviewsArray = Object.values(spotReviews);
-  let reviewCount = reviewsArray.length;
+  reviewsArray.forEach((review) => {
+    if (review.spotId === spot.id) {
+      countReviews++;
+    }
+  });
+  let reviewCount = countReviews;
   const [isLoaded, setIsLoaded] = useState(false);
   const dispatch = useDispatch();
-
-  console.log(spotReviews);
 
   useEffect(() => {
     dispatch(getSingleSpot(spotId))
@@ -39,11 +50,23 @@ const SpotDetailsPage = () => {
             <div className="main-image-container">
               <img src={spot.previewImage} />
               <div className="sub-image-container">
-                <img src={spot.SpotImages[1].url} />
+                {spot.SpotImages[1] ? (
+                  <img src={spot.SpotImages[1].url} />
+                ) : (
+                  <></>
+                )}
               </div>
               <div className="third-image-container">
-                <img src={spot.SpotImages[2].url} />
-                <img src={spot.SpotImages[3].url} />
+                {spot.SpotImages[2] ? (
+                  <img src={spot.SpotImages[2].url} />
+                ) : (
+                  <></>
+                )}
+                {spot.SpotImages[3] ? (
+                  <img src={spot.SpotImages[3].url} />
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           </div>
@@ -60,7 +83,8 @@ const SpotDetailsPage = () => {
               <div className="stay-info-container">
                 <h2>${spot.price} night</h2>
                 <p>
-                  <FaStar /> {spot.avgRating.toFixed(2)}
+                  <FaStar />{" "}
+                  {spot.avgRating ? spot.avgRating.toFixed(2) : "New"}
                 </p>
                 {reviewsArray.length > 0 ? <GoDotFill /> : <></>}
                 {reviewsArray.length === 0 ? (
@@ -82,7 +106,7 @@ const SpotDetailsPage = () => {
           <div className="summary-review-container">
             <div className="review-summary-container">
               <div className="star-rating-review-summary">
-                <FaStar /> {spot.avgRating.toFixed(2)}
+                <FaStar /> {spot.avgRating ? spot.avgRating.toFixed(2) : "New"}
               </div>{" "}
               {reviewsArray.length > 0 ? <GoDotFill /> : <></>}
               {reviewsArray.length === 0 ? (
@@ -94,13 +118,47 @@ const SpotDetailsPage = () => {
               )}
             </div>
             <div className="reviews-container">
-              {reviewCount === 0 && ownerId !== userId ? (
+              {reviewCount === 0 && ownerId !== userSession.id ? (
                 <p>Be the first to post a review!</p>
               ) : (
                 <></>
               )}
+
               {reviewsArray.map((review) => {
-                return <ReviewIndexItem review={review} key={review.id} />;
+                {
+                  review.spotId === spot.id ? (
+                    <>
+                      {review.User.id === userSession.id ? (
+                        (isReviewPresent = true)
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  ) : (
+                    <></>
+                  );
+                }
+              })}
+
+              {isReviewPresent === true ? (
+                <></>
+              ) : (
+                <OpenModalButton
+                  buttonText="Post Your Review"
+                  modalComponent={
+                    <CreateReview spot={spot} user={userSession} />
+                  }
+                />
+              )}
+
+              {reviewsArray.map((review) => {
+                return (
+                  <ReviewIndexItem
+                    review={review}
+                    spot={spot}
+                    key={review.id}
+                  />
+                );
               })}
             </div>
           </div>

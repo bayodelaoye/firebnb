@@ -1,9 +1,15 @@
-const ReviewIndexItem = ({ review }) => {
+const ReviewIndexItem = ({ review, spot }) => {
   return (
     <>
-      <h2>{review.User.firstName}</h2>
-      <p>{review.createdAt.split("T")[0]}</p>
-      <p>{review.review}</p>
+      {review.spotId === spot.id ? (
+        <>
+          <h2>{review.User.firstName}</h2>
+          <p>{review.createdAt.split("T")[0]}</p>
+          <p>{review.review}</p>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
