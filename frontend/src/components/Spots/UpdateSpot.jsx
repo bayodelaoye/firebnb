@@ -1,26 +1,41 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createUpdatedSpot } from "../../store/spotReducer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getSingleSpot } from "../../store/spotReducer";
 
 const UpdateSpot = () => {
   const spot = useSelector((state) => state.spots.currentSpot);
-  const [country, setCountry] = useState(spot.country);
-  const [address, setAddress] = useState(spot.address);
-  const [city, setCity] = useState(spot.city);
-  const [state, setState] = useState(spot.state);
-  const [lat, setLat] = useState(spot.lat);
-  const [lng, setLng] = useState(spot.lng);
-  const [description, setDescription] = useState(spot.description);
-  const [name, setName] = useState(spot.name);
-  const [price, setPrice] = useState(spot.price);
-  // const [submitted, setSubmitted] = useState(false);
+  const [country, setCountry] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
+  const [description, setDescription] = useState("");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isFirstTime, setIsFirstTime] = useState(true);
+  const { spotId } = useParams();
+
+  console.log(spotId);
 
   useEffect(() => {
+    dispatch(getSingleSpot(spotId))
+      .then(() => setCountry(spot.country))
+      .then(() => setAddress(spot.address))
+      .then(() => setCity(spot.city))
+      .then(() => setState(spot.state))
+      .then(() => setLat(spot.lat))
+      .then(() => setLng(spot.lng))
+      .then(() => setDescription(spot.description))
+      .then(() => setName(spot.name))
+      .then(() => setPrice(spot.price));
+
     const errors = {};
 
     if (country.length < 1) {
@@ -44,7 +59,18 @@ const UpdateSpot = () => {
     }
 
     setErrors(errors);
-  }, [country, address, city, state, lat, lng, description, name, price]);
+  }, [
+    dispatch,
+    country,
+    address,
+    city,
+    state,
+    lat,
+    lng,
+    description,
+    name,
+    price,
+  ]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
