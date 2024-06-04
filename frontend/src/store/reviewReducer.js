@@ -47,6 +47,7 @@ export const createReview = (review, spotId) => async (dispatch) => {
   } else {
     const data = await res.json();
 
+    data.spotId = parseInt(spotId);
     return data;
   }
 };

@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createReview } from "../../store/reviewReducer";
 import { getSingleSpot } from "../../store/spotReducer";
+import { getAllReviewsForSpot } from "../../store/reviewReducer";
 import { useModal } from "../../context/Modal";
 import "./CreateReview.css";
 import { FaStar } from "react-icons/fa6";
 import { FaRegStar } from "react-icons/fa";
 import SpotDetailsPage from "../Spots/SpotDetailsPage";
+import { Link, Navigate } from "react-router-dom";
+
+// import { useNavigate } from "react-router-dom";
 
 function CreateReview({ spot, user }) {
   const [stars, setStars] = useState(0);
@@ -16,6 +20,8 @@ function CreateReview({ spot, user }) {
   const dispatch = useDispatch();
   const [activeRating, setActiveRating] = useState(5);
   const [serverError, setServerError] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  // const navigate = useNavigate();
 
   useEffect(() => {
     let errors = {};
@@ -38,21 +44,14 @@ function CreateReview({ spot, user }) {
         review,
       };
 
-      await dispatch(createReview(newReview, spotId))
-        .then(closeModal)
-        .then(() => {
-          getSingleSpot(spotId);
-        })
-        .then(() => {
-          setStars(0);
-          setReview("");
-          setErrors({});
-          setActiveRating(0);
-        })
-        .catch((error) => {
-          setServerError(error.message);
-        });
-      console.log(newReview);
+      dispatch(createReview(newReview, spotId)).then(closeModal);
+      dispatch(getAllReviewsForSpot(spotId));
+      dispatch(getSingleSpot(spotId));
+
+      setStars(0);
+      setReview("");
+      setErrors({});
+      setActiveRating(0);
     }
   };
 
