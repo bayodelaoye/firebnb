@@ -5,37 +5,28 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getSingleSpot } from "../../store/spotReducer";
 
 const UpdateSpot = () => {
-  const spot = useSelector((state) => state.spots.currentSpot);
-  const [country, setCountry] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [lat, setLat] = useState(0);
-  const [lng, setLng] = useState(0);
-  const [description, setDescription] = useState("");
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [isFirstTime, setIsFirstTime] = useState(true);
   const { spotId } = useParams();
 
-  console.log(spotId);
+  const spot = useSelector((state) => state.spots.currentSpot);
+
+  const [country, setCountry] = useState(spot.country);
+  const [address, setAddress] = useState(spot.address);
+  const [city, setCity] = useState(spot.city);
+  const [state, setState] = useState(spot.state);
+  const [lat, setLat] = useState(spot.lat);
+  const [lng, setLng] = useState(spot.lng);
+  const [description, setDescription] = useState(spot.description);
+  const [name, setName] = useState(spot.name);
+  const [price, setPrice] = useState(spot.price);
+  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const navigate = useNavigate();
+  const [isFirstTime, setIsFirstTime] = useState(true);
 
   useEffect(() => {
-    dispatch(getSingleSpot(spotId))
-      .then(() => setCountry(spot.country))
-      .then(() => setAddress(spot.address))
-      .then(() => setCity(spot.city))
-      .then(() => setState(spot.state))
-      .then(() => setLat(spot.lat))
-      .then(() => setLng(spot.lng))
-      .then(() => setDescription(spot.description))
-      .then(() => setName(spot.name))
-      .then(() => setPrice(spot.price));
-
+    dispatch(getSingleSpot(spotId));
     const errors = {};
 
     if (country.length < 1) {
@@ -89,8 +80,6 @@ const UpdateSpot = () => {
       };
 
       try {
-        console.log(spot.id);
-        console.log(spotObj);
         dispatch(createUpdatedSpot(spot.id, spotObj)).then(() => {
           navigate(`/spots/${spot.id}`);
         });
@@ -129,7 +118,7 @@ const UpdateSpot = () => {
             id="country"
             name="country"
             placeholder="Country"
-            value={country}
+            value={country ? country : ""}
             onChange={(e) => setCountry(e.target.value)}
           />
           {country === "" && isFirstTime ? (
@@ -154,7 +143,7 @@ const UpdateSpot = () => {
             id="street-address"
             name="street-address"
             placeholder="Street Address"
-            value={address}
+            value={address ? address : ""}
             onChange={(e) => setAddress(e.target.value)}
           />
           {Object.keys(errors).length >= 1 ? (
@@ -173,7 +162,7 @@ const UpdateSpot = () => {
                 id="city"
                 name="city"
                 placeholder="City"
-                value={city}
+                value={city ? city : ""}
                 onChange={(e) => setCity(e.target.value)}
               />
               {Object.keys(errors).length >= 1 ? (
@@ -192,7 +181,7 @@ const UpdateSpot = () => {
                 id="state"
                 name="state"
                 placeholder="State"
-                value={state}
+                value={state ? state : ""}
                 onChange={(e) => setState(e.target.value)}
               />
               {Object.keys(errors).length >= 1 ? (
@@ -213,7 +202,7 @@ const UpdateSpot = () => {
                 id="lat"
                 name="lat"
                 placeholder="Lat"
-                value={lat}
+                value={lat ? lat : ""}
                 onChange={(e) => setLat(e.target.value)}
               />
               {Object.keys(errors).length >= 1 ? (
@@ -232,7 +221,7 @@ const UpdateSpot = () => {
                 id="lng"
                 name="lng"
                 placeholder="Lng"
-                value={lng}
+                value={lng ? lat : ""}
                 onChange={(e) => setLng(e.target.value)}
               />
               {Object.keys(errors).length >= 1 ? (
@@ -258,7 +247,7 @@ const UpdateSpot = () => {
               id="description"
               name="description"
               placeholder="Please write at least 30 characters"
-              value={description}
+              value={description ? description : ""}
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
             {Object.keys(errors).length >= 1 ? (
@@ -282,7 +271,7 @@ const UpdateSpot = () => {
               id="name-of-spot"
               name="name-of-spot"
               placeholder="Name your spot"
-              value={name}
+              value={name ? name : ""}
               onChange={(e) => setName(e.target.value)}
             />
             {Object.keys(errors).length >= 1 ? (
@@ -305,7 +294,7 @@ const UpdateSpot = () => {
               id="price"
               name="price"
               placeholder="Price per night($USD)"
-              value={price}
+              value={price ? price : ""}
               onChange={(e) => setPrice(e.target.value)}
             />
             {Object.keys(errors).length >= 1 ? (

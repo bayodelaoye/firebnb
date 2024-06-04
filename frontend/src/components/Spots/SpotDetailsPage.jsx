@@ -21,7 +21,7 @@ const SpotDetailsPage = () => {
   const findSpot = Object.values(allSpots).find((spot) => {
     return +spotId === +spot.id;
   });
-  console.log(spotReviews);
+
   const ownerId = findSpot.ownerId;
   const reviewsArray = Object.values(spotReviews);
   reviewsArray.forEach((review) => {
@@ -159,6 +159,7 @@ const SpotDetailsPage = () => {
                     <ReviewIndexItem
                       review={review}
                       spot={spot}
+                      user={userSession}
                       key={review.id}
                     />
                   );

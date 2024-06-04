@@ -8,7 +8,7 @@ function DeleteSpot({ spot }) {
   const { closeModal } = useModal();
   const dispatch = useDispatch();
 
-  const handleDelete = async (e) => {
+  const handleDelete = async () => {
     dispatch(removeSpot(spot.id)).then(closeModal);
     dispatch(getCurrentUserSpots());
   };

@@ -10,8 +10,6 @@ export const sendPreviewImage = () => {
   return preview;
 };
 
-console.log(preview);
-
 const CreateSpot = () => {
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");

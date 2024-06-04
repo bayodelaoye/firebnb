@@ -61,6 +61,22 @@ export const getAllSpots = () => async (dispatch) => {
   }
 };
 
+export const getSingleSpot = (spotId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots/${spotId}`);
+
+  if (res.ok) {
+    const data = await res.json();
+
+    dispatch(receiveSpot(data));
+
+    return data;
+  } else {
+    const data = await res.json();
+
+    return data;
+  }
+};
+
 export const createSpot = (spot) => async (dispatch) => {
   const res = await csrfFetch("/api/spots", {
     method: "POST",
@@ -81,33 +97,17 @@ export const createSpot = (spot) => async (dispatch) => {
   }
 };
 
-export const createUpdatedSpot = (spotId, updateSpot) => async (dispatch) => {
+export const createUpdatedSpot = (spotId, updatedSpot) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(updateSpot),
+    body: JSON.stringify(updatedSpot),
   });
 
   if (res.ok) {
     const data = await res.json();
 
     dispatch(updateSpot(data));
-
-    return data;
-  } else {
-    const data = await res.json();
-
-    return data;
-  }
-};
-
-export const getSingleSpot = (spotId) => async (dispatch) => {
-  const res = await csrfFetch(`/api/spots/${spotId}`);
-
-  if (res.ok) {
-    const data = await res.json();
-
-    dispatch(receiveSpot(data));
 
     return data;
   } else {
@@ -143,7 +143,7 @@ export const removeSpot = (spotId) => async (dispatch) => {
   return spotId;
 };
 
-const initialState = { allSpots: {}, currentUserSpots: {} };
+const initialState = { allSpots: {}, currentUserSpots: {}, currentSpot: {} };
 
 export const spotReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -156,7 +156,8 @@ export const spotReducer = (state = initialState, action) => {
     }
     case RECEIVE_SPOT: {
       const newState = { ...state, currentSpot: action.spot };
-      console.log(action.spot);
+      // state.currentSpot = action.spot;
+      console.log(action.spot, "TEST", state);
       return newState;
     }
     case CREATE_SPOT: {

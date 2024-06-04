@@ -6,7 +6,6 @@ import OpenModalButton from "../OpenModalButton";
 
 const ManageSpotsIndexItem = ({ spot }) => {
   const navigate = useNavigate();
-  console.log(spot);
 
   return (
     <div className="manage-spots-box">
