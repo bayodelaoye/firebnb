@@ -8,7 +8,7 @@ const SpotIndexItem = ({ spot }) => {
     <div className="spot-container">
       <Link to={`/spots/${spot.id}`}>
         <div className="spot-image-container">
-          <img src={spot.previewImage ? spot.previewImage : sendPreviewImage} />
+          <img src={spot.previewImage} />
         </div>
         <div className="tooltip">
           <span className="tooltiptext">{spot.name}</span>

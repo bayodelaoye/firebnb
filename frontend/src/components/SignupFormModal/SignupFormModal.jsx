@@ -16,6 +16,7 @@ function SignupFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const [formErrors, setFormErrors] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   useEffect(() => {
     const errors = {};
@@ -45,6 +46,7 @@ function SignupFormModal() {
     e.preventDefault();
     if (password === confirmPassword) {
       setErrors({});
+
       return dispatch(
         sessionActions.signup({
           email,
@@ -58,7 +60,11 @@ function SignupFormModal() {
         .catch(async (res) => {
           const data = await res.json();
           if (parseInt(res.status) === 500) {
-            setFormErrors({ error: "User with that email already exists" });
+            if (!email.includes("@")) {
+              setFormErrors({ error: "The provided email is invalid" });
+            } else {
+              setFormErrors({ error: "User with that email already exists" });
+            }
           }
           if (data?.errors) {
             setErrors(data.errors);
@@ -67,7 +73,7 @@ function SignupFormModal() {
           <Navigate to={"/"} />;
         });
     }
-    return setErrors({
+    return setFormErrors({
       confirmPassword:
         "Confirm Password field must be the same as the Password field",
     });
@@ -75,9 +81,13 @@ function SignupFormModal() {
 
   return (
     <>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
+      <h1 className="signup-text">Sign Up</h1>
+      <form onSubmit={handleSubmit} className="sign-up-modal">
+        {Object.keys(formErrors).length >= 1 && <p>{formErrors.error}</p>}
+        {Object.keys(formErrors).length >= 1 && (
+          <p>{formErrors.passwordError}</p>
+        )}
+        <label className="sign-up-label-input">
           Email
           <input
             type="text"
@@ -87,13 +97,16 @@ function SignupFormModal() {
             placeholder="Email"
           />
         </label>
-        {Object.keys(formErrors).length >= 1 || Object.keys(errors).length ? (
+        {isModalOpen ? (
+          <></>
+        ) : Object.keys(formErrors).length >= 1 ||
+          Object.keys(errors).length ? (
           <p>{formErrors.email}</p>
         ) : (
           <></>
         )}
         {/* {errors.email && <p>{errors.email}</p>} */}
-        <label>
+        <label className="sign-up-label-input">
           Username
           <input
             type="text"
@@ -104,9 +117,8 @@ function SignupFormModal() {
           />
         </label>
         {Object.keys(formErrors).length >= 1 && <p>{formErrors.username}</p>}
-        {Object.keys(formErrors).length >= 1 && <p>{formErrors.error}</p>}
         {/* {errors.username && <p>{errors.username}</p>} */}
-        <label>
+        <label className="sign-up-label-input">
           First Name
           <input
             type="text"
@@ -118,7 +130,7 @@ function SignupFormModal() {
         </label>
         {Object.keys(formErrors).length >= 1 && <p>{formErrors.firstName}</p>}
         {/* {errors.firstName && <p>{errors.firstName}</p>} */}
-        <label>
+        <label className="sign-up-label-input">
           Last Name
           <input
             type="text"
@@ -130,7 +142,7 @@ function SignupFormModal() {
         </label>
         {Object.keys(formErrors).length >= 1 && <p>{formErrors.lastName}</p>}
         {/* {errors.lastName && <p>{errors.lastName}</p>} */}
-        <label>
+        <label className="sign-up-label-input">
           Password
           <input
             type="password"
@@ -142,7 +154,7 @@ function SignupFormModal() {
         </label>
         {Object.keys(formErrors).length >= 1 && <p>{formErrors.password}</p>}
         {/* {errors.password && <p>{errors.password}</p>} */}
-        <label>
+        <label className="sign-up-label-input">
           Confirm Password
           <input
             type="password"
@@ -156,7 +168,12 @@ function SignupFormModal() {
           <p>{formErrors.confirmPassword}</p>
         )}
         {/* {errors.confirmPassword && <p>{errors.confirmPassword}</p>} */}
-        <button type="submit" disabled={Object.keys(formErrors).length >= 1}>
+        <button
+          className="login-btn"
+          id="sign-up-btn"
+          type="submit"
+          disabled={Object.keys(formErrors).length >= 1}
+        >
           Sign Up
         </button>
       </form>

@@ -13,11 +13,13 @@ import CreateReview from "../Reviews/CreateReview";
 const SpotDetailsPage = () => {
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spots.currentSpot);
+  const allSpots = useSelector((state) => state.spots.allSpots);
   const spotReviews = useSelector((state) => state.reviews.spot);
   const userSession = useSelector((state) => state.session.user);
-  const allSpots = useSelector((state) => state.spots.allSpots);
+
   let countReviews = 0;
   let isReviewPresent = false;
+
   const findSpot = Object.values(allSpots).find((spot) => {
     return +spotId === +spot.id;
   });
