@@ -19,12 +19,16 @@ const SpotDetailsPage = () => {
 
   let countReviews = 0;
   let isReviewPresent = false;
-
+  let ownerId;
   const findSpot = Object.values(allSpots).find((spot) => {
     return +spotId === +spot.id;
   });
 
-  const ownerId = findSpot.ownerId;
+  if (findSpot) {
+    ownerId = findSpot.ownerId;
+  } else {
+    ownerId = null;
+  }
   const reviewsArray = Object.values(spotReviews);
   reviewsArray.forEach((review) => {
     if (review.spotId === spot.id) {
