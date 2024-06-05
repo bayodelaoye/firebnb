@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
@@ -16,7 +16,6 @@ function SignupFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const [formErrors, setFormErrors] = useState({});
-  const navigate = useNavigate();
 
   useEffect(() => {
     const errors = {};
@@ -65,7 +64,7 @@ function SignupFormModal() {
             setErrors(data.errors);
           }
 
-          navigate("/");
+          <Navigate to={"/"} />;
         });
     }
     return setErrors({

@@ -14,12 +14,6 @@ function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
   const [visible, setvisible] = useState(false);
 
-  // const root = document.getElementById("root");
-  // document.body.addEventListener("click", () => {
-  //   const t = document.getElementById("login-sign-up-btns");
-  //   console.log(t);
-  // });
-
   const sessionLinks = sessionUser ? (
     <div className="user-menu-container">
       <div className="three-links">
@@ -34,7 +28,11 @@ function Navigation({ isLoaded }) {
 
       {visible && (
         <li className="drop-down-menu">
-          <ProfileButton user={sessionUser} id="login-sign-up-btns" />{" "}
+          <ProfileButton
+            user={sessionUser}
+            clicked={visible}
+            id="login-sign-up-btns"
+          />{" "}
         </li>
       )}
     </div>
@@ -54,7 +52,6 @@ function Navigation({ isLoaded }) {
           modalComponent={<SignupFormModal />}
           className="login-sign-up-btns"
         />
-        {/* <NavLink to="/signup">Sign Up</NavLink> */}
       </li>
     </>
   );
@@ -65,16 +62,6 @@ function Navigation({ isLoaded }) {
         <img src={mainLogo} className="logo" />
       </NavLink>
 
-      <div className="search-box-container">
-        <p>Anywhere</p>
-        <div className="border-right"></div>
-        <p>Any week</p>
-        <div className="border-right"></div>
-        <p>Add guests</p>
-        <div className="circle-magnify-glass">
-          <FaMagnifyingGlass className="magnify-glass" />
-        </div>
-      </div>
       <div className="sing-up-login-btns">{isLoaded && sessionLinks}</div>
     </nav>
   );
