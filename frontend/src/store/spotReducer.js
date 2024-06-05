@@ -83,7 +83,7 @@ export const createSpot = (spot) => async (dispatch) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(spot),
   });
-  console.log(res);
+
   if (res.ok) {
     const data = await res.json();
 
@@ -156,8 +156,6 @@ export const spotReducer = (state = initialState, action) => {
     }
     case RECEIVE_SPOT: {
       const newState = { ...state, currentSpot: action.spot };
-      // state.currentSpot = action.spot;
-      console.log(action.spot, "TEST", state);
       return newState;
     }
     case CREATE_SPOT: {
@@ -170,7 +168,6 @@ export const spotReducer = (state = initialState, action) => {
     }
     case GET_USER_SPOTS: {
       const newState = { ...state, currentUserSpots: action.spots };
-      console.log(action.spots);
       return newState;
     }
     case DELETE_SPOT: {

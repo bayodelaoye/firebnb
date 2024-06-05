@@ -9,8 +9,9 @@ function DeleteSpot({ spot }) {
   const dispatch = useDispatch();
 
   const handleDelete = async () => {
-    dispatch(removeSpot(spot.id)).then(closeModal);
-    dispatch(getCurrentUserSpots());
+    dispatch(removeSpot(spot.id))
+      .then(closeModal)
+      .then(() => dispatch(getCurrentUserSpots()));
   };
 
   return (
@@ -20,7 +21,9 @@ function DeleteSpot({ spot }) {
 
       <div>
         <button onClick={handleDelete}>Yes (Delete Spot)</button>
-        <button onClick={closeModal}>No (Keep Spot)</button>
+        <button onClick={closeModal} className="do-not-delete-btn">
+          No (Keep Spot)
+        </button>
       </div>
     </div>
   );

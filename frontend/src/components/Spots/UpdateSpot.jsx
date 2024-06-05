@@ -10,15 +10,15 @@ const UpdateSpot = () => {
 
   const spot = useSelector((state) => state.spots.currentSpot);
 
-  const [country, setCountry] = useState(spot.country);
-  const [address, setAddress] = useState(spot.address);
-  const [city, setCity] = useState(spot.city);
-  const [state, setState] = useState(spot.state);
-  const [lat, setLat] = useState(spot.lat);
-  const [lng, setLng] = useState(spot.lng);
-  const [description, setDescription] = useState(spot.description);
-  const [name, setName] = useState(spot.name);
-  const [price, setPrice] = useState(spot.price);
+  const [country, setCountry] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [lat, setLat] = useState("");
+  const [lng, setLng] = useState("");
+  const [description, setDescription] = useState("");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -26,7 +26,20 @@ const UpdateSpot = () => {
   const [isFirstTime, setIsFirstTime] = useState(true);
 
   useEffect(() => {
-    dispatch(getSingleSpot(spotId));
+    dispatch(getSingleSpot(spotId)).then((spot) => {
+      setCountry(spot.country);
+      setAddress(spot.address);
+      setCity(spot.city);
+      setState(spot.state);
+      setLat(spot.lat);
+      setLng(spot.lng);
+      setDescription(spot.description);
+      setName(spot.name);
+      setPrice(spot.price);
+    });
+  }, [dispatch, spotId]);
+
+  useEffect(() => {
     const errors = {};
 
     if (country.length < 1) {
@@ -50,18 +63,7 @@ const UpdateSpot = () => {
     }
 
     setErrors(errors);
-  }, [
-    dispatch,
-    country,
-    address,
-    city,
-    state,
-    lat,
-    lng,
-    description,
-    name,
-    price,
-  ]);
+  }, [country, address, city, state, lat, lng, description, name, price]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,9 +82,9 @@ const UpdateSpot = () => {
       };
 
       try {
-        dispatch(createUpdatedSpot(spot.id, spotObj)).then(() => {
-          navigate(`/spots/${spot.id}`);
-        });
+        dispatch(createUpdatedSpot(spot.id, spotObj)).then(() =>
+          navigate(`/spots/${spot.id}`)
+        );
 
         setCountry("");
         setAddress("");

@@ -9,7 +9,9 @@ const ReviewIndexItem = ({ review, spot, user }) => {
           <h2>{review.User.firstName}</h2>
           <p>{review.createdAt.split("T")[0]}</p>
           <p>{review.review}</p>
-          {user.id === review.userId ? (
+          {user === null ? (
+            <></>
+          ) : user.id === review.userId ? (
             <OpenModalButton
               buttonText="Delete"
               modalComponent={<DeleteReview review={review} />}

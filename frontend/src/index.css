@@ -50,6 +50,16 @@ button:active {
   opacity: 0.5;
 }
 
+.do-not-delete-btn {
+  background-color: #a9a9a9;
+  border-color: #a9a9a9;
+}
+
+.do-not-delete-btn:hover {
+  color: #a9a9a9;
+  border-color: #a9a9a9;
+}
+
 .error-message {
   margin-bottom: 25px;
   color: red;

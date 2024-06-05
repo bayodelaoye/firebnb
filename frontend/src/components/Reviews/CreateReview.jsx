@@ -44,9 +44,10 @@ function CreateReview({ spot, user }) {
         review,
       };
 
-      dispatch(createReview(newReview, spotId)).then(closeModal);
-      dispatch(getAllReviewsForSpot(spotId));
-      dispatch(getSingleSpot(spotId));
+      dispatch(createReview(newReview, spotId))
+        .then(closeModal)
+        .then(() => dispatch(getAllReviewsForSpot(spotId)))
+        .then(() => dispatch(getSingleSpot(spotId)));
 
       setStars(0);
       setReview("");

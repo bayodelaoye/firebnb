@@ -27,7 +27,9 @@ function DeleteReview({ review }) {
 
       <div>
         <button onClick={handleDelete}>Yes (Delete Review)</button>
-        <button onClick={closeModal}>No (Keep Review)</button>
+        <button onClick={closeModal} className="do-not-delete-btn">
+          No (Keep Review)
+        </button>
       </div>
     </div>
   );

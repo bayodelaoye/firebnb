@@ -147,21 +147,25 @@ const SpotDetailsPage = () => {
                 <></>
               )}
 
-              {reviewsArray.length === 0
-                ? (isReviewPresent = true)
-                : reviewsArray.map((review) => {
-                    if (review.spotId == spot.id) {
-                      if (
-                        reviewCount === 0 ||
-                        review.User.id === userSession.id ||
-                        userSession.id === spot.ownerId
-                      ) {
-                        isReviewPresent = true;
-                      }
-                    } else if (userSession.id === spot.ownerId) {
+              {userSession === null ? (
+                <>{(isReviewPresent = true)}</>
+              ) : reviewsArray.length === 0 ? (
+                (isReviewPresent = true)
+              ) : (
+                reviewsArray.map((review) => {
+                  if (review.spotId == spot.id) {
+                    if (
+                      reviewCount === 0 ||
+                      review.User.id === userSession.id ||
+                      userSession.id === spot.ownerId
+                    ) {
                       isReviewPresent = true;
                     }
-                  })}
+                  } else if (userSession.id === spot.ownerId) {
+                    isReviewPresent = true;
+                  }
+                })
+              )}
 
               {isReviewPresent === true ? (
                 <></>
