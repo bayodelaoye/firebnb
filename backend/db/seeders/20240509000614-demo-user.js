@@ -219,6 +219,13 @@ const validUsers = [
     username: "lrimell12",
     hashedPassword: bcrypt.hashSync("qW0(T`)5>"),
   },
+  {
+    firstName: "Demo",
+    lastName: "User",
+    email: "demo.user@gmail.com",
+    username: "demouser",
+    hashedPassword: bcrypt.hashSync("password"),
+  },
 ];
 
 /** @type {import('sequelize-cli').Migration} */

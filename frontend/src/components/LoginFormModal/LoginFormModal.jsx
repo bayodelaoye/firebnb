@@ -11,9 +11,7 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const [formError, setFormError] = useState({});
-
-  const userState = useSelector((state) => state);
-  console.log(userState);
+  let isDemoUser = false;
 
   useEffect(() => {
     const errors = {};
@@ -41,47 +39,80 @@ function LoginFormModal() {
   //       }
   //     });
   // };
-  const handleSubmit = (e) => {
+
+  const createDemoUser = () => {
+    isDemoUser = true;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({});
-    return dispatch(sessionActions.login({ credential, password }))
-      .then(closeModal)
-      .catch(async (res) => {
-        const data = await res.json();
-        if (parseInt(res.status) === 401) {
-          setFormError({ error: "The provided credientials are invalid" });
-        }
-        if (data && data.errors) {
-          setErrors(data.errors);
-        }
-      });
+
+    if (isDemoUser === true) {
+      const demoUser = {
+        credential: "demo.user@gmail.com",
+        password: "password",
+      };
+
+      await dispatch(sessionActions.login(demoUser)).then(closeModal);
+    } else {
+      setErrors({});
+      return dispatch(sessionActions.login({ credential, password }))
+        .then(closeModal)
+        .catch(async (res) => {
+          const data = await res.json();
+          if (parseInt(res.status) === 401) {
+            setFormError({ error: "The provided credientials are invalid" });
+          }
+          if (data && data.errors) {
+            setErrors(data.errors);
+          }
+        });
+    }
   };
 
   return (
     <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
+      <div className="login-text">
+        <h1>Log In</h1>
+      </div>
+      <form onSubmit={handleSubmit} className="login-modal" autoComplete="off">
+        {Object.keys(formError).length >= 1 && (
+          <p className="login-error">{formError.error}</p>
+        )}
+        {errors.credential && (
+          <p className="login-error">{errors.credential}</p>
+        )}
+        <label className="credentials-container">
           Username or Email
           <input
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
-            required
+            placeholder="Username or Email"
+            // required
           />
         </label>
-        <label>
+        <label className="password-modal">
           Password
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            placeholder="Password"
+            // required
           />
         </label>
-        {Object.keys(formError).length >= 1 && <p>{formError.error}</p>}
-        {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit" disabled={Object.values(formError).length >= 1}>
+
+        <button className="login-btn" onClick={createDemoUser}>
+          Log in as Demo User
+        </button>
+        {/* <Link>Log in as Demo User</Link> */}
+
+        <button
+          type="submit"
+          disabled={Object.values(formError).length >= 1}
+          className="login-btn"
+        >
           Log In
         </button>
       </form>

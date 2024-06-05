@@ -1,0 +1,38 @@
+.login-text {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.login-modal {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 300px;
+}
+
+.credentials-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 250px;
+  margin: auto;
+}
+
+.password-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 250px;
+  margin: auto;
+}
+
+.login-btn {
+  margin: auto;
+  width: 250px;
+}
+
+.login-error {
+  margin: auto;
+}
