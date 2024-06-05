@@ -47,26 +47,31 @@ const SpotDetailsPage = () => {
         <div>
           <h2>{spot.name}</h2>
           <p>
-            {spot.city} {spot.state} {spot.country}
+            {spot.city}, {spot.state}, {spot.country}
           </p>
           <div className="details-page-image-container">
             <div className="main-image-container">
               <img src={spot.previewImage} />
-              <div className="sub-image-container">
+              <div className="sub-image-container" id="second-third-images">
                 {spot.SpotImages[1] ? (
                   <img src={spot.SpotImages[1].url} />
                 ) : (
                   <></>
                 )}
-              </div>
-              <div className="third-image-container">
                 {spot.SpotImages[2] ? (
                   <img src={spot.SpotImages[2].url} />
                 ) : (
                   <></>
                 )}
+              </div>
+              <div className="third-image-section">
                 {spot.SpotImages[3] ? (
                   <img src={spot.SpotImages[3].url} />
+                ) : (
+                  <></>
+                )}
+                {spot.SpotImages[4] ? (
+                  <img src={spot.SpotImages[4].url} />
                 ) : (
                   <></>
                 )}
@@ -89,13 +94,21 @@ const SpotDetailsPage = () => {
                   <FaStar />{" "}
                   {spot.avgRating ? spot.avgRating.toFixed(2) : "New"}
                 </p>
-                {reviewsArray.length > 0 ? <GoDotFill /> : <></>}
-                {reviewsArray.length === 0 ? (
-                  <p>New</p>
+
+                {reviewCount === 0 ? (
+                  <></>
                 ) : reviewCount === 1 ? (
-                  <p>{reviewCount} review</p>
+                  <p className="center-dot">
+                    <GoDotFill />
+                    {reviewCount} review
+                  </p>
+                ) : reviewsArray.length > 1 ? (
+                  <p className="center-dot">
+                    <GoDotFill />
+                    {reviewCount} reviews
+                  </p>
                 ) : (
-                  <p>{reviewCount} reviews</p>
+                  <></>
                 )}
               </div>
               <div className="btn-container">
@@ -111,13 +124,20 @@ const SpotDetailsPage = () => {
               <div className="star-rating-review-summary">
                 <FaStar /> {spot.avgRating ? spot.avgRating.toFixed(2) : "New"}
               </div>{" "}
-              {reviewsArray.length > 0 ? <GoDotFill /> : <></>}
-              {reviewsArray.length === 0 ? (
-                <p>New</p>
+              {reviewCount === 0 ? (
+                <></>
               ) : reviewCount === 1 ? (
-                <p>{reviewCount} review</p>
+                <p className="center-dot">
+                  <GoDotFill />
+                  {reviewCount} review
+                </p>
+              ) : reviewsArray.length > 1 ? (
+                <p className="center-dot">
+                  <GoDotFill />
+                  {reviewCount} reviews
+                </p>
               ) : (
-                <p>{reviewCount} reviews</p>
+                <></>
               )}
             </div>
             <div className="reviews-container">
@@ -127,21 +147,21 @@ const SpotDetailsPage = () => {
                 <></>
               )}
 
-              {reviewsArray.map((review) => {
-                {
-                  review.spotId == spot.id ? (
-                    <>
-                      {review.User.id === userSession.id ? (
-                        (isReviewPresent = true)
-                      ) : (
-                        <></>
-                      )}
-                    </>
-                  ) : (
-                    <></>
-                  );
-                }
-              })}
+              {reviewsArray.length === 0
+                ? (isReviewPresent = true)
+                : reviewsArray.map((review) => {
+                    if (review.spotId == spot.id) {
+                      if (
+                        reviewCount === 0 ||
+                        review.User.id === userSession.id ||
+                        userSession.id === spot.ownerId
+                      ) {
+                        isReviewPresent = true;
+                      }
+                    } else if (userSession.id === spot.ownerId) {
+                      isReviewPresent = true;
+                    }
+                  })}
 
               {isReviewPresent === true ? (
                 <></>
@@ -153,7 +173,6 @@ const SpotDetailsPage = () => {
                   }
                 />
               )}
-
               {reviewsArray
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .map((review) => {

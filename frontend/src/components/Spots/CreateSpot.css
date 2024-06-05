@@ -34,11 +34,6 @@
   margin-bottom: 1rem;
 }
 
-.error-message {
-  margin-bottom: 25px;
-  color: red;
-}
-
 .signup-label {
   display: flex;
   flex-direction: column;
@@ -61,12 +56,5 @@
 }
 
 .spot-button {
-  height: 3rem;
-  color: black;
-  box-shadow: 4px 3px 5px rgb(133, 117, 117);
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 15px;
-  border: none;
-  cursor: pointer;
+  margin: auto;
 }

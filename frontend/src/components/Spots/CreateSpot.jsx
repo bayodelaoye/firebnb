@@ -114,6 +114,8 @@ const CreateSpot = () => {
         setImageUrl2("");
         setImageUrl3("");
         setImageUrl4("");
+
+        // navigate(`/spots/${newSpot.id}`);
       } catch {
         console.log("Uncaught in promise");
       }
@@ -142,7 +144,7 @@ const CreateSpot = () => {
             value={country}
             onChange={(e) => setCountry(e.target.value)}
           />
-          {country === "" && isFirstTime ? (
+          {isFirstTime ? (
             <>{setIsFirstTime(false)}</>
           ) : Object.keys(errors).length >= 1 ? (
             <p className="error-message">{errors.country}</p>

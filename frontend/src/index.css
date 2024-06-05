@@ -49,3 +49,8 @@ button:active {
 button:active {
   opacity: 0.5;
 }
+
+.error-message {
+  margin-bottom: 25px;
+  color: red;
+}
