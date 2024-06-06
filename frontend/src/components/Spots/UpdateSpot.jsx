@@ -19,7 +19,6 @@ const UpdateSpot = () => {
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();

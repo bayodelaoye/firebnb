@@ -16,7 +16,7 @@ function SignupFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const [formErrors, setFormErrors] = useState({});
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(true);
 
   useEffect(() => {
     const errors = {};
@@ -44,6 +44,7 @@ function SignupFormModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitted(true);
     if (password === confirmPassword) {
       setErrors({});
 
@@ -99,7 +100,7 @@ function SignupFormModal() {
             placeholder="Email"
           />
         </label>
-        {isModalOpen ? (
+        {isSubmitted ? (
           <></>
         ) : Object.keys(formErrors).length >= 1 ||
           Object.keys(errors).length ? (

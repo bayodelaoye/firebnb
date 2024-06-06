@@ -2,19 +2,19 @@ import { useDispatch, useSelector } from "react-redux";
 import "./ManageSpots.css";
 import { useNavigate } from "react-router-dom";
 import ManageSpotsIndexItem from "./ManageSpotsIndexItem";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getCurrentUserSpots } from "../../store/spotReducer";
 
 const ManageSpots = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isLoaded, setIsLoaded] = useState(false);
   const currentUserSpots = useSelector(
     (state) => state.spots.currentUserSpots.Spots
   );
   let spotsArray;
 
   if (currentUserSpots === undefined) {
+    //do nothing
   } else {
     spotsArray = Object.values(currentUserSpots);
   }

@@ -1,6 +1,6 @@
 import { FaStar } from "react-icons/fa";
 import "./ManageSpotsIndexItem.css";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DeleteSpot from "./DeleteSpot";
 import OpenModalButton from "../OpenModalButton";
 
@@ -30,7 +30,7 @@ const ManageSpotsIndexItem = ({ spot }) => {
         </div>
       </Link>
       <div className="manage-btns">
-        <button onClick={() => navigate(`/spots/${spot.id}/edit`)} spot={spot}>
+        <button onClick={() => navigate(`/spots/${spot.id}/edit`)}>
           Update
         </button>
         <OpenModalButton

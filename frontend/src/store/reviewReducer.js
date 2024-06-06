@@ -1,3 +1,5 @@
+import { csrfFetch } from "./csrf";
+
 const LOAD_REVIEWS_BY_SPOT_ID = "reviews/LOAD_REVIEWS_BY_SPOT_ID";
 const CREATE_REVIEW = "reviews/CREATE_REVIEW";
 const DELETE_REVIEW = "reviews/DELETE_REVIEW";

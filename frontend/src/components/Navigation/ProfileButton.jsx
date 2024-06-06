@@ -4,16 +4,16 @@ import * as sessionActions from "../../store/session";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Navigation.css";
 
-function ProfileButton({ user, clicked }) {
+function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
   const navigate = useNavigate();
 
-  const toggleMenu = (e) => {
-    e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
-    setShowMenu(!showMenu);
-  };
+  // const toggleMenu = (e) => {
+  //   e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
+  //   setShowMenu(!showMenu);
+  // };
 
   const root = document.getElementById("root");
   root.addEventListener("click", () => {

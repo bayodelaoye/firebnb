@@ -16,7 +16,6 @@ const SpotDetailsPage = () => {
   const allSpots = useSelector((state) => state.spots.allSpots);
   const spotReviews = useSelector((state) => state.reviews.spot);
   const userSession = useSelector((state) => state.session.user);
-  let review;
   let countReviews = 0;
   let isReviewPresent = false;
   let ownerId;
@@ -163,6 +162,8 @@ const SpotDetailsPage = () => {
               )}
 
               {userSession === null ? (
+                <>{(isReviewPresent = true)}</>
+              ) : spot.ownerId === userSession.id ? (
                 <>{(isReviewPresent = true)}</>
               ) : (
                 reviewsArray.map((review) => {

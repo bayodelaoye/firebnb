@@ -20,7 +20,6 @@ const CreateSpot = () => {
   const [imageUrl2, setImageUrl2] = useState("");
   const [imageUrl3, setImageUrl3] = useState("");
   const [imageUrl4, setImageUrl4] = useState("");
-  // const [submitted, setSubmitted] = useState(false);
   const newSpot = useSelector((state) => state.spots.createdSpot);
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();

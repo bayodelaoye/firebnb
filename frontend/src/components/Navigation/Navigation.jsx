@@ -5,7 +5,6 @@ import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import "./Navigation.css";
-import { FaMagnifyingGlass } from "react-icons/fa6";
 import mainLogo from "../../../public/Assets/firebnb-logo-3.png";
 import { MdAccountCircle } from "react-icons/md";
 import { useState } from "react";
