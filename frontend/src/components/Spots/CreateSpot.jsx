@@ -3,12 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSpot } from "../../store/spotReducer";
 import "./CreateSpot.css";
 import { useNavigate } from "react-router-dom";
-
-let preview;
-
-export const sendPreviewImage = () => {
-  return preview;
-};
+import { createSpotImage } from "../../store/spotReducer";
 
 const CreateSpot = () => {
   const [country, setCountry] = useState("");
@@ -30,33 +25,43 @@ const CreateSpot = () => {
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isFirstTime, setIsFirstTime] = useState(true);
-  console.log(newSpot);
-
-  preview = previewImage;
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const allSpotsObj = useSelector((state) => state.spots.allSpots);
+  const numberOfSpots = Object.values(allSpotsObj).length;
+  let newSpotId;
 
   useEffect(() => {
     const errors = {};
 
     if (country.length < 1) {
       errors.country = "Country is required";
-    } else if (address.length < 1) {
+    }
+
+    if (address.length < 1) {
       errors.address = "Address is required";
-    } else if (city.length < 1) {
+    }
+    if (city.length < 1) {
       errors.city = "City is required";
-    } else if (state.length < 1) {
+    }
+    if (state.length < 1) {
       errors.state = "State is required";
-    } else if (isNaN(lat) || lat === "") {
+    }
+    if (isNaN(lat) || lat === "") {
       errors.lat = "Lat is required and must be a number";
-    } else if (isNaN(lng) || lng === "") {
+    }
+    if (isNaN(lng) || lng === "") {
       errors.lng = "Lng is required and must be a number";
-    } else if (description.length < 1) {
+    }
+    if (description.length < 1) {
       errors.description = "Description needs 30 or more characters";
-    } else if (name.length < 1) {
+    }
+    if (name.length < 1) {
       errors.name = "Name is required";
-    } else if (isNaN(price) || price === "") {
+    }
+    if (isNaN(price) || price === "") {
       errors.price = "Price is required and must be a number";
-    } else if (previewImage.length < 1) {
+    }
+    if (previewImage.length < 1) {
       errors.previewImage = "Preview image is requried";
     }
 
@@ -75,7 +80,24 @@ const CreateSpot = () => {
   ]);
 
   const handleSubmit = async (e) => {
+    const spotImages = [];
+
+    spotImages.push(previewImage);
+
+    if (imageUrl1 !== "") {
+      spotImages.push(imageUrl1);
+    }
+    if (imageUrl2 !== "") {
+      spotImages.push(imageUrl2);
+    }
+    if (imageUrl3 !== "") {
+      spotImages.push(imageUrl3);
+    }
+    if (imageUrl4 !== "") {
+      spotImages.push(imageUrl4);
+    }
     e.preventDefault();
+    setIsSubmitted(true);
 
     if (Object.values(errors).length === 0) {
       const spotObj = {
@@ -89,38 +111,54 @@ const CreateSpot = () => {
         description,
         price: parseInt(price),
       };
-      console.log(spotObj);
 
       try {
         dispatch(createSpot(spotObj))
           .then(() => {
-            newSpot["previewImage"] = previewImage;
+            spotImages.forEach((spotImage, index) => {
+              let spotImageObj;
+
+              if (index === 0) {
+                spotImageObj = {
+                  url: spotImage,
+                  preview: true,
+                };
+              } else {
+                spotImageObj = {
+                  url: spotImage,
+                  preview: false,
+                };
+              }
+              if (newSpot === undefined) {
+                newSpotId = numberOfSpots + 1;
+              } else {
+                newSpotId = newSpot.id;
+              }
+              dispatch(createSpotImage(newSpotId, spotImageObj));
+            });
           })
           .then(() => {
-            navigate(`/spots/${newSpot.id}`);
+            navigate(`/spots/${newSpotId}`);
+          })
+          .then(() => {
+            setCountry("");
+            setAddress("");
+            setCity("");
+            setState("");
+            setLat("");
+            setLng("");
+            setDescription("");
+            setName("");
+            setPrice("");
+            setPreviewImage("");
+            setImageUrl1("");
+            setImageUrl2("");
+            setImageUrl3("");
+            setImageUrl4("");
           });
-
-        setCountry("");
-        setAddress("");
-        setCity("");
-        setState("");
-        setLat("");
-        setLng("");
-        setDescription("");
-        setName("");
-        setPrice("");
-        setPreviewImage("");
-        setImageUrl1("");
-        setImageUrl2("");
-        setImageUrl3("");
-        setImageUrl4("");
-
-        // navigate(`/spots/${newSpot.id}`);
       } catch {
         console.log("Uncaught in promise");
       }
-    } else {
-      alert("Please fix your errors before creating a spot");
     }
   };
 
@@ -144,18 +182,15 @@ const CreateSpot = () => {
             value={country}
             onChange={(e) => setCountry(e.target.value)}
           />
-          {isFirstTime ? (
-            <>{setIsFirstTime(false)}</>
-          ) : Object.keys(errors).length >= 1 ? (
-            <p className="error-message">{errors.country}</p>
+          {isSubmitted === true ? (
+            Object.keys(errors).length >= 1 ? (
+              <p className="error-message">{errors.country}</p>
+            ) : (
+              <></>
+            )
           ) : (
             <></>
           )}
-          {/* {Object.keys(errors).length >= 1 ? (
-            <p className="error-message">{errors.country}</p>
-          ) : (
-            <></>
-          )} */}
         </label>
 
         <label className="signup-label">
@@ -169,8 +204,12 @@ const CreateSpot = () => {
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
-          {Object.keys(errors).length >= 1 ? (
-            <p className="error-message">{errors.address}</p>
+          {isSubmitted === true ? (
+            Object.keys(errors).length >= 1 ? (
+              <p className="error-message">{errors.address}</p>
+            ) : (
+              <></>
+            )
           ) : (
             <></>
           )}
@@ -188,8 +227,12 @@ const CreateSpot = () => {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
-              {Object.keys(errors).length >= 1 ? (
-                <p className="error-message">{errors.city}</p>
+              {isSubmitted === true ? (
+                Object.keys(errors).length >= 1 ? (
+                  <p className="error-message">{errors.city}</p>
+                ) : (
+                  <></>
+                )
               ) : (
                 <></>
               )}
@@ -207,8 +250,12 @@ const CreateSpot = () => {
                 value={state}
                 onChange={(e) => setState(e.target.value)}
               />
-              {Object.keys(errors).length >= 1 ? (
-                <p className="error-message">{errors.state}</p>
+              {isSubmitted === true ? (
+                Object.keys(errors).length >= 1 ? (
+                  <p className="error-message">{errors.state}</p>
+                ) : (
+                  <></>
+                )
               ) : (
                 <></>
               )}
@@ -228,8 +275,12 @@ const CreateSpot = () => {
                 value={lat}
                 onChange={(e) => setLat(e.target.value)}
               />
-              {Object.keys(errors).length >= 1 ? (
-                <p className="error-message">{errors.lat}</p>
+              {isSubmitted === true ? (
+                Object.keys(errors).length >= 1 ? (
+                  <p className="error-message">{errors.lat}</p>
+                ) : (
+                  <></>
+                )
               ) : (
                 <></>
               )}
@@ -247,8 +298,12 @@ const CreateSpot = () => {
                 value={lng}
                 onChange={(e) => setLng(e.target.value)}
               />
-              {Object.keys(errors).length >= 1 ? (
-                <p className="error-message">{errors.lng}</p>
+              {isSubmitted === true ? (
+                Object.keys(errors).length >= 1 ? (
+                  <p className="error-message">{errors.lng}</p>
+                ) : (
+                  <></>
+                )
               ) : (
                 <></>
               )}
@@ -273,8 +328,12 @@ const CreateSpot = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
-            {Object.keys(errors).length >= 1 ? (
-              <p className="error-message">{errors.description}</p>
+            {isSubmitted === true ? (
+              Object.keys(errors).length >= 1 ? (
+                <p className="error-message">{errors.description}</p>
+              ) : (
+                <></>
+              )
             ) : (
               <></>
             )}
@@ -297,8 +356,12 @@ const CreateSpot = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            {Object.keys(errors).length >= 1 ? (
-              <p className="error-message">{errors.name}</p>
+            {isSubmitted === true ? (
+              Object.keys(errors).length >= 1 ? (
+                <p className="error-message">{errors.name}</p>
+              ) : (
+                <></>
+              )
             ) : (
               <></>
             )}
@@ -320,8 +383,12 @@ const CreateSpot = () => {
               value={price}
               onChange={(e) => setPrice(e.target.value)}
             />
-            {Object.keys(errors).length >= 1 ? (
-              <p className="error-message">{errors.price}</p>
+            {isSubmitted === true ? (
+              Object.keys(errors).length >= 1 ? (
+                <p className="error-message">{errors.price}</p>
+              ) : (
+                <></>
+              )
             ) : (
               <></>
             )}
@@ -344,8 +411,12 @@ const CreateSpot = () => {
               value={previewImage}
               onChange={(e) => setPreviewImage(e.target.value)}
             />
-            {Object.keys(errors).length >= 1 ? (
-              <p className="error-message">{errors.previewImage}</p>
+            {isSubmitted === true ? (
+              Object.keys(errors).length >= 1 ? (
+                <p className="error-message">{errors.previewImage}</p>
+              ) : (
+                <></>
+              )
             ) : (
               <></>
             )}

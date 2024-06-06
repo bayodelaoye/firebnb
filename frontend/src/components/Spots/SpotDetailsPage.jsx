@@ -16,7 +16,7 @@ const SpotDetailsPage = () => {
   const allSpots = useSelector((state) => state.spots.allSpots);
   const spotReviews = useSelector((state) => state.reviews.spot);
   const userSession = useSelector((state) => state.session.user);
-
+  let review;
   let countReviews = 0;
   let isReviewPresent = false;
   let ownerId;
@@ -38,6 +38,14 @@ const SpotDetailsPage = () => {
   let reviewCount = countReviews;
   const [isLoaded, setIsLoaded] = useState(false);
   const dispatch = useDispatch();
+
+  if (spot.avgRating === null && reviewCount === 1) {
+    reviewsArray.forEach((spotReview) => {
+      if (spotReview.spotId === spot.id) {
+        review = spotReview;
+      }
+    });
+  }
 
   useEffect(() => {
     dispatch(getSingleSpot(spotId))
@@ -97,7 +105,7 @@ const SpotDetailsPage = () => {
               <div className="stay-info-container">
                 <h2>${spot.price} night</h2>
                 <p>
-                  <FaStar />{" "}
+                  <FaStar />
                   {spot.avgRating ? spot.avgRating.toFixed(2) : "New"}
                 </p>
 
@@ -155,13 +163,10 @@ const SpotDetailsPage = () => {
 
               {userSession === null ? (
                 <>{(isReviewPresent = true)}</>
-              ) : reviewsArray.length === 0 ? (
-                (isReviewPresent = true)
               ) : (
                 reviewsArray.map((review) => {
                   if (review.spotId == spot.id) {
                     if (
-                      reviewCount === 0 ||
                       review.User.id === userSession.id ||
                       userSession.id === spot.ownerId
                     ) {

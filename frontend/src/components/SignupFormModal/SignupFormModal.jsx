@@ -83,9 +83,11 @@ function SignupFormModal() {
     <>
       <h1 className="signup-text">Sign Up</h1>
       <form onSubmit={handleSubmit} className="sign-up-modal">
-        {Object.keys(formErrors).length >= 1 && <p>{formErrors.error}</p>}
         {Object.keys(formErrors).length >= 1 && (
-          <p>{formErrors.passwordError}</p>
+          <p className="sign-up-error">{formErrors.error}</p>
+        )}
+        {Object.keys(formErrors).length >= 1 && (
+          <p className="sign-up-error">{formErrors.passwordError}</p>
         )}
         <label className="sign-up-label-input">
           Email
@@ -101,7 +103,7 @@ function SignupFormModal() {
           <></>
         ) : Object.keys(formErrors).length >= 1 ||
           Object.keys(errors).length ? (
-          <p>{formErrors.email}</p>
+          <p className="sign-up-error">{formErrors.email}</p>
         ) : (
           <></>
         )}
@@ -116,7 +118,9 @@ function SignupFormModal() {
             placeholder="Username"
           />
         </label>
-        {Object.keys(formErrors).length >= 1 && <p>{formErrors.username}</p>}
+        {Object.keys(formErrors).length >= 1 && (
+          <p className="sign-up-error">{formErrors.username}</p>
+        )}
         {/* {errors.username && <p>{errors.username}</p>} */}
         <label className="sign-up-label-input">
           First Name
@@ -128,7 +132,9 @@ function SignupFormModal() {
             placeholder="First Name"
           />
         </label>
-        {Object.keys(formErrors).length >= 1 && <p>{formErrors.firstName}</p>}
+        {Object.keys(formErrors).length >= 1 && (
+          <p className="sign-up-error">{formErrors.firstName}</p>
+        )}
         {/* {errors.firstName && <p>{errors.firstName}</p>} */}
         <label className="sign-up-label-input">
           Last Name
@@ -140,7 +146,9 @@ function SignupFormModal() {
             placeholder="Last Name"
           />
         </label>
-        {Object.keys(formErrors).length >= 1 && <p>{formErrors.lastName}</p>}
+        {Object.keys(formErrors).length >= 1 && (
+          <p className="sign-up-error">{formErrors.lastName}</p>
+        )}
         {/* {errors.lastName && <p>{errors.lastName}</p>} */}
         <label className="sign-up-label-input">
           Password
@@ -152,7 +160,9 @@ function SignupFormModal() {
             placeholder="Password"
           />
         </label>
-        {Object.keys(formErrors).length >= 1 && <p>{formErrors.password}</p>}
+        {Object.keys(formErrors).length >= 1 && (
+          <p className="sign-up-error">{formErrors.password}</p>
+        )}
         {/* {errors.password && <p>{errors.password}</p>} */}
         <label className="sign-up-label-input">
           Confirm Password
@@ -165,7 +175,7 @@ function SignupFormModal() {
           />
         </label>
         {Object.keys(formErrors).length >= 1 && (
-          <p>{formErrors.confirmPassword}</p>
+          <p className="sign-up-error">{formErrors.confirmPassword}</p>
         )}
         {/* {errors.confirmPassword && <p>{errors.confirmPassword}</p>} */}
         <button

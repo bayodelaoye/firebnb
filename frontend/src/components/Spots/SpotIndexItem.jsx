@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import "./SpotsIndex.css";
 import { FaStar } from "react-icons/fa";
-import { sendPreviewImage } from "./CreateSpot";
 
 const SpotIndexItem = ({ spot }) => {
   return (
