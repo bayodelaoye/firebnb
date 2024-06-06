@@ -39,14 +39,6 @@ const SpotDetailsPage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const dispatch = useDispatch();
 
-  if (spot.avgRating === null && reviewCount === 1) {
-    reviewsArray.forEach((spotReview) => {
-      if (spotReview.spotId === spot.id) {
-        review = spotReview;
-      }
-    });
-  }
-
   useEffect(() => {
     dispatch(getSingleSpot(spotId))
       .then(() => dispatch(getAllReviewsForSpot(spotId)))
@@ -106,7 +98,11 @@ const SpotDetailsPage = () => {
                 <h2>${spot.price} night</h2>
                 <p>
                   <FaStar />
-                  {spot.avgRating ? spot.avgRating.toFixed(2) : "New"}
+                  {reviewCount === 0
+                    ? "New"
+                    : spot.avgRating
+                    ? spot.avgRating.toFixed(2)
+                    : "New"}
                 </p>
 
                 {reviewCount === 0 ? (
@@ -136,7 +132,12 @@ const SpotDetailsPage = () => {
           <div className="summary-review-container">
             <div className="review-summary-container">
               <div className="star-rating-review-summary">
-                <FaStar /> {spot.avgRating ? spot.avgRating.toFixed(2) : "New"}
+                <FaStar />{" "}
+                {reviewCount === 0
+                  ? "New"
+                  : spot.avgRating
+                  ? spot.avgRating.toFixed(2)
+                  : "New"}
               </div>{" "}
               {reviewCount === 0 ? (
                 <></>
