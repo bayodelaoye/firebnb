@@ -11,7 +11,7 @@ const SpotsIndex = () => {
   let spots;
 
   if (spotsObj === undefined) {
-    // do nothing and proceed
+    // do nothing
   } else {
     spots = Object.values(spotsObj);
   }
