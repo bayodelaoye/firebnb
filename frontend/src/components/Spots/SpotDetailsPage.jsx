@@ -12,12 +12,21 @@ import CreateReview from "../Reviews/CreateReview";
 
 const SpotDetailsPage = () => {
   const { spotId } = useParams();
-  const spot = useSelector((state) => state.spots.currentSpot);
-  const allSpots = useSelector((state) => state.spots.allSpots);
-  const spotReviews = useSelector((state) => state.reviews.spot);
-  const userSession = useSelector((state) => state.session.user);
+  let spot = useSelector((state) => state.spots.currentSpot);
+  let allSpots = useSelector((state) => state.spots.allSpots);
+  let spotReviews = useSelector((state) => state.reviews.spot);
+  let userSession = useSelector((state) => state.session.user);
   let countReviews = 0;
   let isReviewPresent = false;
+
+  if (spot && allSpots && spotReviews && userSession) {
+    // if have then continue
+  } else {
+    spot = null;
+    allSpots = null;
+    spotReviews = null;
+    userSession = null;
+  }
 
   let ownerId;
   const findSpot = Object.values(allSpots).find((spot) => {
