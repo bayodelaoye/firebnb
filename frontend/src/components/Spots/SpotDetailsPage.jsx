@@ -29,6 +29,7 @@ const SpotDetailsPage = () => {
   } else {
     ownerId = null;
   }
+
   const reviewsArray = Object.values(spotReviews);
   reviewsArray.forEach((review) => {
     if (review.spotId === spot.id) {
