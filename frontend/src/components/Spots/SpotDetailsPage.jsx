@@ -18,6 +18,7 @@ const SpotDetailsPage = () => {
   const userSession = useSelector((state) => state.session.user);
   let countReviews = 0;
   let isReviewPresent = false;
+
   let ownerId;
   const findSpot = Object.values(allSpots).find((spot) => {
     return +spotId === +spot.id;
