@@ -114,7 +114,7 @@ const SpotDetailsPage = () => {
                   {reviewCount === 0
                     ? "New"
                     : spot.avgRating
-                    ? spot.avgRating.toFixed(2)
+                    ? Number(spot.avgRating).toFixed(2)
                     : "New"}
                 </p>
 
@@ -149,7 +149,7 @@ const SpotDetailsPage = () => {
                 {reviewCount === 0
                   ? "New"
                   : spot.avgRating
-                  ? spot.avgRating.toFixed(2)
+                  ? Number(spot.avgRating).toFixed(2)
                   : "New"}
               </div>{" "}
               {reviewCount === 0 ? (
