@@ -95,7 +95,7 @@ const UpdateSpot = () => {
         setName("");
         setPrice("");
       } catch {
-        console.log("Uncaught in promise");
+        // console.log("Uncaught in promise");
       }
     } else {
       alert("Please fix your errors before creating a spot");

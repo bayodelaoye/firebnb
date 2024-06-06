@@ -156,7 +156,7 @@ const CreateSpot = () => {
             setImageUrl4("");
           });
       } catch {
-        console.log("Uncaught in promise");
+        // console.log("Uncaught in promise");
       }
     }
   };

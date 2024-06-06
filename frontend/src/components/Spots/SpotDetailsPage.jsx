@@ -16,20 +16,27 @@ const SpotDetailsPage = () => {
   let allSpots = useSelector((state) => state.spots.allSpots);
   let spotReviews = useSelector((state) => state.reviews.spot);
   let userSession = useSelector((state) => state.session.user);
-  let countReviews = 0;
+  const [isLoaded, setIsLoaded] = useState(false);
+  const dispatch = useDispatch();
+  let reviewsArray;
   let isReviewPresent = false;
+  let reviewCount = 0;
+  let ownerId;
+  let allSpotsArray;
+  let findSpot;
 
-  if (spot && allSpots && spotReviews && userSession) {
-    // if have then continue
+  if (
+    allSpots === undefined ||
+    spotReviews == undefined ||
+    allSpots === undefined
+  ) {
+    // do nothing
   } else {
-    spot = null;
-    allSpots = null;
-    spotReviews = null;
-    userSession = null;
+    reviewsArray = Object.values(spotReviews);
+    allSpotsArray = Object.values(allSpots);
   }
 
-  let ownerId;
-  const findSpot = Object.values(allSpots).find((spot) => {
+  findSpot = allSpotsArray.find((spot) => {
     return +spotId === +spot.id;
   });
 
@@ -39,15 +46,11 @@ const SpotDetailsPage = () => {
     ownerId = null;
   }
 
-  const reviewsArray = Object.values(spotReviews);
   reviewsArray.forEach((review) => {
     if (review.spotId === spot.id) {
-      countReviews++;
+      reviewCount++;
     }
   });
-  let reviewCount = countReviews;
-  const [isLoaded, setIsLoaded] = useState(false);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getSingleSpot(spotId))

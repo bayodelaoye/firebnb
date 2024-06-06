@@ -6,12 +6,18 @@ import "./SpotsIndex.css";
 
 const SpotsIndex = () => {
   const spotsObj = useSelector((state) => state.spots.allSpots);
-  const spots = Object.values(spotsObj);
+  let spots;
+
+  if (spotsObj === undefined) {
+    // do nothing
+  } else {
+    spots = Object.values(spotsObj);
+  }
   const dispatch = useDispatch();
 
   //
-  const spotReviews = useSelector((state) => state);
-  console.log(spotReviews);
+  // const spotReviews = useSelector((state) => state);
+  // console.log(spots);
 
   useEffect(() => {
     dispatch(getAllSpots());
