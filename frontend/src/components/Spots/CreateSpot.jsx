@@ -158,7 +158,9 @@ const CreateSpot = () => {
             setImageUrl4("");
           });
       } catch {
-        // console.log("Uncaught in promise");
+        alert(
+          "Please check your inputs that you have no errors. Address must be unique"
+        );
       }
     }
   };

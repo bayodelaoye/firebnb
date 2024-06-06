@@ -100,7 +100,9 @@ const UpdateSpot = () => {
         // console.log("Uncaught in promise");
       }
     } else {
-      alert("Please fix your errors before creating a spot");
+      alert(
+        "Please fix your errors before updating a spot. Address must be unique"
+      );
     }
   };
 
