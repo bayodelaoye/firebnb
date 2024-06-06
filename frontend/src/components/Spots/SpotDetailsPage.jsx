@@ -49,10 +49,12 @@ const SpotDetailsPage = () => {
     <div className="details-page-container">
       {isLoaded ? (
         <div>
-          <h2>{spot.name}</h2>
-          <p>
-            {spot.city}, {spot.state}, {spot.country}
-          </p>
+          <div className="spot-name-location">
+            <h2>{spot.name}</h2>
+            <p>
+              {spot.city}, {spot.state}, {spot.country}
+            </p>
+          </div>
           <div className="details-page-image-container">
             <div className="main-image-container">
               <img src={spot.previewImage} />

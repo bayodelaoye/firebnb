@@ -38,21 +38,21 @@ function Navigation({ isLoaded }) {
     </div>
   ) : (
     <>
-      <li>
-        <OpenModalButton
-          buttonText="Log In"
-          modalComponent={<LoginFormModal />}
-          className="login-sign-up-btns"
-        />
-        {/* <NavLink to="/login">Log In</NavLink> */}
-      </li>
-      <li>
-        <OpenModalButton
-          buttonText="Sign Up"
-          modalComponent={<SignupFormModal />}
-          className="login-sign-up-btns"
-        />
-      </li>
+      <div className="login-sign-up-btns">
+        <li>
+          <OpenModalButton
+            buttonText="Log In"
+            modalComponent={<LoginFormModal />}
+          />
+          {/* <NavLink to="/login">Log In</NavLink> */}
+        </li>
+        <li>
+          <OpenModalButton
+            buttonText="Sign Up"
+            modalComponent={<SignupFormModal />}
+          />
+        </li>
+      </div>
     </>
   );
 
@@ -62,7 +62,7 @@ function Navigation({ isLoaded }) {
         <img src={mainLogo} className="logo" />
       </NavLink>
 
-      <div className="sing-up-login-btns">{isLoaded && sessionLinks}</div>
+      <div className="sign-up-login-btns">{isLoaded && sessionLinks}</div>
     </nav>
   );
 }

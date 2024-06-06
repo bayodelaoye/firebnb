@@ -118,3 +118,10 @@
   align-items: center;
   gap: 10px;
 }
+
+.spot-name-location {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 70px;
+}

@@ -48,12 +48,12 @@
   display: inline-block;
   border-bottom: 1px dotted black;
   bottom: 170px;
-  left: 190px;
+  left: 160px;
 }
 
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  width: 180px;
   background-color: #51636d;
   color: white;
   text-align: center;
@@ -61,9 +61,9 @@
   border-radius: 6px;
   position: absolute;
   z-index: 100;
-  width: 120px;
   bottom: 100%;
   left: 50%;
   margin: 0 auto;
   margin-left: -60px;
+  justify-content: center;
 }

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
 import { NavLink, useNavigate } from "react-router-dom";
+import "./Navigation.css";
 
 function ProfileButton({ user, clicked }) {
   const dispatch = useDispatch();
