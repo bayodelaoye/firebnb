@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllSpots } from "../../store/spotReducer";
+import { useState } from "react";
 import SpotIndexItem from "./SpotIndexItem";
 import "./SpotsIndex.css";
 
 const SpotsIndex = () => {
   const spotsObj = useSelector((state) => state.spots.allSpots);
+  const [isLoaded, setIsLoaded] = useState(false);
   let spots;
 
   if (spotsObj === undefined) {
@@ -15,21 +17,21 @@ const SpotsIndex = () => {
   }
   const dispatch = useDispatch();
 
-  //
-  // const spotReviews = useSelector((state) => state);
-  // console.log(spots);
-
   useEffect(() => {
-    dispatch(getAllSpots());
+    dispatch(getAllSpots()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
   return (
     <div>
-      <div className="spots-container">
-        {spots.map((spot) => {
-          return <SpotIndexItem spot={spot} key={spot.id} />;
-        })}
-      </div>
+      {isLoaded ? (
+        <div className="spots-container">
+          {spots.map((spot) => {
+            return <SpotIndexItem spot={spot} key={spot.id} />;
+          })}
+        </div>
+      ) : (
+        <>Loading</>
+      )}
     </div>
   );
 };

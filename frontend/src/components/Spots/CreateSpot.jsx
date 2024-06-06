@@ -24,12 +24,14 @@ const CreateSpot = () => {
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const allSpotsObj = useSelector((state) => state.spots.allSpots);
   const numberOfSpots = Object.values(allSpotsObj).length;
   let newSpotId;
 
   useEffect(() => {
+    setIsLoaded(true);
     const errors = {};
 
     if (country.length < 1) {
@@ -163,201 +165,29 @@ const CreateSpot = () => {
 
   return (
     <div className="create-spot-container">
-      <form className="create-spot-form" onSubmit={handleSubmit}>
-        <h1 className="form-title">Create a new Spot</h1>
-        <h2 className="form-subtitle">Where&apos;s your place located?</h2>
-        <h3 className="form-info">
-          Guests will only get your exact address once they book a reservation.
-        </h3>
+      {isLoaded ? (
+        <form className="create-spot-form" onSubmit={handleSubmit}>
+          <h1 className="form-title">Create a new Spot</h1>
+          <h2 className="form-subtitle">Where&apos;s your place located?</h2>
+          <h3 className="form-info">
+            Guests will only get your exact address once they book a
+            reservation.
+          </h3>
 
-        <label className="signup-label">
-          Country:
-          <input
-            className="input-area-spots"
-            type="text"
-            id="country"
-            name="country"
-            placeholder="Country"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-          />
-          {isSubmitted === true ? (
-            Object.keys(errors).length >= 1 ? (
-              <p className="error-message">{errors.country}</p>
-            ) : (
-              <></>
-            )
-          ) : (
-            <></>
-          )}
-        </label>
-
-        <label className="signup-label">
-          Street Address:
-          <input
-            className="input-area-spots"
-            type="text"
-            id="street-address"
-            name="street-address"
-            placeholder="Street Address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-          {isSubmitted === true ? (
-            Object.keys(errors).length >= 1 ? (
-              <p className="error-message">{errors.address}</p>
-            ) : (
-              <></>
-            )
-          ) : (
-            <></>
-          )}
-        </label>
-        <div className="city-state">
-          <div className="city">
-            <label className="signup-label">
-              City:
-              <input
-                className="input-area-spots"
-                type="text"
-                id="city"
-                name="city"
-                placeholder="City"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              />
-              {isSubmitted === true ? (
-                Object.keys(errors).length >= 1 ? (
-                  <p className="error-message">{errors.city}</p>
-                ) : (
-                  <></>
-                )
-              ) : (
-                <></>
-              )}
-            </label>
-          </div>
-          <div className="city">
-            <label className="signup-label">
-              State:
-              <input
-                className="input-area-spots"
-                type="text"
-                id="state"
-                name="state"
-                placeholder="State"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-              />
-              {isSubmitted === true ? (
-                Object.keys(errors).length >= 1 ? (
-                  <p className="error-message">{errors.state}</p>
-                ) : (
-                  <></>
-                )
-              ) : (
-                <></>
-              )}
-            </label>
-          </div>
-        </div>
-        <div className="city-state">
-          <div className="city">
-            <label className="signup-label">
-              lat:
-              <input
-                className="input-area-spots"
-                type="text"
-                id="lat"
-                name="lat"
-                placeholder="Lat"
-                value={lat}
-                onChange={(e) => setLat(e.target.value)}
-              />
-              {isSubmitted === true ? (
-                Object.keys(errors).length >= 1 ? (
-                  <p className="error-message">{errors.lat}</p>
-                ) : (
-                  <></>
-                )
-              ) : (
-                <></>
-              )}
-            </label>
-          </div>
-          <div className="city">
-            <label className="signup-label">
-              lng:
-              <input
-                className="input-area-spots"
-                type="text"
-                id="lng"
-                name="lng"
-                placeholder="Lng"
-                value={lng}
-                onChange={(e) => setLng(e.target.value)}
-              />
-              {isSubmitted === true ? (
-                Object.keys(errors).length >= 1 ? (
-                  <p className="error-message">{errors.lng}</p>
-                ) : (
-                  <></>
-                )
-              ) : (
-                <></>
-              )}
-            </label>
-          </div>
-        </div>
-        <div className="added-text">
-          <h2 className="description-title">
-            Describe your place to your guests
-          </h2>
-          <p className="description-info">
-            Mention the best features of your space, any special amenities like
-            fast wifi or parking, and what you love about the neighborhood
-          </p>
           <label className="signup-label">
-            Description:
-            <textarea
-              className="input-text-area"
-              id="description"
-              name="description"
-              placeholder="Please write at least 30 characters"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
-            {isSubmitted === true ? (
-              Object.keys(errors).length >= 1 ? (
-                <p className="error-message">{errors.description}</p>
-              ) : (
-                <></>
-              )
-            ) : (
-              <></>
-            )}
-          </label>
-        </div>
-        <div className="added-text">
-          <h2 className="spot-title">Create a title for your spot</h2>
-          <p className="title-info">
-            Catch guests&apos; attention with a spot title that highlights what
-            makes your place special.
-          </p>
-          <label className="signup-label">
-            Name of Spot:
+            Country:
             <input
               className="input-area-spots"
               type="text"
-              id="name-of-spot"
-              name="name-of-spot"
-              placeholder="Name your spot"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              id="country"
+              name="country"
+              placeholder="Country"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
             />
             {isSubmitted === true ? (
               Object.keys(errors).length >= 1 ? (
-                <p className="error-message">{errors.name}</p>
+                <p className="error-message">{errors.country}</p>
               ) : (
                 <></>
               )
@@ -365,26 +195,21 @@ const CreateSpot = () => {
               <></>
             )}
           </label>
-        </div>
-        <div className="added-text">
-          <h2 className="price-title">Set a price for your spot</h2>
-          <p className="price-info">
-            Competitive pricing can help your listing stand out and rank higher
-            in search results
-          </p>
+
           <label className="signup-label">
+            Street Address:
             <input
               className="input-area-spots"
               type="text"
-              id="price"
-              name="price"
-              placeholder="Price per night($USD)"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              id="street-address"
+              name="street-address"
+              placeholder="Street Address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
             />
             {isSubmitted === true ? (
               Object.keys(errors).length >= 1 ? (
-                <p className="error-message">{errors.price}</p>
+                <p className="error-message">{errors.address}</p>
               ) : (
                 <></>
               )
@@ -392,91 +217,274 @@ const CreateSpot = () => {
               <></>
             )}
           </label>
-        </div>
-        <div className="added-text">
-          <h2 className="price-title">Liven up your spot with photos</h2>
-          <p className="price-info">
-            Submit a link to at least one photo to publish your spot.
-          </p>
+          <div className="city-state">
+            <div className="city">
+              <label className="signup-label">
+                City:
+                <input
+                  className="input-area-spots"
+                  type="text"
+                  id="city"
+                  name="city"
+                  placeholder="City"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
+                {isSubmitted === true ? (
+                  Object.keys(errors).length >= 1 ? (
+                    <p className="error-message">{errors.city}</p>
+                  ) : (
+                    <></>
+                  )
+                ) : (
+                  <></>
+                )}
+              </label>
+            </div>
+            <div className="city">
+              <label className="signup-label">
+                State:
+                <input
+                  className="input-area-spots"
+                  type="text"
+                  id="state"
+                  name="state"
+                  placeholder="State"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                />
+                {isSubmitted === true ? (
+                  Object.keys(errors).length >= 1 ? (
+                    <p className="error-message">{errors.state}</p>
+                  ) : (
+                    <></>
+                  )
+                ) : (
+                  <></>
+                )}
+              </label>
+            </div>
+          </div>
+          <div className="city-state">
+            <div className="city">
+              <label className="signup-label">
+                lat:
+                <input
+                  className="input-area-spots"
+                  type="text"
+                  id="lat"
+                  name="lat"
+                  placeholder="Lat"
+                  value={lat}
+                  onChange={(e) => setLat(e.target.value)}
+                />
+                {isSubmitted === true ? (
+                  Object.keys(errors).length >= 1 ? (
+                    <p className="error-message">{errors.lat}</p>
+                  ) : (
+                    <></>
+                  )
+                ) : (
+                  <></>
+                )}
+              </label>
+            </div>
+            <div className="city">
+              <label className="signup-label">
+                lng:
+                <input
+                  className="input-area-spots"
+                  type="text"
+                  id="lng"
+                  name="lng"
+                  placeholder="Lng"
+                  value={lng}
+                  onChange={(e) => setLng(e.target.value)}
+                />
+                {isSubmitted === true ? (
+                  Object.keys(errors).length >= 1 ? (
+                    <p className="error-message">{errors.lng}</p>
+                  ) : (
+                    <></>
+                  )
+                ) : (
+                  <></>
+                )}
+              </label>
+            </div>
+          </div>
+          <div className="added-text">
+            <h2 className="description-title">
+              Describe your place to your guests
+            </h2>
+            <p className="description-info">
+              Mention the best features of your space, any special amenities
+              like fast wifi or parking, and what you love about the
+              neighborhood
+            </p>
+            <label className="signup-label">
+              Description:
+              <textarea
+                className="input-text-area"
+                id="description"
+                name="description"
+                placeholder="Please write at least 30 characters"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></textarea>
+              {isSubmitted === true ? (
+                Object.keys(errors).length >= 1 ? (
+                  <p className="error-message">{errors.description}</p>
+                ) : (
+                  <></>
+                )
+              ) : (
+                <></>
+              )}
+            </label>
+          </div>
+          <div className="added-text">
+            <h2 className="spot-title">Create a title for your spot</h2>
+            <p className="title-info">
+              Catch guests&apos; attention with a spot title that highlights
+              what makes your place special.
+            </p>
+            <label className="signup-label">
+              Name of Spot:
+              <input
+                className="input-area-spots"
+                type="text"
+                id="name-of-spot"
+                name="name-of-spot"
+                placeholder="Name your spot"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              {isSubmitted === true ? (
+                Object.keys(errors).length >= 1 ? (
+                  <p className="error-message">{errors.name}</p>
+                ) : (
+                  <></>
+                )
+              ) : (
+                <></>
+              )}
+            </label>
+          </div>
+          <div className="added-text">
+            <h2 className="price-title">Set a price for your spot</h2>
+            <p className="price-info">
+              Competitive pricing can help your listing stand out and rank
+              higher in search results
+            </p>
+            <label className="signup-label">
+              <input
+                className="input-area-spots"
+                type="text"
+                id="price"
+                name="price"
+                placeholder="Price per night($USD)"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+              {isSubmitted === true ? (
+                Object.keys(errors).length >= 1 ? (
+                  <p className="error-message">{errors.price}</p>
+                ) : (
+                  <></>
+                )
+              ) : (
+                <></>
+              )}
+            </label>
+          </div>
+          <div className="added-text">
+            <h2 className="price-title">Liven up your spot with photos</h2>
+            <p className="price-info">
+              Submit a link to at least one photo to publish your spot.
+            </p>
 
+            <label className="signup-label">
+              Preview Image URL:
+              <input
+                className="input-area-spots"
+                type="text"
+                id="preview-image-url"
+                name="preview-image-url"
+                placeholder="Preview Image Url"
+                value={previewImage}
+                onChange={(e) => setPreviewImage(e.target.value)}
+              />
+              {isSubmitted === true ? (
+                Object.keys(errors).length >= 1 ? (
+                  <p className="error-message">{errors.previewImage}</p>
+                ) : (
+                  <></>
+                )
+              ) : (
+                <></>
+              )}
+            </label>
+          </div>
           <label className="signup-label">
-            Preview Image URL:
+            Image URL 1:
             <input
               className="input-area-spots"
               type="text"
-              id="preview-image-url"
-              name="preview-image-url"
-              placeholder="Preview Image Url"
-              value={previewImage}
-              onChange={(e) => setPreviewImage(e.target.value)}
+              id="image-url-1"
+              name="image-url-1"
+              placeholder="Image Url"
+              value={imageUrl1}
+              onChange={(e) => setImageUrl1(e.target.value)}
             />
-            {isSubmitted === true ? (
-              Object.keys(errors).length >= 1 ? (
-                <p className="error-message">{errors.previewImage}</p>
-              ) : (
-                <></>
-              )
-            ) : (
-              <></>
-            )}
           </label>
-        </div>
-        <label className="signup-label">
-          Image URL 1:
-          <input
-            className="input-area-spots"
-            type="text"
-            id="image-url-1"
-            name="image-url-1"
-            placeholder="Image Url"
-            value={imageUrl1}
-            onChange={(e) => setImageUrl1(e.target.value)}
-          />
-        </label>
 
-        <label className="signup-label">
-          Image URL 2:
-          <input
-            className="input-area-spots"
-            type="text"
-            id="image-url-2"
-            name="image-url-2"
-            placeholder="Image Url"
-            value={imageUrl2}
-            onChange={(e) => setImageUrl2(e.target.value)}
-          />
-        </label>
+          <label className="signup-label">
+            Image URL 2:
+            <input
+              className="input-area-spots"
+              type="text"
+              id="image-url-2"
+              name="image-url-2"
+              placeholder="Image Url"
+              value={imageUrl2}
+              onChange={(e) => setImageUrl2(e.target.value)}
+            />
+          </label>
 
-        <label className="signup-label">
-          Image URL 3:
-          <input
-            className="input-area-spots"
-            type="text"
-            id="image-url-3"
-            name="image-url-3"
-            placeholder="Image Url"
-            value={imageUrl3}
-            onChange={(e) => setImageUrl3(e.target.value)}
-          />
-        </label>
+          <label className="signup-label">
+            Image URL 3:
+            <input
+              className="input-area-spots"
+              type="text"
+              id="image-url-3"
+              name="image-url-3"
+              placeholder="Image Url"
+              value={imageUrl3}
+              onChange={(e) => setImageUrl3(e.target.value)}
+            />
+          </label>
 
-        <label className="signup-label">
-          Image URL 4:
-          <input
-            className="input-area-spots"
-            type="text"
-            id="image-url-4"
-            name="image-url-4"
-            placeholder="Image Url"
-            value={imageUrl4}
-            onChange={(e) => setImageUrl4(e.target.value)}
-          />
-        </label>
+          <label className="signup-label">
+            Image URL 4:
+            <input
+              className="input-area-spots"
+              type="text"
+              id="image-url-4"
+              name="image-url-4"
+              placeholder="Image Url"
+              value={imageUrl4}
+              onChange={(e) => setImageUrl4(e.target.value)}
+            />
+          </label>
 
-        <button className="spot-button" type="submit">
-          Create Spot
-        </button>
-      </form>
+          <button className="spot-button" type="submit">
+            Create Spot
+          </button>
+        </form>
+      ) : (
+        <>Loading</>
+      )}
     </div>
   );
 };
