@@ -54,32 +54,32 @@ const populateRatingAndImageColumn = async (query) => {
       },
     });
 
-    if (spot === undefined) {
-    } else {
-      spot.previewImage = imageArray[countImages].url;
-      await spot.save();
-      countImages++;
-    }
-  }
-
-  for (let k = 1; k <= spots.length; k++) {
-    const spot = await Spot.findOne({
-      where: {
-        id: k,
-      },
-    });
-
-    if (spot === undefined) {
-    } else {
-      spot.avgRating = avgRatingArray[countRating];
-      console.log(countRating, spot.avgRating);
-      await spot.save();
-      countRating++;
-    }
-    // spots[k].avgRating = avgRatingArray[k];
-
+    spot.previewImage = imageArray[countImages].url;
+    spot.avgRating = avgRatingArray[countRating];
+    console.log(countRating, spot.previewImage);
+    countImages++;
+    countRating++;
     await spot.save();
   }
+
+  // for (let k = 1; k <= spots.length; k++) {
+  //   const spot = await Spot.findOne({
+  //     where: {
+  //       id: k,
+  //     },
+  //   });
+
+  //   spot.avgRating = avgRatingArray[countRating];
+  //   console.log(countRating, spot.avgRating);
+  //   // await spot.save();
+  //   countRating++;
+
+  //   // spots[k].avgRating = avgRatingArray[k];
+
+  //   await spot.save();
+  // }
+
+  console.log(spots);
 
   return spots;
 };
@@ -146,6 +146,9 @@ router.get("/", async (req, res) => {
   }
 
   spots = await populateRatingAndImageColumn(query);
+  if (spots[0].avgRating === null) {
+    spots = await populateRatingAndImageColumn(query);
+  }
 
   res.json({ spots, page, size });
 });

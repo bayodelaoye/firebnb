@@ -12,10 +12,10 @@ const SpotsIndex = () => {
 
   if (spotsObj === undefined) {
     // do nothing
-    window.location.reload();
   } else {
     spots = Object.values(spotsObj);
   }
+
   const dispatch = useDispatch();
 
   useEffect(() => {
