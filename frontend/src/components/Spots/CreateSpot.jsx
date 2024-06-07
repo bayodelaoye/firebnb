@@ -103,7 +103,7 @@ const CreateSpot = () => {
           if (newSpot === undefined) {
             createdSpotId++;
           } else {
-            createdSpotId++;
+            createdSpotId = createdSpotId + 2;
           }
         })
         .then(() => {
