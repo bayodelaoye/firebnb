@@ -111,7 +111,11 @@ const CreateSpot = () => {
         })
         .then(() => dispatch(getAllSpots()))
         .then(() => {
-          navigate(`/spots/${createdSpotId}`);
+          if (newSpot === undefined) {
+            navigate(`/spots/${createdSpotId}`);
+          } else {
+            navigate(`/spots/${createdSpotId + 1}`);
+          }
         })
         .then(() => {
           setCountry("");
