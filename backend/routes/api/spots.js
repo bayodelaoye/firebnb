@@ -41,10 +41,7 @@ const populateRatingAndImageColumn = async (query) => {
   }
 
   for (let k = 0; k < spots.length; k++) {
-    if (previewImages[k] === undefined) {
-    } else {
-      spots[k].previewImage = previewImages[k].url;
-    }
+    spots[k].previewImage = previewImages[k].url;
     spots[k].avgRating = avgRatingArray[k];
 
     await spots[k].save();
