@@ -23,7 +23,8 @@ const ManageSpotsIndexItem = ({ spot }) => {
               {spot.city}, {spot.state}
             </p>
             <p>
-              <FaStar /> {spot.avgRating ? spot.avgRating.toFixed(2) : "New"}
+              <FaStar />{" "}
+              {spot.avgRating ? Number(spot.avgRating).toFixed(2) : "New"}
             </p>
           </div>
           <p>${spot.price} night</p>
