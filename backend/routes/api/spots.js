@@ -61,12 +61,23 @@ const populateRatingAndImageColumn = async (query) => {
     }
   }
 
-  // for (let k = 0; k < spots.length; k++) {
-  //   // spots[k].previewImage = imageArray[k].url;
-  //   spots[k].avgRating = avgRatingArray[k];
+  for (let k = 1; k < spots.length; k++) {
+    const spot = await Spot.findOne({
+      where: {
+        id: k,
+      },
+    });
 
-  //   await spots[k].save();
-  // }
+    if (spot === undefined) {
+    } else {
+      spot.avgRating = avgRatingArray[count];
+      await spot.save();
+      count++;
+    }
+    // spots[k].avgRating = avgRatingArray[k];
+
+    await spot.save();
+  }
 
   return spots;
 };
