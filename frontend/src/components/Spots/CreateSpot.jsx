@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSpot } from "../../store/spotReducer";
+import { getAllSpots } from "../../store/spotReducer";
 import "./CreateSpot.css";
 import { useNavigate } from "react-router-dom";
 import { createSpotImage } from "../../store/spotReducer";
@@ -21,14 +22,13 @@ const CreateSpot = () => {
   const [imageUrl3, setImageUrl3] = useState("");
   const [imageUrl4, setImageUrl4] = useState("");
   const newSpot = useSelector((state) => state.spots.createdSpot);
+  const allSpots = useSelector((state) => state.spots.allSpots);
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const allSpotsObj = useSelector((state) => state.spots.allSpots);
-  const numberOfSpots = Object.values(allSpotsObj).length;
-  let newSpotId;
+  let createdSpotId = Object.values(allSpots).length;
 
   useEffect(() => {
     setIsLoaded(true);
@@ -81,6 +81,62 @@ const CreateSpot = () => {
   ]);
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setIsSubmitted(true);
+
+    if (Object.values(errors).length < 1) {
+      const spotObj = {
+        address,
+        city,
+        state,
+        country,
+        lat: parseInt(lat),
+        lng: parseInt(lng),
+        name,
+        description,
+        price: parseInt(price),
+      };
+
+      dispatch(createSpot(spotObj))
+        .then(() => {
+          if (newSpot === undefined) {
+            createdSpotId++;
+            // console.log("ONE--");
+          } else {
+            createdSpotId++;
+            // createdSpotId = newSpot.id;
+            // console.log("TWO--", createdSpotId);
+          }
+          // console.log(Object.values(allSpots).length);
+        })
+        .then(() => {
+          handleImages(createdSpotId);
+        })
+        .then(() => dispatch(getAllSpots()))
+        .then(() => {
+          navigate(`/spots/${createdSpotId}`);
+        })
+        .then(() => {
+          setCountry("");
+          setAddress("");
+          setCity("");
+          setState("");
+          setLat("");
+          setLng("");
+          setDescription("");
+          setName("");
+          setPrice("");
+          setPreviewImage("");
+          setImageUrl1("");
+          setImageUrl2("");
+          setImageUrl3("");
+          setImageUrl4("");
+        });
+    }
+  };
+
+  const handleImages = (newSpotId) => {
     const spotImages = [];
 
     spotImages.push(previewImage);
@@ -97,72 +153,23 @@ const CreateSpot = () => {
     if (imageUrl4 !== "") {
       spotImages.push(imageUrl4);
     }
-    e.preventDefault();
-    setIsSubmitted(true);
 
-    if (Object.values(errors).length === 0) {
-      const spotObj = {
-        address,
-        city,
-        state,
-        country,
-        lat: parseInt(lat),
-        lng: parseInt(lng),
-        name,
-        description,
-        price: parseInt(price),
-      };
+    spotImages.forEach((spotImage, index) => {
+      let spotImageObj;
 
-      try {
-        dispatch(createSpot(spotObj))
-          .then(() => {
-            spotImages.forEach((spotImage, index) => {
-              let spotImageObj;
-
-              if (index === 0) {
-                spotImageObj = {
-                  url: spotImage,
-                  preview: true,
-                };
-              } else {
-                spotImageObj = {
-                  url: spotImage,
-                  preview: false,
-                };
-              }
-              if (newSpot === undefined) {
-                newSpotId = numberOfSpots + 1;
-              } else {
-                newSpotId = newSpot.id;
-              }
-              dispatch(createSpotImage(newSpotId, spotImageObj));
-            });
-          })
-          .then(() => {
-            navigate(`/spots/${newSpotId}`);
-          })
-          .then(() => {
-            setCountry("");
-            setAddress("");
-            setCity("");
-            setState("");
-            setLat("");
-            setLng("");
-            setDescription("");
-            setName("");
-            setPrice("");
-            setPreviewImage("");
-            setImageUrl1("");
-            setImageUrl2("");
-            setImageUrl3("");
-            setImageUrl4("");
-          });
-      } catch {
-        alert(
-          "Please check your inputs that you have no errors. Address must be unique"
-        );
+      if (index === 0) {
+        spotImageObj = {
+          url: spotImage,
+          preview: true,
+        };
+      } else {
+        spotImageObj = {
+          url: spotImage,
+          preview: false,
+        };
       }
-    }
+      dispatch(createSpotImage(newSpotId, spotImageObj));
+    });
   };
 
   return (
