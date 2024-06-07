@@ -10,6 +10,9 @@ const {
 
 const router = express.Router();
 
+let hitOnce = false;
+let hitSpots;
+
 const populateRatingAndImageColumn = async (query) => {
   const imageArray = [];
   const spots = await Spot.findAll({
@@ -52,6 +55,8 @@ const populateRatingAndImageColumn = async (query) => {
 
     await spots[k].save();
   }
+
+  hitSpots = spots;
 
   return spots;
 };
@@ -117,11 +122,11 @@ router.get("/", async (req, res) => {
     }
   }
 
-  if (localStorage.get("First time")) {
-    spots = localStorage.get("First time");
-  } else {
+  if (hitOnce === false) {
     spots = await populateRatingAndImageColumn(query);
-    localStorage.set("First time", spots);
+  } else {
+    hitOnce = true;
+    spots = hitSpots;
   }
 
   res.json({ spots, page, size });
