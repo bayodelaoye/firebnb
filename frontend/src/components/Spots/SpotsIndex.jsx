@@ -12,6 +12,7 @@ const SpotsIndex = () => {
 
   if (spotsObj === undefined) {
     // do nothing and proceed
+    window.location.reload();
   } else {
     spots = Object.values(spotsObj);
   }

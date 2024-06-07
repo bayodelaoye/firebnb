@@ -29,7 +29,7 @@ const CreateSpot = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   let createdSpotId = Object.values(allSpots).length;
-  window.location.reload();
+
   useEffect(() => {
     setIsLoaded(true);
     const errors = {};
