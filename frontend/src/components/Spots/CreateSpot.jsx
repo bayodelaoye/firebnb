@@ -129,6 +129,8 @@ const CreateSpot = () => {
           setImageUrl3("");
           setImageUrl4("");
         });
+    } else {
+      alert(`You have errors in the form. Please scroll up to see them.`);
     }
   };
 

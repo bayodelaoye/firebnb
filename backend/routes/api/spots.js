@@ -307,7 +307,7 @@ router.post("/:spotId/images", async (req, res) => {
 });
 
 router.get("/current", async (req, res) => {
-  // const spots = await populateRatingAndImageColumn();
+  const spots = await populateRatingAndImageColumn();
   const { user } = req;
 
   if (user) {
@@ -327,7 +327,7 @@ router.get("/current", async (req, res) => {
 });
 
 router.get("/:spotId", async (req, res) => {
-  // const spots = await populateRatingAndImageColumn();
+  const spots = await populateRatingAndImageColumn();
   const spot = await Spot.findByPk(req.params.spotId, {
     include: [{ model: SpotImage }, { model: User, as: "Owner" }],
   });
