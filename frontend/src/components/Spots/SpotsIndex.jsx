@@ -14,7 +14,6 @@ const SpotsIndex = () => {
     // do nothing again 1hjbhjb
   } else {
     spots = Object.values(spotsObj);
-    console.log(spots[0]);
   }
   const dispatch = useDispatch();
 
