@@ -242,7 +242,9 @@ router.post("/:spotId/images", async (req, res) => {
           preview,
         });
 
-        // const spots = await populateRatingAndImageColumn();
+        if (preview === true) {
+          const spots = await populateRatingAndImageColumn();
+        }
 
         res.json(spotImage);
       } else {
