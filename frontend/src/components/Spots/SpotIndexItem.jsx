@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import "./SpotsIndex.css";
 import { FaStar } from "react-icons/fa";
 
+const arr = [];
 const SpotIndexItem = ({ spot }) => {
+  arr.push(spot);
   return (
     <div className="spot-container">
       <Link to={`/spots/${spot.id}`}>
