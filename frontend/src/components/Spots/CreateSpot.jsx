@@ -102,13 +102,9 @@ const CreateSpot = () => {
         .then(() => {
           if (newSpot === undefined) {
             createdSpotId++;
-            // console.log("ONE--");
           } else {
             createdSpotId++;
-            // createdSpotId = newSpot.id;
-            // console.log("TWO--", createdSpotId);
           }
-          // console.log(Object.values(allSpots).length);
         })
         .then(() => {
           handleImages(createdSpotId);
