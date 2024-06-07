@@ -61,6 +61,7 @@ router.get("/", async (req, res) => {
     message: {},
     errors: {},
   };
+  let spots;
 
   const query = {};
 
@@ -116,7 +117,12 @@ router.get("/", async (req, res) => {
     }
   }
 
-  const spots = await populateRatingAndImageColumn(query);
+  if (localStorage.get("First time")) {
+    spots = localStorage.get("First time");
+  } else {
+    spots = await populateRatingAndImageColumn(query);
+    localStorage.set("First time", spots);
+  }
 
   res.json({ spots, page, size });
 });
