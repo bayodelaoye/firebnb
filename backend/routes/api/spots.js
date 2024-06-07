@@ -11,15 +11,21 @@ const {
 const router = express.Router();
 
 const populateRatingAndImageColumn = async (query) => {
+  const imageArray = [];
   const spots = await Spot.findAll({
     ...query,
   });
-  const previewImages = await SpotImage.findAll({
-    where: {
-      preview: true,
-    },
+  console.log(spots.length);
+
+  const previewImages = await SpotImage.findAll();
+
+  previewImages.forEach((image) => {
+    if (image.preview === true) {
+      imageArray.push(image);
+    }
   });
 
+  console.log(imageArray.length);
   const avgRatingArray = [];
 
   for (let i = 1; i <= spots.length; i++) {
@@ -41,7 +47,7 @@ const populateRatingAndImageColumn = async (query) => {
   }
 
   for (let k = 0; k < spots.length; k++) {
-    spots[k].previewImage = previewImages[k].url;
+    spots[k].previewImage = imageArray[k].url;
     spots[k].avgRating = avgRatingArray[k];
 
     await spots[k].save();
@@ -226,15 +232,15 @@ router.post("/:spotId/images", async (req, res) => {
           },
         });
 
-        if (preview === true && spotImages.length > 0) {
-          for (let i = 0; i < spotImages.length; i++) {
-            if (spotImages[i].preview === true) {
-              spotImages[i].preview = false;
+        // if (preview === true && spotImages.length > 0) {
+        //   for (let i = 0; i < spotImages.length; i++) {
+        //     if (spotImages[i].preview === true) {
+        //       spotImages[i].preview = false;
 
-              await spotImages[i].save();
-            }
-          }
-        }
+        //       await spotImages[i].save();
+        //     }
+        //   }
+        // }
 
         const spotImage = await SpotImage.create({
           spotId: spot.id,

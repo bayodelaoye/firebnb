@@ -30,7 +30,7 @@ const SpotDetailsPage = () => {
     spotReviews == undefined ||
     allSpots === undefined
   ) {
-    // do nothing and
+    // do nothing and procee
   } else {
     reviewsArray = Object.values(spotReviews);
     allSpotsArray = Object.values(allSpots);
