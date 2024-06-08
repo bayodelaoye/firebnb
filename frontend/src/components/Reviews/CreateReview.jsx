@@ -50,6 +50,14 @@ function CreateReview({ spot }) {
   return (
     <form className="review-form" onSubmit={handleSubmit}>
       <h2 className="review-title">How was your stay?</h2>
+      {Object.keys(errors).length >= 1 ? (
+        <p className="review-errors">
+          *Review must be at least 10 characters long and Stars can&apos;t be
+          empty
+        </p>
+      ) : (
+        <></>
+      )}
       <label className="review-label">
         Review:
         <textarea
@@ -175,6 +183,7 @@ function CreateReview({ spot }) {
           )}
         </div>
       </label>
+
       <button disabled={Object.values(errors).length > 0} type="submit">
         Submit Your Review
       </button>
