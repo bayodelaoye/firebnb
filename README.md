@@ -1,4 +1,5 @@
-# `FireBnb`
+# `Firebnb`
+
 ## Database Schema Design
 
 ![db-schema]
