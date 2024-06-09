@@ -47,31 +47,16 @@ const populateRatingAndImageColumn = async (query) => {
     }
   }
 
-  // for (let l = 1; l <= spots.length; l++) {
-  //   const spot = await Spot.findOne({
-  //     where: {
-  //       id: l,
-  //     },
-  //   });
-
-  //   spot.previewImage = imageArray[countImages].url;
-  //   spot.avgRating = avgRatingArray[countRating];
-  //   console.log(countRating, spot.previewImage);
-  //   countImages++;
-  //   countRating++;
-  //   await spot.save();
-  // }
-
-  for (let l = 1; l < spots.length; l++) {
-    console.log(countRating, spots[l].id);
+  for (let l = 1; l <= spots.length; l++) {
     const spot = await Spot.findOne({
       where: {
-        id: spots[l].id,
+        id: l,
       },
     });
 
-    spot.previewImage = imageArray[l].url;
-    spot.avgRating = avgRatingArray[l];
+    spot.previewImage = imageArray[countImages].url;
+    spot.avgRating = avgRatingArray[countRating];
+    console.log(countRating, spot.previewImage);
     countImages++;
     countRating++;
     await spot.save();
