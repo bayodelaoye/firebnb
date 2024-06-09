@@ -72,14 +72,3 @@ h2 {
     width: 20rem;
   }
 }
-
-.review-errors {
-  color: red;
-  font-size: 11px;
-  margin: auto;
-  text-decoration: underline;
-}
-
-.review-title {
-  padding-top: 20px;
-}
