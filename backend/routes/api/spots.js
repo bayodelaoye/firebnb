@@ -69,8 +69,8 @@ const populateRatingAndImageColumn = async (query) => {
       },
     });
 
-    spot.previewImage = imageArray[countImages].url;
-    spot.avgRating = avgRatingArray[countRating];
+    spot.previewImage = imageArray[l].url;
+    spot.avgRating = avgRatingArray[l];
     countImages++;
     countRating++;
     await spot.save();
