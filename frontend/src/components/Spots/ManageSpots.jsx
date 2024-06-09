@@ -16,7 +16,7 @@ const ManageSpots = () => {
   let spotsArray;
 
   if (currentUserSpots === undefined) {
-    //do nothing
+    //do nothing and proceed
   } else {
     spotsArray = Object.values(currentUserSpots);
   }
