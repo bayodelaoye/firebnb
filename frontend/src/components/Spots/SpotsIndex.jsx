@@ -27,7 +27,6 @@ const SpotsIndex = () => {
       {isLoaded ? (
         <div className="spots-container">
           {spots.map((spot) => {
-            console.log(spot);
             return <SpotIndexItem spot={spot} key={spot.id} />;
           })}
         </div>
