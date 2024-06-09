@@ -64,7 +64,11 @@ function SignupFormModal() {
             if (!email.includes("@")) {
               setFormErrors({ error: "The provided email is invalid" });
             } else {
-              setFormErrors({ error: "User with that email already exists" });
+              console.log(res);
+              setFormErrors({
+                error:
+                  "User with that email already exists and or Username must be unique",
+              });
             }
           }
           if (data?.errors) {
