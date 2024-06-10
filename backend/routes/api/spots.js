@@ -58,7 +58,7 @@ const populateRatingAndImageColumn = async (query) => {
   for (let l = 0; l < spots.length; l++) {
     const spot = await Spot.findOne({
       where: {
-        id: spot[l].id,
+        id: spots[l].id,
       },
     });
 
