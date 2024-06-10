@@ -22,9 +22,10 @@ const populateRatingAndImageColumn = async (query) => {
 
   previewImages.forEach((image) => {
     if (image.preview === true) {
-      imageArray.push(image);
+      imageArray.push(image.url);
     }
   });
+  console.log(imageArray);
 
   for (let i = 0; i < spots.length; i++) {
     const spot = await Spot.findOne({
@@ -33,7 +34,7 @@ const populateRatingAndImageColumn = async (query) => {
       },
     });
 
-    spot.previewImage = imageArray[i].url;
+    spot.previewImage = imageArray[i];
     await spot.save();
   }
 
