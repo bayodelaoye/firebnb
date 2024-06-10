@@ -13,6 +13,7 @@ const router = express.Router();
 const populateRatingAndImageColumn = async (query) => {
   const imageArray = [];
   const avgRatingArray = [];
+  let count = 0;
 
   const spots = await Spot.findAll({
     ...query,
@@ -33,8 +34,9 @@ const populateRatingAndImageColumn = async (query) => {
       },
     });
 
-    spot.previewImage = imageArray[i];
+    spot.previewImage = imageArray[count];
     await spot.save();
+    count++;
   }
 
   for (let j = 0; j < spots.length; j++) {
