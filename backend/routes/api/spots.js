@@ -10,11 +10,6 @@ const {
 
 const router = express.Router();
 
-const addPreviewImage = async (spots, index, imageArray) => {
-  spots[index].previewImage = imageArray[index];
-  await spots[index].save();
-};
-
 const populateRatingAndImageColumn = async (query) => {
   const imageArray = [];
   const avgRatingArray = [];
@@ -31,40 +26,16 @@ const populateRatingAndImageColumn = async (query) => {
     }
   });
 
-  // spots[0].previewImage = imageArray[0];
-  // spots[1].previewImage = imageArray[1];
-  // spots[2].previewImage = imageArray[2];
-  // spots[3].previewImage = imageArray[3];
-  // spots[4].previewImage = imageArray[4];
-  // spots[5].previewImage = imageArray[5];
-  // spots[6].previewImage = imageArray[6];
-  // spots[7].previewImage = imageArray[7];
-  // spots[8].previewImage = imageArray[8];
-  // spots[9].previewImage = imageArray[9];
-  // spots[10].previewImage = imageArray[10];
-  // spots[11].previewImage = imageArray[11];
-  // spots[12].previewImage = imageArray[12];
-  // spots[13].previewImage = imageArray[13];
-  // spots[14].previewImage = imageArray[14];
-  // spots[15].previewImage = imageArray[15];
-  // spots[16].previewImage = imageArray[16];
-  // spots[17].previewImage = imageArray[17];
-  // spots[18].previewImage = imageArray[18];
-  // spots[19].previewImage = imageArray[19];
+  for (let i = 1; i <= spots.length; i++) {
+    const spot = await Spot.findOne({
+      where: {
+        id: i,
+      },
+    });
 
-  for (let i = 0; i < spots.length; i++) {
-    addPreviewImage(spots, i, imageArray);
+    spot.previewImage = imageArray[i];
+    await spot.save();
   }
-  // for (let i = 0; i < spots.length; i++) {
-  //   const spot = await Spot.findOne({
-  //     where: {
-  //       id: spots[i].id,
-  //     },
-  //   });
-
-  //   spot.previewImage = imageArray[i];
-  //   await spot.save();
-  // }
 
   for (let j = 0; j < spots.length; j++) {
     let ratingAmount = 0;
