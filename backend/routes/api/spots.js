@@ -27,40 +27,51 @@ const populateRatingAndImageColumn = async (query) => {
     }
   });
 
-  const avgRatingArray = [];
-
-  for (let i = 1; i <= spots.length; i++) {
-    let ratingAmount = 0;
-
-    const reviewSpecificSpotId = await Review.findAll({
-      where: {
-        spotId: i,
-      },
-    });
-
-    if (reviewSpecificSpotId.length === 0) {
-    } else {
-      for (let j = 0; j < reviewSpecificSpotId.length; j++) {
-        ratingAmount += reviewSpecificSpotId[j].stars;
-      }
-      avgRatingArray.push(ratingAmount / reviewSpecificSpotId.length);
-    }
-  }
-
-  for (let l = 1; l <= spots.length; l++) {
+  console.log(spots[0].id);
+  for (let i = 0; i < spots.length; i++) {
     const spot = await Spot.findOne({
       where: {
-        id: l,
+        id: spots[i].id,
       },
     });
 
-    spot.previewImage = imageArray[countImages].url;
-    spot.avgRating = avgRatingArray[countRating];
-    console.log(countRating, spot.previewImage);
-    countImages++;
-    countRating++;
+    spot.previewImage = imageArray[i].url;
     await spot.save();
   }
+  // const avgRatingArray = [];
+
+  // for (let i = 1; i <= spots.length; i++) {
+  //   let ratingAmount = 0;
+
+  //   const reviewSpecificSpotId = await Review.findAll({
+  //     where: {
+  //       spotId: i,
+  //     },
+  //   });
+
+  //   if (reviewSpecificSpotId.length === 0) {
+  //   } else {
+  //     for (let j = 0; j < reviewSpecificSpotId.length; j++) {
+  //       ratingAmount += reviewSpecificSpotId[j].stars;
+  //     }
+  //     avgRatingArray.push(ratingAmount / reviewSpecificSpotId.length);
+  //   }
+  // }
+
+  // for (let l = 1; l <= spots.length; l++) {
+  //   const spot = await Spot.findOne({
+  //     where: {
+  //       id: l,
+  //     },
+  //   });
+
+  //   spot.previewImage = imageArray[countImages].url;
+  //   spot.avgRating = avgRatingArray[countRating];
+  //   console.log(countRating, spot.previewImage);
+  //   countImages++;
+  //   countRating++;
+  //   await spot.save();
+  // }
 
   return spots;
 };
