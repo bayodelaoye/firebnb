@@ -12,6 +12,7 @@ const router = express.Router();
 
 const populateRatingAndImageColumn = async (query) => {
   const imageArray = [];
+  const avgRatingArray = [];
   let countImages = 0;
   let countRating = 0;
 
@@ -27,7 +28,6 @@ const populateRatingAndImageColumn = async (query) => {
     }
   });
 
-  console.log(spots[0].id);
   for (let i = 0; i < spots.length; i++) {
     const spot = await Spot.findOne({
       where: {
@@ -38,40 +38,35 @@ const populateRatingAndImageColumn = async (query) => {
     spot.previewImage = imageArray[i].url;
     await spot.save();
   }
-  // const avgRatingArray = [];
 
-  // for (let i = 1; i <= spots.length; i++) {
-  //   let ratingAmount = 0;
+  for (let j = 0; j < spots.length; j++) {
+    let ratingAmount = 0;
 
-  //   const reviewSpecificSpotId = await Review.findAll({
-  //     where: {
-  //       spotId: i,
-  //     },
-  //   });
+    const reviewSpecificSpotId = await Review.findAll({
+      where: {
+        spotId: spots[j].id,
+      },
+    });
 
-  //   if (reviewSpecificSpotId.length === 0) {
-  //   } else {
-  //     for (let j = 0; j < reviewSpecificSpotId.length; j++) {
-  //       ratingAmount += reviewSpecificSpotId[j].stars;
-  //     }
-  //     avgRatingArray.push(ratingAmount / reviewSpecificSpotId.length);
-  //   }
-  // }
+    if (reviewSpecificSpotId.length === 0) {
+    } else {
+      for (let k = 0; k < reviewSpecificSpotId.length; k++) {
+        ratingAmount += reviewSpecificSpotId[k].stars;
+      }
+      avgRatingArray.push(ratingAmount / reviewSpecificSpotId.length);
+    }
+  }
 
-  // for (let l = 1; l <= spots.length; l++) {
-  //   const spot = await Spot.findOne({
-  //     where: {
-  //       id: l,
-  //     },
-  //   });
+  for (let l = 0; l < spots.length; l++) {
+    const spot = await Spot.findOne({
+      where: {
+        id: spot[l].id,
+      },
+    });
 
-  //   spot.previewImage = imageArray[countImages].url;
-  //   spot.avgRating = avgRatingArray[countRating];
-  //   console.log(countRating, spot.previewImage);
-  //   countImages++;
-  //   countRating++;
-  //   await spot.save();
-  // }
+    spot.avgRating = avgRatingArray[l];
+    await spot.save();
+  }
 
   return spots;
 };
