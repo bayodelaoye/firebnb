@@ -13,8 +13,6 @@ const router = express.Router();
 const populateRatingAndImageColumn = async (query) => {
   const imageArray = [];
   const avgRatingArray = [];
-  let countImages = 0;
-  let countRating = 0;
 
   const spots = await Spot.findAll({
     ...query,
