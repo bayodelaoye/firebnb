@@ -107,6 +107,7 @@ const CreateSpot = () => {
           }
         })
         .then(() => {
+          console.log(createdSpotId);
           handleImages(createdSpotId);
         })
         .then(() => dispatch(getAllSpots()))

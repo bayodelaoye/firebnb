@@ -13,7 +13,7 @@ const router = express.Router();
 const populateRatingAndImageColumn = async (query) => {
   const imageArray = [];
   const avgRatingArray = [];
-  let count = 0;
+  let count = 20;
 
   const spots = await Spot.findAll({
     ...query,
@@ -27,16 +27,31 @@ const populateRatingAndImageColumn = async (query) => {
     }
   });
 
-  for (let i = 1; i <= spots.length; i++) {
-    const spot = await Spot.findOne({
-      where: {
-        id: i,
-      },
-    });
+  console.log(imageArray);
+  if (spots.length === 20) {
+    for (let i = 0; i < spots.length; i++) {
+      const spot = await Spot.findOne({
+        where: {
+          id: spots[i].id,
+        },
+      });
 
-    spot.previewImage = imageArray[count];
-    await spot.save();
-    count++;
+      spot.previewImage =
+        "https://res.cloudinary.com/dsb4nx6zn/image/upload/v1718054869/square-xxl_xk18hb.png";
+      await spot.save();
+    }
+  } else {
+    for (let i = 20; i < spots.length; i++) {
+      const spot = await Spot.findOne({
+        where: {
+          id: spots[i].id,
+        },
+      });
+
+      spot.previewImage = imageArray[count];
+      await spot.save();
+      count++;
+    }
   }
 
   for (let j = 0; j < spots.length; j++) {
@@ -245,22 +260,6 @@ router.post("/:spotId/images", async (req, res) => {
       const { url, preview } = req.body;
 
       if (url && (preview === true || preview === false)) {
-        const spotImages = await SpotImage.findAll({
-          where: {
-            spotId: spot.id,
-          },
-        });
-
-        // if (preview === true && spotImages.length > 0) {
-        //   for (let i = 0; i < spotImages.length; i++) {
-        //     if (spotImages[i].preview === true) {
-        //       spotImages[i].preview = false;
-
-        //       await spotImages[i].save();
-        //     }
-        //   }
-        // }
-
         const spotImage = await SpotImage.create({
           spotId: spot.id,
           url,
