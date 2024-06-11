@@ -101,13 +101,18 @@ const CreateSpot = () => {
       dispatch(createSpot(spotObj))
         .then(() => {
           if (newSpot === undefined) {
-            createdSpotId++;
+            // createdSpotId++;
+            createdSpotId =
+              Object.values(allSpots)[Object.values(allSpots).length - 1].id +
+              1;
           } else {
-            createdSpotId = newSpot.id;
+            // createdSpotId = newSpot.id;
+            createdSpotId =
+              Object.values(allSpots)[Object.values(allSpots).length - 1].id +
+              1;
           }
         })
         .then(() => {
-          console.log(createdSpotId);
           handleImages(createdSpotId);
         })
         .then(() => dispatch(getAllSpots()))
@@ -115,7 +120,7 @@ const CreateSpot = () => {
           if (newSpot === undefined) {
             navigate(`/spots/${createdSpotId}`);
           } else {
-            navigate(`/spots/${createdSpotId + 1}`);
+            navigate(`/spots/${createdSpotId}`);
           }
         })
         .then(() => {
