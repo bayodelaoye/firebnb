@@ -19,40 +19,55 @@ const populateRatingAndImageColumn = async (query) => {
     ...query,
   });
 
-  const previewImages = await SpotImage.findAll();
-
-  previewImages.forEach((image) => {
-    if (image.preview === true) {
-      imageArray.push(image.url);
-    }
-  });
-
-  console.log(imageArray);
-  if (spots.length === 20) {
-    for (let i = 0; i < spots.length; i++) {
-      const spot = await Spot.findOne({
-        where: {
-          id: spots[i].id,
-        },
-      });
-
-      spot.previewImage =
-        "https://res.cloudinary.com/dsb4nx6zn/image/upload/v1718054869/square-xxl_xk18hb.png";
-      await spot.save();
-    }
-  } else {
-    for (let i = 20; i < spots.length; i++) {
-      const spot = await Spot.findOne({
-        where: {
-          id: spots[i].id,
-        },
-      });
-
-      spot.previewImage = imageArray[count];
-      await spot.save();
-      count++;
+  for (let i = 0; i < spots.length; i++) {
+    const previewImage = await SpotImage.findOne({
+      attributes: ["url"],
+      where: {
+        spotId: spots[i].id,
+        preview: true,
+      },
+    });
+    // return previewImage;
+    if (previewImage) {
+      // added an if statement to check if previewUrl is truthy
+      spots[i].previewImage = previewImage.url;
+      await spots[i].save();
     }
   }
+
+  // const previewImages = await SpotImage.findAll();
+
+  // previewImages.forEach((image) => {
+  //   if (image.preview === true) {
+  //     imageArray.push(image.url);
+  //   }
+  // });
+
+  // if (spots.length === 20) {
+  //   for (let i = 0; i < spots.length; i++) {
+  //     const spot = await Spot.findOne({
+  //       where: {
+  //         id: spots[i].id,
+  //       },
+  //     });
+
+  //     spot.previewImage =
+  //       "https://res.cloudinary.com/dsb4nx6zn/image/upload/v1718054869/square-xxl_xk18hb.png";
+  //     await spot.save();
+  //   }
+  // } else {
+  //   for (let i = 20; i < spots.length; i++) {
+  //     const spot = await Spot.findOne({
+  //       where: {
+  //         id: spots[i].id,
+  //       },
+  //     });
+
+  //     spot.previewImage = imageArray[count];
+  //     await spot.save();
+  //     count++;
+  //   }
+  // }
 
   for (let j = 0; j < spots.length; j++) {
     let ratingAmount = 0;
