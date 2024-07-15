@@ -21,6 +21,11 @@
   width: 270px;
 }
 
+.sign-up-btn-disabled {
+  width: 270px;
+  pointer-events: none;
+}
+
 .sign-up-error {
   color: red;
 }

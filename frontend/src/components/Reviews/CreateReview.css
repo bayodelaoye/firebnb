@@ -67,6 +67,10 @@ h2 {
   gap: 15px;
 }
 
+.review-btn-disabled {
+  pointer-events: none;
+}
+
 @media (max-width: 740px) {
   .review-form {
     width: 20rem;

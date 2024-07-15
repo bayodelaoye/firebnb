@@ -53,7 +53,7 @@ const CreateSpot = () => {
     if (isNaN(lng) || lng === "") {
       errors.lng = "Lng is required and must be a number";
     }
-    if (description.length < 1) {
+    if (description.length < 30) {
       errors.description = "Description needs 30 or more characters";
     }
     if (name.length < 1) {

@@ -183,14 +183,23 @@ function SignupFormModal() {
           <p className="sign-up-error">{formErrors.confirmPassword}</p>
         )}
         {/* {errors.confirmPassword && <p>{errors.confirmPassword}</p>} */}
-        <button
-          className="login-btn"
-          id="sign-up-btn"
-          type="submit"
-          disabled={Object.keys(formErrors).length >= 1}
-        >
-          Sign Up
-        </button>
+        {Object.keys(formErrors).length >= 1 ? (
+          <button
+            className="sign-up-btn-disabled"
+            type="submit"
+            disabled={Object.keys(formErrors).length >= 1}
+          >
+            Sign Up
+          </button>
+        ) : (
+          <button
+            id="sign-up-btn"
+            type="submit"
+            disabled={Object.keys(formErrors).length >= 1}
+          >
+            Sign Up
+          </button>
+        )}
       </form>
     </>
   );
