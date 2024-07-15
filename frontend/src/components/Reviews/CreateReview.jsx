@@ -51,7 +51,7 @@ function CreateReview({ spot }) {
     <form className="review-form" onSubmit={handleSubmit}>
       <h2 className="review-title">How was your stay?</h2>
       <label className="review-label">
-        Review:
+        Review (10 characters or more):
         <textarea
           placeholder="Leave your review here..."
           className="review-input long-text"
@@ -176,9 +176,19 @@ function CreateReview({ spot }) {
         </div>
       </label>
 
-      <button disabled={Object.values(errors).length > 0} type="submit">
-        Submit Your Review
-      </button>
+      {Object.values(errors).length > 0 ? (
+        <button
+          className="review-btn-disabled"
+          disabled={Object.values(errors).length > 0}
+          type="submit"
+        >
+          Submit Your Review
+        </button>
+      ) : (
+        <button className="review-btn" type="submit">
+          Submit Your Review
+        </button>
+      )}
     </form>
   );
 }

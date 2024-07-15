@@ -55,7 +55,7 @@ const UpdateSpot = () => {
       errors.lat = "Lat is required and must be a number";
     } else if (isNaN(lng) || lng === "") {
       errors.lng = "Lng is required and must be a number";
-    } else if (description.length < 1) {
+    } else if (description.length < 30) {
       errors.description = "Description needs 30 or more characters";
     } else if (name.length < 1) {
       errors.name = "Name is required";
@@ -228,7 +228,7 @@ const UpdateSpot = () => {
                   id="lng"
                   name="lng"
                   placeholder="Lng"
-                  value={lng ? lat : ""}
+                  value={lng ? lng : ""}
                   onChange={(e) => setLng(e.target.value)}
                 />
                 {Object.keys(errors).length >= 1 ? (

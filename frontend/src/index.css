@@ -11,18 +11,13 @@ a {
 
 button {
   width: fit-content;
-  padding: 12px;
   cursor: pointer;
-}
-
-button {
-  background: #cb2027;
-  border: 1px solid #cb2027;
+  /* background: #cb2027; */
+  /* border: 1px solid #cb2027; */
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
   box-sizing: border-box;
-  color: #ffffff;
-  cursor: pointer;
+  /* color: #ffffff; */
   display: inline-block;
   font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
   font-size: 16px;
@@ -43,7 +38,7 @@ button:hover,
 button:active {
   background-color: initial;
   background-position: 0 0;
-  color: #cb2027;
+  /* color: #cb2027; */
 }
 
 button:active {
