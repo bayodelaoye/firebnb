@@ -11,6 +11,7 @@ import SpotDetailsPage from "./components/Spots/SpotDetailsPage";
 import CreateSpot from "./components/Spots/CreateSpot";
 import ManageSpots from "./components/Spots/ManageSpots";
 import UpdateSpot from "./components/Spots/UpdateSpot";
+import Footer from "./components/Footer";
 
 function Layout() {
   const dispatch = useDispatch();
@@ -68,7 +69,12 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Footer />
+    </>
+  );
 }
 
 export default App;
