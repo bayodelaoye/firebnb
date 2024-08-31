@@ -8,7 +8,7 @@ const ReviewIndexItem = ({ review, spot, user }) => {
         <>
           <h2>{review.User.firstName}</h2>
           <p>{review.createdAt.split("T")[0]}</p>
-          <p>{review.review}</p>
+          <p className="spot-review">{review.review}</p>
           {user === null ? (
             <></>
           ) : user.id === review.userId ? (

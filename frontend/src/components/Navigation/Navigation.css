@@ -1,61 +1,91 @@
-.nav-bar {
-  display: flex;
-  list-style-type: none;
-  justify-content: space-between;
-  align-items: center;
+@media screen and (min-width: 360px) {
+  .nav-bar {
+    display: flex;
+    list-style-type: none;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .nav-bar li {
+    list-style-type: none;
+  }
+
+  .nav-bar .logo {
+    width: 110px;
+  }
+
+  .login-sign-up-btns {
+    display: flex;
+    gap: 25px;
+  }
+
+  .three-links {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
 }
 
-.nav-bar li {
-  list-style-type: none;
-}
+@media screen and (min-width: 768px) {
+  .nav-bar {
+    display: flex;
+    list-style-type: none;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-.nav-bar .logo {
-  width: 110px;
-  margin-left: 70px;
-}
+  .nav-bar li {
+    list-style-type: none;
+  }
 
-.sign-up-login-btns {
-  display: flex;
-  gap: 20px;
-}
+  .nav-bar .logo {
+    width: 110px;
+    margin-left: 70px;
+  }
 
-.user-menu-container {
-  display: grid;
-  margin-top: 20px;
-  margin-right: 70px;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas:
-    "row1"
-    "row2";
-}
+  .sign-up-login-btns {
+    display: flex;
+    gap: 20px;
+  }
 
-.three-links {
-  display: flex;
-  grid-area: row1;
-  gap: 25px;
-  align-items: center;
-  justify-content: end;
-}
+  .user-menu-container {
+    display: grid;
+    margin-top: 20px;
+    margin-right: 70px;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      "row1"
+      "row2";
+  }
 
-.drop-down-menu {
-  grid-area: row2;
-  text-align: right;
-}
+  .three-links {
+    display: flex;
+    grid-area: row1;
+    gap: 25px;
+    align-items: center;
+    justify-content: end;
+  }
 
-.icon-nav-bar {
-  cursor: pointer;
-  width: 35px;
-  height: 35px;
-}
+  .drop-down-menu {
+    grid-area: row2;
+    text-align: right;
+  }
 
-.profile-dropdown {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
+  .icon-nav-bar {
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+  }
 
-.login-sign-up-btns {
-  display: flex;
-  gap: 25px;
-  margin-right: 70px;
+  .profile-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .login-sign-up-btns {
+    display: flex;
+    gap: 25px;
+    margin-right: 70px;
+  }
 }
