@@ -103,13 +103,13 @@ const SpotDetailsPage = () => {
               <h2>
                 Hosted by {spot.Owner.firstName} {spot.Owner.lastName}
               </h2>
-              <p>{spot.description}</p>
+              <p className="spot-details-description">{spot.description}</p>
             </div>
 
             <div className="info-box-container">
               <div className="stay-info-container">
                 <h2>${spot.price} night</h2>
-                <p>
+                <p className="stay-info-star-text">
                   <FaStar />
                   {reviewCount === 0
                     ? "New"
@@ -141,6 +141,7 @@ const SpotDetailsPage = () => {
               </div>
             </div>
           </div>
+
           <div className="line-break"></div>
           <div className="summary-review-container">
             <div className="review-summary-container">
@@ -168,6 +169,7 @@ const SpotDetailsPage = () => {
                 <></>
               )}
             </div>
+
             <div className="reviews-container">
               {reviewCount === 0 && ownerId !== userSession.id ? (
                 <p>Be the first to post a review!</p>
