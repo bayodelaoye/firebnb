@@ -25,13 +25,11 @@ I used React and Redux on the frontend for state management and to display the v
 
 ### List of Spots
 
-<img width="600px" src="https://github.com/bayodelaoye/garment/blob/dev/react-vite/public/home_page.png" />
-<!-- ![Screenshot](./frontend/public/Assets/BevBnB_home.PNG) -->
+<img src="https://github.com/bayodelaoye/firebnb/blob/dev/frontend/public/Assets/home-page.png" />
 
 ### Spot Information
 
-<img width="600px" src="https://github.com/bayodelaoye/garment/blob/dev/react-vite/public/home_page.png" />
-<!-- ![Screenshot](./frontend/public/Assets/BevBnB_Spot.PNG) -->
+<img width="600px" src="https://github.com/bayodelaoye/firebnb/blob/dev/frontend/public/Assets/spot-details-page.PNG" />
 
 ## Features
 
@@ -43,7 +41,7 @@ I used React and Redux on the frontend for state management and to display the v
 
 ![db-schema]
 
-[db-schema]: ./images/schema.pn
+[db-schema]: ./images/schema.png
 
 ## API Documentation
 
