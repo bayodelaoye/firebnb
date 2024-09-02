@@ -19,7 +19,7 @@ Firebnb is an application that displays a list of spots. Users can sign in or cr
 
 React/Redux CSS
 
-I used React and Redux on the frontend for state management and to display the various pieces of information I obtained from the database. A PostgreSQL database is used on the live site in production, whereas a SQLite database is used in development. Furthermore, with CSS I was able to make media queries to ensure my site is responsive on screen sizes.
+I used React and Redux on the frontend for state management and to display the various pieces of information I obtained from the database. A PostgreSQL database is used on the live site in production, whereas a SQLite database is used in development. Furthermore, with CSS I was able to make media queries to ensure my site is responsive on different screen sizes.
 
 ## Frontend
 
@@ -27,9 +27,9 @@ I used React and Redux on the frontend for state management and to display the v
 
 <img src="https://github.com/bayodelaoye/firebnb/blob/dev/frontend/public/Assets/home-page.png" />
 
-### Spot Information
+### Spot Details
 
-<img width="600px" src="https://github.com/bayodelaoye/firebnb/blob/dev/frontend/public/Assets/spot-details-page.PNG" />
+<img src="https://github.com/bayodelaoye/firebnb/blob/dev/frontend/public/Assets/spot-details-page.PNG" />
 
 ## Features
 

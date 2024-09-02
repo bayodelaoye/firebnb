@@ -21,6 +21,7 @@
 
   .main-image-container > img {
     width: 200px;
+    height: 200px;
     object-fit: cover;
     border-radius: 10px 0px 0px 10px;
   }
@@ -33,7 +34,7 @@
 
   .sub-image-container > img {
     width: 100px;
-    height: auto;
+    height: 100px;
   }
 
   .third-image-section {
@@ -44,7 +45,7 @@
 
   .third-image-section > img {
     width: 100px;
-    height: auto;
+    height: 100px;
   }
 
   .spot-info-container {
@@ -143,9 +144,6 @@
     align-items: center;
     gap: 5px;
   }
-}
-
-@media screen and (min-width: 768px) {
 }
 
 @media screen and (min-width: 768px) {
