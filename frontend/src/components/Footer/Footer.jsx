@@ -1,5 +1,4 @@
 import "./Footer.css";
-import { Link } from "react-router-dom";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 
@@ -8,10 +7,18 @@ function Footer() {
     <footer id="footer-container">
       <p>Bayode Olaoye © 2024</p>
       <div className="github-linkedin-footer">
-        <a href="https://github.com/bayodelaoye" target="_blank">
+        <a
+          href="https://github.com/bayodelaoye"
+          target="_blank"
+          rel="noreferrer"
+        >
           <FaGithub className="footer-icon" />
         </a>
-        <a href="https://www.linkedin.com/in/bayode-olaoye/" target="_blank">
+        <a
+          href="https://www.linkedin.com/in/bayode-olaoye/"
+          target="_blank"
+          rel="noreferrer"
+        >
           <FaLinkedin className="footer-icon" />
         </a>
       </div>
