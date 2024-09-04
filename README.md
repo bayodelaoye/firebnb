@@ -13,7 +13,7 @@
 
 ## About
 
-Firebnb is an application that displays a list of spots. Users can sign in or create an account and view the details of a spot. Users can perform crud operations such as, create a spot, update a spot, delete a spot, and leave a review for a spot. My site is live on https://firebnb-project-f4vq.onrender.com
+Firebnb is an application that displays a list of spots. Users can sign in or create an account and view the details of a spot. Users can perform crud operations such as, create a spot, update a spot, delete a spot, and leave a review for a spot. My site is live on https://firebnb-project.onrender.com
 
 ## Technologies
 
